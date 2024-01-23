@@ -22,3 +22,5 @@ All text is licensed under the CC-BY-SA 4.0 http://creativecommons.org/licenses/
 Contributors:
 
     Elijah Alexander
+    Eden Zhou
+    Iris Ling

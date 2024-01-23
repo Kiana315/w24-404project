@@ -24,3 +24,5 @@ Contributors:
     Elijah Alexander
     Eden Zhou
     Iris Ling
+    Kiana Yu
+    Wenxin Li

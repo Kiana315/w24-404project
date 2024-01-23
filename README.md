@@ -11,11 +11,11 @@ Contributing
 ============
 
 Send a pull request and be sure to update this file with your name.
-    Elijah Alexander
-    Eden Zhou
-    Iris Ling
-    Kiana Yu
-    Wenxin Li
++   Elijah Alexander
++   Eden Zhou
++   Iris Ling
++   Kiana Yu
++   Wenxin Li
 
 Contributors / Licensing
 ========================
@@ -25,13 +25,14 @@ Generally everything is LICENSE'D under the Apache 2 license by Abram Hindle.
 All text is licensed under the CC-BY-SA 4.0 http://creativecommons.org/licenses/by-sa/4.0/deed.en_US
 
 Contributors:
-    Karim Baaba
-    Ali Sajedi
-    Kyle Richelhoff
-    Chris Pavlicek
-    Derek Dowling
-    Olexiy Berjanskii
-    Erin Torbiak
-    Abram Hindle
-    Braedy Kuzma
-    Nhan Nguyen 
+
++    Karim Baaba
++  Ali Sajedi
++   Kyle Richelhoff
++   Chris Pavlicek
++   Derek Dowling
++   Olexiy Berjanskii
++   Erin Torbiak
++   Abram Hindle
++ Braedy Kuzma
++   Nhan Nguyen 

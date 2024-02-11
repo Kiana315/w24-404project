@@ -5,64 +5,33 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
-    <link rel="stylesheet" type="text/css" href="/static/css/index.css">
-    <!-- <script>
-        function checkLoginStatus() {
-            // Assume currently is 'Not' LoggedIn, and the loggedInUserName is 'Eden Zhou':
-            let isLoggedIn = false;
-            let loggedInUserName = 'Eden Zhou';
+    <link rel="stylesheet" type="text/css" href="../static/css/index.css">
 
-            // If logged-in, display buttons of "profile", "friend posts", and "in-box":
-            if (isLoggedIn) {
-                document.getElementById('a1').setAttribute('href', 'friendPosts.html');
-                document.getElementById('a1').innerHTML = '&#20 Friend Posts';
-                document.getElementById('a2').setAttribute('href', 'inBox.html');
-                document.getElementById('a2').innerHTML = '&#20 Inbox';
-                document.getElementById('b').setAttribute('href', 'profile.html');
-                document.getElementById('b').innerHTML = "Hello, " + loggedInUserName;
-            // If NOT logged-in, display the button of "Connect to Your Account":
-            } else {
-                document.getElementById('a1').innerHTML = 'Connect to Your Account';
-                document.getElementById('a1').setAttribute('href', 'login.html');
-            }
-        }
-    </script> -->
 </head>
 
 <body onload="checkLoginStatus()">
-    <!-- <div class="navbar clearfix">
-        <a href="index.html">&#20 Home Page</a>
-        <a id="a1"></a>
-        <a id="a2"></a>
-        <a id="b"></a>
-    </div> -->
 
     <nav class="navbar">
         <ul>
-            <li><a href="#"><ion-icon name="home" size="large"></ion-icon></a></li>
-            <li><a href="/friendPost"><ion-icon name="people" size="large"></ion-icon></a></li>
-            <li><a href="/inbox"><ion-icon name="mail" size="large"></ion-icon></a></li>
-            <li>
-                {% if user.is_authenticated %}
-                    <a href="/profile">
-                        {% if user.avatar %}
-                            <img class="user-avatar" src="{{ user.avatar.url }}" alt="User avatar">
-                        {% else %}   
-                            <ion-icon name="person-circle" size="large"></ion-icon>
-                        {% endif %}
-                    </a>
+            <li><a href="/"><ion-icon name="home" size="large"></ion-icon></a></li>
+            <li><a href="friendPosts/"><ion-icon name="people" size="large"></ion-icon></a></li>
+            <li><a href="inBox/"><ion-icon name="mail" size="large"></ion-icon></a></li>
+            {% if user.is_authenticated %}
+                {% if user.avatar %}
+                    <li><a href="{% url 'profile' username=user.username %}"><img class="user-avatar" src="{{ user.avatar.url }}" alt="User avatar"></a></li>
                 {% else %}
-                    <a href="/login"><ion-icon name="person" size="large"></ion-icon></a>
+                    <li><a href="{% url 'profile' username=user.username %}"><ion-icon name="person-circle" size="large"></ion-icon></a></li>
                 {% endif %}
-            </li>
+            {% else %}
+                <li><a href="login/"><ion-icon name="person" size="large"></ion-icon></a></li>
+            {% endif %}
         </ul>
     </nav>
-    
-    
 
-<!-- <div class="post">
+
+<div class="post">
     <div class="user-info">
-        <img src="profilePicSrc.png" alt="User's profile picture" class="profile-pic">
+        <img src="" alt="profile picture" class="profile-pic">
         <div class="username">Username</div>
     </div>
     <div class="post-content">
@@ -72,14 +41,14 @@
 
 <div class="post">
     <div class="user-info">
-        <img src="/static/images/path_to_profile_picture.jpg" alt="User's profile picture" class="profile-pic">
+        <img src="" alt="profile picture" class="profile-pic">
         <div class="username">Username</div>
     </div>
     <div class="post-content">
         <p>This is the content of the user's post. Here you will find what they have shared with the community.</p>
     </div>
 </div>
- -->
+
 
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>

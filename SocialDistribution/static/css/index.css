@@ -1,5 +1,6 @@
 body {
-    background-image: url("/static/images/bg1.jpg");
+
+    background-image: url("../images/bg1.jpg");
     background-size: cover;
     background-position: center center;
     background-repeat: no-repeat;
@@ -8,13 +9,15 @@ body {
     margin: 0px;
 }
 
+.post {
+    margin-top: 50px;
+}
 
 .navbar {
     list-style: none;
     overflow: hidden;
     display: flex;
     background-color: rgba(255, 255, 255, 0.39);
-    position: fixed;
     width: 100%;
     height: 8%;
     top: 0;
@@ -22,6 +25,7 @@ body {
     align-items: center;
     z-index: 10000;
     color: #ffffff;
+    position: relative;
 }
 
 .navbar ul{
@@ -105,3 +109,4 @@ body {
     clear: both;
     display: table;
 }
+

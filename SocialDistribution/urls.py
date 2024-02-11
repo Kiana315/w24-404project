@@ -12,7 +12,7 @@ urlpatterns = [
     path("home/", views.indexView, name="home"),
     path("login/", views.loginView, name="login"),
     path("signup/", views.signupView, name="signup"),
-    path("friendPosts/<str:username>/", views.signupView, name="friendPosts"),
+    path("friendPosts/<str:username>/", views.friendPostsView, name="friendPosts"),
     path("profile/<str:username>/", views.profileView, name="profile"),
     path("inBox/", views.inboxView, name="inbox"),
 ]

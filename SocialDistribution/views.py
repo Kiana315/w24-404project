@@ -1,4 +1,5 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.http import HttpResponse
 
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
@@ -14,10 +15,32 @@ from rest_framework.response import Response
 
 
 
-def index(request):
-    return render(request, "index.html")
+def login_view(request):
+    return render(request, 'login.html')
 
+def signup_view(request):
+    return render(request, 'signup.html')   
 
+def following_posts_view(request):
+    return render(request, 'followign_posts.html')
+
+def public_posts_view(request):
+    return render(request, 'public_posts.html')
+
+def profile_view(request, username):
+    return render(request, 'profile.html', {'username': username})
+
+def inbox_view(request):
+    return render(request, 'inbox.html')
+
+def post_view(request):
+    return render(request, 'post.html')
+
+def server_admin_view(request):
+    return render(request, 'server_admin.html')
+
+def friendlist_view(request):
+    return render(request, 'friendlist.html')
 
 
 # # Todo: Fell free to edit all the following codes, just copy from lab3

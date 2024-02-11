@@ -2,9 +2,150 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Profile Page</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            position: relative;
+            margin: 0;
+            padding-top: 50px; /* Ensure content is not hidden under buttons */
+        }
+
+        .profile-container {
+            width: 80%;
+            margin: 0 auto;
+            padding-top: 20px;
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 20px;
+        }
+
+        .profile-photo {
+            border-radius: 50%;
+            width: 100px;
+            height: 100px;
+            margin-right: 20px;
+        }
+
+        .profile-info {
+            flex-grow: 1;
+        }
+
+        .profile-info h2 {
+            margin: 0;
+        }
+
+        .profile-info p {
+            color: #555;
+            margin: 5px 0;
+        }
+
+        .recent-posts, .friend-list {
+            margin-top: 20px;
+        }
+
+        .post, .friend {
+            background-color: #f9f9f9;
+            border: 1px solid #eee;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+
+        .post-title {
+            margin: 0;
+        }
+
+        .top-button {
+            right: 10px;
+            margin-left: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            text-align: center;
+            color: white;
+            border: none;
+            border-radius: 30px;
+            box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+            cursor: pointer;
+            transition: transform 0.1s ease-in-out, box-shadow 0.1s ease-in-out;
+            outline: none;
+        }
+
+        .top-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
+        }
+
+        .top-button:active {
+            transform: translateY(0);
+            box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+        }
+
+        .back-button {
+            top: 10px;
+            background-image: linear-gradient(45deg, #a485ff 0%, #7dd2ff 100%);
+
+        }
+
+        .logout-button {
+            top: 10px;
+            background-image: linear-gradient(45deg, #e00808 0%, #f8990a 100%);
+            color: #f4f7f6;
+        }
+
+        .profile-container {
+            width: 80%;
+            margin: 0 auto;
+        }
+    </style>
 </head>
+
 <body>
-    <h1> Here is the Profile Page </h1>
+<button class="top-button back-button" onclick="history.back()">Back</button>
+<button class="top-button logout-button" onclick="logout()">Log Out</button>
+<div class="profile-container">
+</div>
+
+<script>
+    function logout() {
+        alert('Logging out!');
+        //  redirect to a login page:
+        // window.location.href = '/login';
+    }
+</script>
+
+<div class="profile-container">
+    <div class="profile-header">
+        <img class="profile-photo" src="profile-picture-url.jpg" alt="Profile Picture">
+        <div class="profile-info">
+            <h2>Username</h2>
+            <p>Email: user@example.com</p>
+            <p>Recent Posts</p>
+        </div>
+    </div>
+    <div class="recent-posts">
+        <!-- This section should be populated with actual post data -->
+        <div class="post">
+            <h3 class="post-title">Post Title 1</h3>
+            <p>Post excerpt or summary...</p>
+        </div>
+        <div class="post">
+            <h3 class="post-title">Post Title 2</h3>
+            <p>Post excerpt or summary...</p>
+        </div>
+        <!-- ... more posts ... -->
+    </div>
+    <div class="friend-list">
+        <h3>Friends/Following</h3>
+        <!-- This section should be populated with actual friend data -->
+        <div class="friend">Friend 1</div>
+        <div class="friend">Friend 2</div>
+        <!-- ... more friends ... -->
+    </div>
+</div>
 </body>
 </html>

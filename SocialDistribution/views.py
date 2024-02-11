@@ -22,7 +22,7 @@ def profileView(request, username):
 
 
 def inboxView(request):
-    return render(request, 'inbox.html')
+    return render(request, 'inBox.html')
 
 
 def friendPostsView(request, username):

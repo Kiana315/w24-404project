@@ -1,6 +1,5 @@
 body {
-
-    background-image: url("../images/bg1.jpg");
+    background-image: url("../images/index-bg.jpg");
     background-size: cover;
     background-position: center center;
     background-repeat: no-repeat;
@@ -64,13 +63,9 @@ body {
 }
 
 .user-avatar {
-    height: 30px; /* 或其他需要的尺寸 */
-    width: 30px; /* 保持头像是圆形的 */
-    border-radius: 50%; /* 使头像呈现圆形 */
-}
-
-#b {
-    float: right;
+    height: 30px;
+    width: 30px;
+    border-radius: 50%;
 }
 
 .post {
@@ -104,9 +99,4 @@ body {
     font-size: 16px;
 }
 
-.clearfix::after {
-    content: "";
-    clear: both;
-    display: table;
-}
 

@@ -4,89 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blog Home Page</title>
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background-image: url("images/bg1.jpg");
-            background-size: cover;
-            background-position: center center;
-            background-repeat: no-repeat;
-            background-attachment: fixed;
-            background-color: #f4f7f6;
-            margin: 0;
-            padding: 0;
-        }
-
-        .navbar {
-            overflow: hidden;
-            background-color: rgba(255, 255, 255, 0.39);
-            position: fixed;
-            width: 100%;
-            top: 0;
-            padding: 3px 0;
-            z-index: 10000;
-        }
-
-        .navbar a {
-            float: left;
-            display: block;
-            color: rgba(255, 255, 255, 0.77);
-            text-align: center;
-            font-weight: bold;
-            padding: 16px 16px;
-            text-decoration: none;
-            font-size: 15px;
-            font-family: "Segoe UI", system-ui, sans-serif;
-        }
-
-        .navbar a:hover {
-            background-color: #ddd;
-            color: black;
-        }
-
-        #b {
-            float: right;
-        }
-
-        .post {
-            background-color: #ffffff;
-            border-radius: 8px;
-            padding: 20px;
-            margin: 20px auto;
-            max-width: 800px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        .user-info {
-            display: flex;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-
-        .profile-pic {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            margin-right: 10px;
-        }
-
-        .username {
-            font-weight: bold;
-        }
-
-        .post-content {
-            text-align: left;
-            font-size: 16px;
-        }
-
-        .clearfix::after {
-            content: "";
-            clear: both;
-            display: table;
-        }
-    </style>
-    <script>
+    <title>Home</title>
+    <link rel="stylesheet" type="text/css" href="/static/css/index.css">
+    <!-- <script>
         function checkLoginStatus() {
             // Assume currently is 'Not' LoggedIn, and the loggedInUserName is 'Eden Zhou':
             let isLoggedIn = false;
@@ -106,19 +26,41 @@
                 document.getElementById('a1').setAttribute('href', 'login.html');
             }
         }
-    </script>
+    </script> -->
 </head>
 
 <body onload="checkLoginStatus()">
-    <div class="navbar clearfix">
+    <!-- <div class="navbar clearfix">
         <a href="index.html">&#20 Home Page</a>
         <a id="a1"></a>
         <a id="a2"></a>
         <a id="b"></a>
-    </div>
+    </div> -->
 
+    <nav class="navbar">
+        <ul>
+            <li><a href="#"><ion-icon name="home" size="large"></ion-icon></a></li>
+            <li><a href="/friendPost"><ion-icon name="people" size="large"></ion-icon></a></li>
+            <li><a href="/inbox"><ion-icon name="mail" size="large"></ion-icon></a></li>
+            <li>
+                {% if user.is_authenticated %}
+                    <a href="/profile">
+                        {% if user.avatar %}
+                            <img class="user-avatar" src="{{ user.avatar.url }}" alt="User avatar">
+                        {% else %}   
+                            <ion-icon name="person-circle" size="large"></ion-icon>
+                        {% endif %}
+                    </a>
+                {% else %}
+                    <a href="/login"><ion-icon name="person" size="large"></ion-icon></a>
+                {% endif %}
+            </li>
+        </ul>
+    </nav>
+    
+    
 
-<div class="post">
+<!-- <div class="post">
     <div class="user-info">
         <img src="profilePicSrc.png" alt="User's profile picture" class="profile-pic">
         <div class="username">Username</div>
@@ -130,15 +72,16 @@
 
 <div class="post">
     <div class="user-info">
-        <img src="path_to_profile_picture.jpg" alt="User's profile picture" class="profile-pic">
+        <img src="/static/images/path_to_profile_picture.jpg" alt="User's profile picture" class="profile-pic">
         <div class="username">Username</div>
     </div>
     <div class="post-content">
         <p>This is the content of the user's post. Here you will find what they have shared with the community.</p>
     </div>
 </div>
+ -->
 
-
-
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 </body>
 </html>

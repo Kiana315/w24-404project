@@ -106,17 +106,21 @@
 
 <body>
 <button class="top-button back-button" onclick="history.back()">Back</button>
-<button class="top-button logout-button" onclick="logout()">Log Out</button>
+<form action="{% url 'logout' %}" method="post">
+    {% csrf_token %}
+    <button type="submit" class="top-button logout-button">Log Out</button>
+</form>
+
 <div class="profile-container">
 </div>
 
-<script>
+<!-- <script>
     function logout() {
         alert('Logging out!');
         //  redirect to a login page:
         // window.location.href = '/login';
     }
-</script>
+</script> -->
 
 <div class="profile-container">
     <div class="profile-header">

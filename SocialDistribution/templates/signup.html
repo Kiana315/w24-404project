@@ -116,11 +116,19 @@
     <br>
     <h1 class="signup-title">- Welcome Aboard - </h1>
     <h2 class="signup-comment"> Please sign up to join our community!! </h2>
-    <form action="/signup" method="post">
+    <form action="{% url 'signup' %}" method="post">
+        {% csrf_token %}
         <input type="text" class="signup-input" name="username" placeholder="Username" required autofocus>
         <input type="email" class="signup-input" name="email" placeholder="Email Address" required>
-        <input type="password" class="signup-input" name="password" placeholder="Password" required>
-        <button type="submit" class="signup-button">Sign Up</button>
+        <input type="password" class="signup-input" name="password1" placeholder="Password" required>
+        <input type="password" class="signup-input" name="password2" placeholder="Password confirmation" required>
+        <button class="signup-button" type="submit">Sign up</button>
+        {% if messages %}
+            {% for message in messages %}
+                <p>{{ message }}</p>
+            {% endfor %}
+        {% endif %}
+        
     </form>
 </div>
 </body>

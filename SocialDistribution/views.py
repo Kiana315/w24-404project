@@ -56,6 +56,8 @@ def profileView(request, username):
     # return render(request, 'profile.html', context)
     return render(request, 'profile.html')
 
+def signup_view(request):
+    return render(request, 'signup.html')   
 
 def inboxView(request):
     return render(request, 'inBox.html')

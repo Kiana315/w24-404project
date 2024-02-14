@@ -1,18 +1,21 @@
 from django.urls import path
 from . import views
-
+from django.contrib import admin
+from django.contrib.auth import views as auth_views
+from .views import LoginView
+from django.contrib.auth.views import LogoutView
 
 app_name = "SocialDistribution"
-""" May edit this part to have new web pages"""
+
 urlpatterns = [
-    # path("", views.index, name="index"),
-    path('login/', views.login_view, name='login'),
-    path('signup/', views.signup_view, name='signup'),
-    path('following-posts/', views.following_posts_view, name='following_posts'),
-    path('public-posts/', views.public_posts_view, name='public_posts'),
-    path('profile/<str:username>/', views.profile_view, name='profile'),
-    path('inbox/', views.inbox_view, name='inbox'),
-    path('post/', views.post_view, name='post'),
-    path('server-admin/', views.server_admin_view, name='server_admin'),
-    path('friendlist/', views.friendlist_view, name='friendlist'),
+    path("", views.indexView, name="home"),
+    path('admin/', admin.site.urls, name="admin"),
+    # path("home/", views.indexView, name="home"),
+    path("login/", LoginView.as_view(), name="login"),
+    path('logout/', LogoutView.as_view(), name='logout'),
+    path("signup/", views.signupView, name="signup"),
+    path("friendPosts/<str:username>/", views.friendPostsView, name="friendPosts"),
+    path("profile/<str:username>/", views.profileView, name="profile"),
+    path("inBox/", views.inboxView, name="inbox"),
 ]
+

@@ -9,28 +9,28 @@
 </head>
 
 <body>
-<div class="navbar">
-    <a href="/">&#20 Home Page</a>
-    <a href="../login/">&#20 Login Page</a>
-    <a href="../signup/">Don't have an account? &#20 Sign Up</a>
-</div>
-<div class="login-container">
-    <br>
-    <h1 class="login-title">- Welcome Back - </h1>
-    <h2 class="login-comment"> Please log in to enjoy your time!! </h2>
-    <form action="/login/" method="post">
-        {% csrf_token %}
-        <input type="text" class="login-input" name="username"  placeholder="Username" required autofocus>
-        <input type="password" class="login-input" name="password" placeholder="Password" required>
-        <button type="submit" class="login-button">Log In</button>
-        {% if form.non_field_errors %}
-            <div class="error">
-                <p>Please enter a correct username and password.</p>
-            </div>
-        {% endif %}
-        
-    </form>
-</div>
+    <div class="navbar">
+        <a href="/">&#20 Home Page</a>
+        <a href="../login/">&#20 Login Page</a>
+        <a href="../signup/">Don't have an account? &#20 Sign Up</a>
+    </div>
+    <div class="login-container">
+        <br>
+        <h1 class="login-title">- Welcome Back - </h1>
+        <h2 class="login-comment"> Please log in to enjoy your time!! </h2>
+        <form action="/login/" method="post">
+            {% csrf_token %}
+            <input type="text" class="login-input" name="username"  placeholder="Username" required autofocus>
+            <input type="password" class="login-input" name="password" placeholder="Password" required>
+            <button type="submit" class="login-button">Log In</button>
+            {% if form.non_field_errors %}
+                <div class="error">
+                    <p>Please enter a correct username and password.</p>
+                </div>
+            {% endif %}
+
+        </form>
+    </div>
 </body>
 
 </html>

@@ -1,11 +1,10 @@
 body {
-    background-image: url("/static/images/friendPosts-bg.jpg");
+    background-image: url("../images/friendPosts-bg.jpg");
     background-size: cover;
     background-position: center center;
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-color: #f4f7f6;
-    margin: 0;
 }
 .navbar {
     list-style: none;
@@ -20,7 +19,7 @@ body {
     color: #ffffff;
     position: relative;
 }
-.navbar ul {
+.navbar ul{
     list-style-type: none;
     display: flex;
     justify-content: center;
@@ -28,7 +27,7 @@ body {
     text-align: center;
 }
 .navbar li {
-    padding: 0 15px;
+    padding: 0px 15px;
 }
 .navbar a {
     display: block;
@@ -39,6 +38,7 @@ body {
     height: 98%;
     width: 60px;
     padding: 5px;
+    text-decoration: none;
     font-size: 15px;
 }
 .navbar a:hover {
@@ -46,6 +46,7 @@ body {
     color: black;
     border-radius: 10px;
 }
+
 .user-avatar {
     height: 30px;
     width: 30px;
@@ -78,4 +79,30 @@ body {
 .friendPostContent {
     text-align: left;
     font-size: 16px;
+}
+
+.circle-button {
+    bottom: 100px;
+    right: 100px;
+    width: 70px;
+    height: 70px;
+    position: fixed;
+    font-size: 50px;
+    line-height: 70px;
+    text-align: center;
+    border-radius: 50%;
+    background-image: linear-gradient(45deg, rgba(144, 25, 213, 0.65) 0%, rgba(246, 78, 78, 0.85) 100%);
+    box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+    transition: transform 0.1s ease-in-out, box-shadow 0.1s ease-in-out;
+    cursor: pointer;
+    color: #dddddd;
+    text-decoration: none;
+}
+.circle-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
+}
+.circle-button:active {
+    transform: translateY(0);
+    box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
 }

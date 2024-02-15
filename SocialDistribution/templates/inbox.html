@@ -9,55 +9,77 @@
 </head>
 
 <body>
-<div class="inbox-container">
-    <h1>- Your Inbox -</h1>
-    <div class="inbox-filters">
-        <form id="filter-form">
-            <label for="filter">Filter messages:</label>
-            <select name="filter" id="filter">
-                <option value="all">All</option>
-                <option value="unread">Unread</option>
-                <option value="read">Read</option>
-            </select>
-            <button type="submit">Filter</button>
-        </form>
+    <nav class="navbar">
+        <ul>
+            <li><a href="/"><ion-icon name="home" size="large"></ion-icon></a></li>
+            {% if user.is_authenticated %}
+                <li><a href="{% url 'inbox' username=user.username %}"><ion-icon name="mail" size="large" target="_blank"></ion-icon></a></li>
+                <li><a href="{% url 'friendPosts' username=user.username %}"><ion-icon name="people" size="large"></ion-icon></a></li>
+                {% if user.avatar %}
+                    <li><a href="{% url 'profile' username=user.username %}"><img class="user-avatar" src="{{ user.avatar.url }}" alt="User avatar"></a></li>
+                {% else %}
+                    <li><a href="{% url 'profile' username=user.username %}"><ion-icon name="person-circle" size="large"></ion-icon></a></li>
+                {% endif %}
+            {% else %}
+                <li><a href="login/"><ion-icon name="mail" size="large"></ion-icon></a></li>
+                <li><a href="login/"><ion-icon name="people" size="large"></ion-icon></a></li>
+                <li><a href="login/"><ion-icon name="person" size="large"></ion-icon></a></li>
+            {% endif %}
+        </ul>
+    </nav>
+
+    <div class="inbox-container">
+        <h1>- Your Inbox -</h1>
+        <div class="inbox-filters">
+            <form id="filter-form">
+                <label for="filter">Filter messages:</label>
+                <select name="filter" id="filter">
+                    <option value="all">All</option>
+                    <option value="unread">Unread</option>
+                    <option value="read">Read</option>
+                </select>
+                <button type="submit">Filter</button>
+            </form>
+        </div>
+
+        <div class="inbox-messages">
+        <ul>
+            <li class="message unread" data-sender="Eden" data-subject="Hey, did you get my last message?">
+                <div class="message-header">
+                    <span class="status-dot"></span>
+                    <span class="sender">Eden</span>
+                    <span class="subject">Hey, did you get my last message?</span>
+                </div>
+                <div class="message-body">
+                    <p>Hey, just checking to see if you received my last message. Let me know if you have any questions about the project.</p>
+                    <div class="message-actions">
+                        <button class="delete-btn">Delete</button>
+                        <button class="star-btn">Star</button>
+                    </div>
+                </div>
+            </li>
+            <li class="message" data-sender="Hazel" data-subject="Meeting is rescheduled to 3 PM">
+                <div class="message-header">
+                    <span class="status-dot"></span>
+                    <span class="sender">Hazel</span>
+                    <span class="subject">Meeting is rescheduled to 3 PM</span>
+                </div>
+                <div class="message-body">
+                    <p>Just a reminder that today's meeting has been rescheduled to 3 PM. Hope to see you there!</p>
+                    <div class="message-actions">
+                        <button class="delete-btn">Delete</button>
+                        <button class="star-btn">Star</button>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
     </div>
 
-    <div class="inbox-messages">
-    <ul>
-        <li class="message unread" data-sender="Eden" data-subject="Hey, did you get my last message?">
-            <div class="message-header">
-                <span class="status-dot"></span>
-                <span class="sender">Eden</span>
-                <span class="subject">Hey, did you get my last message?</span>
-            </div>
-            <div class="message-body">
-                <p>Hey, just checking to see if you received my last message. Let me know if you have any questions about the project.</p>
-                <div class="message-actions">
-                    <button class="delete-btn">Delete</button>
-                    <button class="star-btn">Star</button>
-                </div>
-            </div>
-        </li>
-        <li class="message" data-sender="Hazel" data-subject="Meeting is rescheduled to 3 PM">
-            <div class="message-header">
-                <span class="status-dot"></span>
-                <span class="sender">Hazel</span>
-                <span class="subject">Meeting is rescheduled to 3 PM</span>
-            </div>
-            <div class="message-body">
-                <p>Just a reminder that today's meeting has been rescheduled to 3 PM. Hope to see you there!</p>
-                <div class="message-actions">
-                    <button class="delete-btn">Delete</button>
-                    <button class="star-btn">Star</button>
-                </div>
-            </div>
-        </li>
-    </ul>
-</div>
-</div>
+    <script src="../../static/js/inbox.js"></script>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 
-<script src="../../static/js/inbox.js"></script>
 </body>
 
 

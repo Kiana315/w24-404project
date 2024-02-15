@@ -23,7 +23,6 @@ body {
     color: #ffffff;
     position: relative;
 }
-
 .navbar ul{
     list-style-type: none;
     display: flex;
@@ -31,16 +30,12 @@ body {
     align-items: center;
     text-align: center;
 }
-
-
 .navbar li {
     padding: 0px 15px;
 }
-
 .navbar a {
     display: block;
     color: #ffffff;
-    /* color: rgba(255, 255, 255, 0.77); */
     text-align: center;
     font-weight: bold;
     cursor: pointer;
@@ -49,10 +44,7 @@ body {
     padding: 5px;
     text-decoration: none;
     font-size: 15px;
-    /* font-family: "Segoe UI", system-ui, sans-serif; */
 }
-
-
 .navbar a:hover {
     background-color: #ddd;
     color: black;
@@ -96,27 +88,39 @@ body {
     font-size: 16px;
 }
 
-.circle-button {
-    position: fixed;   /* Fixed position */
-    bottom: 20px;     /* 20px from the bottom */
-    right: 20px;      /* 20px from the right */
-    background-color: #007bff; /* Blue background color */
-    color: #e00808;     /* White text color */
-    border: none;     /* No border */
-    border-radius: 50%; /* Rounded borders to make it a circle */
-    width: 50px;      /* Width of the button */
-    height: 50px;     /* Height of the button */
-    text-align: center; /* Center the text horizontally */
+.circle {
     line-height: 50px; /* Center the text vertically */
-    font-size: 24px;   /* Size of the "+" */
     text-decoration: none; /* No underline on the "+" */
     box-shadow: 2px 2px 5px rgba(0,0,0,0.3); /* Optional: Shadow for better visibility */
     z-index: 1000;    /* Make sure it's on top of other elements */
     cursor: pointer;  /* Change cursor to pointer when hovering over the button */
 }
 
+
+.circle-button {
+    bottom: 100px;
+    right: 100px;
+    width: 70px;
+    height: 70px;
+    position: fixed;
+    font-size: 50px;
+    line-height: 70px;
+    text-align: center;
+    border-radius: 50%;
+    background-image: linear-gradient(45deg, rgba(25, 213, 150, 0.65) 0%, rgba(78, 190, 246, 0.85) 100%);
+    box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+    transition: transform 0.1s ease-in-out, box-shadow 0.1s ease-in-out;
+    cursor: pointer;
+    color: #dddddd;
+    text-decoration: none;
+}
 .circle-button:hover {
-    background-color: #0056b3; /* Darker blue on hover for visual feedback */
+    transform: translateY(-2px);
+    box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
+}
+.circle-button:active {
+    transform: translateY(0);
+    box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
 }
 
 

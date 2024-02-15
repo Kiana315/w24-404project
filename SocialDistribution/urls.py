@@ -10,13 +10,12 @@ app_name = "SocialDistribution"
 urlpatterns = [
     path("", views.indexView, name="home"),
     path('admin/', admin.site.urls, name="admin"),
-    # path("home/", views.indexView, name="home"),
     path("login/", LoginView.as_view(), name="login"),
     path('logout/', LogoutView.as_view(), name='logout'),
     path("signup/", views.signupView, name="signup"),
     path("friendPosts/<str:username>/", views.friendPostsView, name="friendPosts"),
     path("profile/<str:username>/", views.profileView, name="profile"),
-    path("inBox/", views.inboxView, name="inbox"),
+    path("inbox/<str:username>/", views.inboxView, name="inbox"),
     path("profile/<str:username>/followers", views.followersListView, name="followers"),
     path("profile/<str:username>/following", views.followingListView, name="following")
 ]

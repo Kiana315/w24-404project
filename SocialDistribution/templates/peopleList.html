@@ -1,65 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>People List</title>
-  <style> 
-    .person {
-      display: flex;
-      align-items: center;
-      margin-bottom: 15px;
-    }
-    
-    .person-photo {
-      width: 35px;
-      height: 35px;
-      border: 1px solid black;
-      margin-right: 10px;
-    }
-     
-    .back-button {
-      margin-left: 20px;
-      right: 10px;
-      padding: 10px 20px;
-      font-size: 16px;
-      text-align: center;
-      color: white;
-      border: none;
-      border-radius: 30px;
-      box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
-      cursor: pointer;
-      transition: transform 0.1s ease-in-out, box-shadow 0.1s ease-in-out;
-      outline: none;
-      top: 10px;
-      background-image: linear-gradient(45deg, #a485ff 0%, #7dd2ff 100%);
-    }
-    
-    .back-button:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>People List</title>
+    <link rel="stylesheet" type="text/css" href="../../static/js/peopleList.css">
 
-    .back-button:active {
-      transform: translateY(0);
-      box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
-    }
-  </style>
+
 </head>
 <body>
 
-  <button class="back-button" onclick="history.back()">Back</button>
-  
-  <ul>
-      <li class="person">
-          <img class="person-photo" src="person1.jpg" alt="Profile Picture"></img>
-          <p class="person-name">Username</p>
-      </li>
-      <li class="person">
-          <img class="person-photo" src="person2.jpg" alt="Profile Picture"></img>
-          <p class="person-name">Username</p>
-      </li>
-  </ul>
+<button class="back-button" onclick="history.back()">Back</button>
+
+<ul>
+    <li class="person">
+        <img class="person-photo" src="person1.jpg" alt="Profile Picture"></img>
+        <p class="person-name">Username</p>
+    </li>
+    <li class="person">
+        <img class="person-photo" src="person2.jpg" alt="Profile Picture"></img>
+        <p class="person-name">Username</p>
+    </li>
+</ul>
 
 </body>
 </html>

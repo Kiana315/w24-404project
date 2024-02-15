@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
     <link rel="stylesheet" type="text/css" href="../static/css/index.css">
-
 </head>
 
 <body>
@@ -14,7 +13,7 @@
         <ul>
             <li><a href="/"><ion-icon name="home" size="large"></ion-icon></a></li>
             {% if user.is_authenticated %}
-                <li><a href="inBox/"><ion-icon name="mail" size="large"></ion-icon></a></li>
+                <li><a href="{% url 'inbox' username=user.username %}"><ion-icon name="mail" size="large"></ion-icon></a></li>
                 <li><a href="{% url 'friendPosts' username=user.username %}"><ion-icon name="people" size="large"></ion-icon></a></li>
                 {% if user.avatar %}
                     <li><a href="{% url 'profile' username=user.username %}"><img class="user-avatar" src="{{ user.avatar.url }}" alt="User avatar"></a></li>
@@ -50,8 +49,14 @@
     </div>
 </div>
 
+    <div>
+        <a href="/" class="circle-button" target="_blank">+</a>
+    </div>
 
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+
+
 </body>
+
 </html>

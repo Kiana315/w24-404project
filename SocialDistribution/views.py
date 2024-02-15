@@ -6,8 +6,8 @@ from .forms import SignUpForm
 from django.contrib import messages
 
 User = get_user_model()
-# def loginView(request):
-#     return render(request, 'login.html')
+
+
 class LoginView(LoginView):
     template_name = 'login.html'
     
@@ -59,8 +59,8 @@ def profileView(request, username):
 def signup_view(request):
     return render(request, 'signup.html')   
 
-def inboxView(request):
-    return render(request, 'inBox.html')
+def inboxView(request, username):
+    return render(request, 'inbox.html')
 
 
 def friendPostsView(request, username):

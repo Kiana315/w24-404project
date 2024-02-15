@@ -3,40 +3,21 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>People</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-    }
-    
-    .people-list {
-      padding: 0;
-    }
-    
+  <title>People List</title>
+  <style> 
     .person {
       display: flex;
       align-items: center;
-      margin-bottom: 10px;
+      margin-bottom: 15px;
     }
     
     .person-photo {
-      width: 40px;
-      height: 40px;
+      width: 35px;
+      height: 35px;
       border: 1px solid black;
       margin-right: 10px;
     }
-    
-    .person a {
-      text-decoration: none;
-      color: inherit;
-      display: flex;
-      align-items: center;
-    }
-    
-    .person-name {
-      font-weight: bold;
-    }
-    
+     
     .back-button {
       margin-left: 20px;
       right: 10px;
@@ -68,21 +49,16 @@
 <body>
 
   <button class="back-button" onclick="history.back()">Back</button>
-
-  <ul class="people-list">
-    <li class="person">
-      <a>
-        <img class="person-photo" src="person1.jpg" alt="Profile Picture">
-        <p class="person-name">Username</p>
-      </a>
-    </li>
-    <li class="person">
-      <a>
-        <img class="person-photo" src="person2.jpg" alt="Profile Picture">
-        <p class="person-name">Username</p>
-      </a>
-    </li>
-    <!-- Add more friends as needed -->
+  
+  <ul>
+      <li class="person">
+          <img class="person-photo" src="person1.jpg" alt="Profile Picture"></img>
+          <p class="person-name">Username</p>
+      </li>
+      <li class="person">
+          <img class="person-photo" src="person2.jpg" alt="Profile Picture"></img>
+          <p class="person-name">Username</p>
+      </li>
   </ul>
 
 </body>

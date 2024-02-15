@@ -69,3 +69,9 @@ def friendPostsView(request, username):
     # return render(request, 'profile.html', context)
     return render(request, 'friendPosts.html')
 
+def followersListView(request, username):
+    return render(request, 'peopleList.html')
+
+def followingListView(request, username):
+    return render(request, 'peopleList.html')
+

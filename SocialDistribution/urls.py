@@ -17,5 +17,7 @@ urlpatterns = [
     path("friendPosts/<str:username>/", views.friendPostsView, name="friendPosts"),
     path("profile/<str:username>/", views.profileView, name="profile"),
     path("inBox/", views.inboxView, name="inbox"),
+    path("profile/<str:username>/followers", views.followersListView, name="followers"),
+    path("profile/<str:username>/following", views.followingListView, name="following")
 ]
 

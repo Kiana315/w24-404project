@@ -23,33 +23,29 @@
             align-items: center;
             border-bottom: 1px solid #ccc;
             padding-bottom: 20px;
+            justify-content: center;
         }
-
+        
+        .profile-info {
+            margin: 20px 20px;
+        }
+        
         .profile-photo {
-            border-radius: 50%;
+            margin: 20px 20px;
+            border: 1px solid black;
             width: 100px;
             height: 100px;
-            margin-right: 20px;
-        }
-
-        .profile-info {
-            flex-grow: 1;
-        }
-
-        .profile-info h2 {
-            margin: 0;
         }
 
         .profile-info p {
             color: #555;
-            margin: 5px 0;
         }
 
-        .recent-posts, .friend-list {
+        .recent-posts {
             margin-top: 20px;
         }
 
-        .post, .friend {
+        .post {
             background-color: #f9f9f9;
             border: 1px solid #eee;
             padding: 10px;
@@ -61,8 +57,8 @@
         }
 
         .top-button {
-            right: 10px;
             margin-left: 20px;
+            right: 10px;
             padding: 10px 20px;
             font-size: 16px;
             text-align: center;
@@ -88,7 +84,6 @@
         .back-button {
             top: 10px;
             background-image: linear-gradient(45deg, #a485ff 0%, #7dd2ff 100%);
-
         }
 
         .logout-button {
@@ -100,6 +95,18 @@
         .profile-container {
             width: 80%;
             margin: 0 auto;
+        }
+
+        .followers-button {
+            margin: 20px 20px;
+            top: 10px;
+            background-image: linear-gradient(45deg, #23fe44 0%, #065d11 100%);
+        }
+
+        .following-button {
+            margin: 20px 20px;
+            top: 10px;
+            background-image: linear-gradient(45deg, #23fe44 0%, #065d11 100%);
         }
     </style>
 </head>
@@ -130,6 +137,8 @@
             <p>Email: user@example.com</p>
             <p>Recent Posts</p>
         </div>
+        <button class="top-button followers-button" onclick="location.href = 'followers'">Followers<br>0</button>
+        <button class="top-button following-button" onclick="location.href = 'following'">Following<br>0</button>
     </div>
     <div class="recent-posts">
         <!-- This section should be populated with actual post data -->
@@ -142,13 +151,6 @@
             <p>Post excerpt or summary...</p>
         </div>
         <!-- ... more posts ... -->
-    </div>
-    <div class="friend-list">
-        <h3>Friends/Following</h3>
-        <!-- This section should be populated with actual friend data -->
-        <div class="friend">Friend 1</div>
-        <div class="friend">Friend 2</div>
-        <!-- ... more friends ... -->
     </div>
 </div>
 </body>

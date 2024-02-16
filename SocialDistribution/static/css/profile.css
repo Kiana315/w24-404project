@@ -2,7 +2,7 @@ body {
     font-family: Arial, sans-serif;
     position: relative;
     margin: 0;
-    padding-top: 50px;
+    padding-top: 50px; /* Ensure content is not hidden under buttons */
 }
 
 .profile-container {
@@ -10,6 +10,7 @@ body {
     margin: 0 auto;
     padding-top: 20px;
 }
+
 .profile-header {
     display: flex;
     align-items: center;
@@ -17,15 +18,18 @@ body {
     padding-bottom: 20px;
     justify-content: center;
 }
+
 .profile-info {
     margin: 20px 20px;
 }
+
 .profile-photo {
     margin: 20px 20px;
     border: 1px solid black;
     width: 100px;
     height: 100px;
 }
+
 .profile-info p {
     color: #555;
 }
@@ -33,11 +37,21 @@ body {
 .recent-posts {
     margin-top: 20px;
 }
+
 .post {
+    display: flex;
+    align-items: top;
     background-color: #f9f9f9;
     border: 1px solid #eee;
     padding: 10px;
     margin-bottom: 10px;
+}
+
+.post-photo {
+    border: 1px solid black;
+    margin-right: 20px;
+    width: 150px;
+    height: 150px;
 }
 
 .post-title {
@@ -46,30 +60,38 @@ body {
 
 .top-button {
     margin-left: 20px;
-    margin-bottom: 20px;
     right: 10px;
+    padding: 10px 20px;
     font-size: 16px;
     text-align: center;
     color: white;
+    border: none;
     border-radius: 30px;
     box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+    cursor: pointer;
     transition: transform 0.1s ease-in-out, box-shadow 0.1s ease-in-out;
+    outline: none;
 }
+
 .top-button:hover {
     transform: translateY(-2px);
     box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
 }
+
 .top-button:active {
     transform: translateY(0);
     box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
 }
+
 .back-button {
     top: 10px;
     background-image: linear-gradient(45deg, #a485ff 0%, #7dd2ff 100%);
 }
+
 .logout-button {
     top: 10px;
     background-image: linear-gradient(45deg, #e00808 0%, #f8990a 100%);
+    color: #f4f7f6;
 }
 
 .profile-container {
@@ -87,4 +109,10 @@ body {
     margin: 20px 20px;
     top: 10px;
     background-image: linear-gradient(45deg, #23fe44 0%, #065d11 100%);
+}
+
+.interaction-button {
+    margin: 30px 30px;
+    top: 5px;
+    background-color: #666666;
 }

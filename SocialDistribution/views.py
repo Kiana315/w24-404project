@@ -75,3 +75,5 @@ def followersListView(request, username):
 def followingListView(request, username):
     return render(request, 'peopleList.html')
 
+def postView(request, username):
+    return render(request, 'post.html')

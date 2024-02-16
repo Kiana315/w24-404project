@@ -4,6 +4,8 @@ from django.contrib.auth.models import User
 from django.contrib.auth.views import LoginView
 from .forms import SignUpForm
 from django.contrib import messages
+from django.shortcuts import get_object_or_404
+from .models import Post
 
 User = get_user_model()
 
@@ -77,3 +79,7 @@ def followingListView(request, username):
 
 def postView(request, username):
     return render(request, 'post.html')
+
+def post_detail(request, post_id):
+    post = get_object_or_404(Post, pk=post_id)
+    return render(request, 'post_detail.html', {'post': post})

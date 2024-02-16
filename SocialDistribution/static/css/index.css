@@ -56,7 +56,6 @@ body {
     width: 30px;
     border-radius: 50%;
 }
-
 .post {
     background-color: #ffffff;
     border-radius: 8px;
@@ -65,35 +64,26 @@ body {
     max-width: 800px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
-
 .user-info {
     display: flex;
     align-items: center;
     margin-bottom: 15px;
 }
-
-.profile-pic {
+.avatar {
     width: 50px;
     height: 50px;
     border-radius: 50%;
     margin-right: 10px;
 }
-
 .username {
     font-weight: bold;
 }
-
-.post-content {
+.content {
     text-align: left;
     font-size: 16px;
 }
+.post-container {
 
-.circle {
-    line-height: 50px; /* Center the text vertically */
-    text-decoration: none; /* No underline on the "+" */
-    box-shadow: 2px 2px 5px rgba(0,0,0,0.3); /* Optional: Shadow for better visibility */
-    z-index: 1000;    /* Make sure it's on top of other elements */
-    cursor: pointer;  /* Change cursor to pointer when hovering over the button */
 }
 
 

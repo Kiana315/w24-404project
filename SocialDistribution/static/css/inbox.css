@@ -171,13 +171,14 @@ h1, h2 {
 .delete-btn {
     margin-top: 20px;
     text-align: right;
+    border-radius: 10px;
     background-color: red;
     color: white;
-    justify-content: flex-end;
 }
 .star-btn {
     margin-top: 20px;
     text-align: right;
+    border-radius: 10px;
     background-color: aqua;
     color: black;
 }

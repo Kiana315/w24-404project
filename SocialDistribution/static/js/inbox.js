@@ -1,3 +1,6 @@
+'use strict';
+
+
 document.addEventListener('DOMContentLoaded', function() {
 let messages = document.querySelectorAll('.inbox-messages .message');
 

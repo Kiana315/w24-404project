@@ -1,3 +1,6 @@
+'use strict';
+
+
 function createPost(userPost) {
     let div_post = document.createElement("div");
     let div_userInfo = document.createElement("div");

@@ -7,7 +7,7 @@ class User(AbstractUser):
     #   blank=True indicates that this field is optional
     #   and users can not fill in the introduction when registering
     bio = models.TextField(blank=True)
-    avatar = models.ImageField(upload_to='static/avatars/', null=True, blank=True)
+    avatar = models.ImageField(upload_to='avatars/', default="default_avatar.jpg")
 
 
 class Post(models.Model):

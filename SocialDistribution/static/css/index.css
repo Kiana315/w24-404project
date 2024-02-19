@@ -22,8 +22,9 @@ body {
     position: relative;
 }
 .navbar ul{
-    list-style-type: none;
+    margin: 10px 10px;
     display: flex;
+    list-style-type: none;
     justify-content: center;
     align-items: center;
     text-align: center;
@@ -55,10 +56,19 @@ body {
     border-radius: 50%;
 }
 
+.post-container {
+    position: relative;
+    margin-top: 20px;
+    width: 100%;
+    height: auto;
+    align-items: center;
+    
+}
 .post {
+    position: relative;
     background-color: #ffffff;
-    margin-top: 50px;
-
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
     border-radius: 8px;
     padding: 20px;
     margin: 20px auto;
@@ -71,13 +81,17 @@ body {
     margin-bottom: 15px;
 }
 .avatar {
-    width: 50px;
-    height: 50px;
+    width: 48px;
+    height: 48px;
     border-radius: 50%;
     margin-right: 10px;
 }
 .username {
+    margin: 0 10px;
     font-weight: bold;
+}
+.title {
+    font-size: 20px;
 }
 .content {
     text-align: left;
@@ -129,6 +143,7 @@ body {
     color: #dddddd;
     text-decoration: none;
     border: none;
+    z-index: 100;
 }
 
 /* pop up window template */
@@ -190,11 +205,11 @@ body {
 
 .modal-content select {
     margin-bottom: 10px; 
-    -webkit-appearance: none; /* 对于 WebKit 浏览器移除默认样式 */
-    -moz-appearance: none; /* 对于 Mozilla 浏览器移除默认样式 */
-    appearance: none; /* 移除默认下拉框的样式 */
-    background-color: transparent; /* 背景设为透明 */
-    border: none; /* 移除边框 */
+    -webkit-appearance: none; 
+    -moz-appearance: none; 
+    appearance: none; 
+    background-color: transparent; 
+    border: none; 
 }
 
 /* Close button */
@@ -223,13 +238,7 @@ body {
     margin-bottom: 20px; 
 }
 
-.post-container {
-    position: relative;
-    height: 40px;
-    width: 100%;
-    display: flex;
-    align-items: center;
-}
+
 
 .upload-icon {
     display: inline-block;
@@ -278,8 +287,8 @@ body {
     transform: translateY(-50%);
 }
 .visibility-select select:focus {
-    border: none; /* 点击时移除边框 */
-    outline-color: #2fcccc; /* 点击时移除聚焦边框 */
+    border: none; 
+    outline-color: #2fcccc; 
 }
 
 /* Style for the post button */

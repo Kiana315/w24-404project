@@ -1,6 +1,3 @@
-'use strict';
-
-
 
 document.addEventListener('DOMContentLoaded', (event) => {
     // Get elements
@@ -8,11 +5,12 @@ document.addEventListener('DOMContentLoaded', (event) => {
     const btn = document.getElementById("floating-button");
     const form = document.getElementById("newPostForm");
     
+    
 
     // Open pop-up window when clicking floating button
-    btn.onclick = function() {
+    btn.addEventListener('click', function() {
         modal.style.display = "block";
-    };
+    });
 
     // Click the x to close the pop-up window
     document.getElementsByClassName("close")[0].onclick = function() {

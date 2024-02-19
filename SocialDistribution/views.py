@@ -108,8 +108,12 @@ class InboxView(TemplateView):
 
 class PPsAPIView(generics.ListAPIView):
     """ [GET] Get The Public Posts """
-    queryset = Post.objects.filter(visibility='PUBLIC')
     serializer_class = PostSerializer
+
+    def get_queryset(self):
+        # Get all public posts，sorted by publication time in descending order
+        return Post.objects.filter(visibility='PUBLIC').order_by('-date_posted')
+    
 
 
 class FPsAPIView(generics.ListAPIView):

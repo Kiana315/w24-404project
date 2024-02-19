@@ -95,14 +95,35 @@ def postView(request, username):
 
 
 class IndexAPIView(TemplateView):
+    """ * [GET] Get The Home/PP Page """
     template_name = "index.html"
 
 
 class FriendPostsAPIView(TemplateView):
+    """ * [GET] Get The FP Page """
     template_name = "friendPosts.html"
 
 
 class PPsAPIView(generics.ListAPIView):
+    """ [GET] Get The Public Posts """
     queryset = Post.objects.filter(is_public=True)
     serializer_class = PostSerializer
 
+
+class FPsAPIView(generics.ListAPIView):
+    """ [GET] Get The Username-based Friend Posts """
+    serializer_class = PostSerializer
+
+    def get_queryset(self):
+        username = self.kwargs['username']
+        user = get_object_or_404(User, username=username)
+        return self._getFPsForUser(user)
+
+    def _getFPsForUser(self, user):
+        return user.friend_posts.all()
+
+
+class NPsAPIView(generics.CreateAPIView):
+    """ [POST] Create A New Post """
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer

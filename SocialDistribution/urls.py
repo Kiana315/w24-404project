@@ -22,7 +22,8 @@ urlpatterns = [
     path("post/<str:username>", postView, name="post"),
     path("posts/<int:post_id>/", post_detail, name="post_detail"),
 
-    path("api/pps/", PPsAPIView.as_view(), name="API_PP"),
-    #path("api/<str:username>/FPs", FriendPostDetailAPIView.as_view(), name="API_FP"),
+    path("api/pps/", PPsAPIView.as_view(), name="API_PPs"),                     # GET PublicPosts
+    path("api/fps/<str:username>/", FPsAPIView.as_view(), name="API_FPs"),      # GET FriendPosts
+    path("api/nps/", NPsAPIView.as_view(), name="API_NPs")                      # POST NewPosts
 ]
 

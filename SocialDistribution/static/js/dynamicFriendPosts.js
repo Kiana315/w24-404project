@@ -30,7 +30,7 @@ function createPost(userPost) {
 }
 
 function fetchPosts() {
-    let request = new Request("???.json");  // todo: resources address
+    let request = new Request("/api/FP/<int:pk>/");
     fetch(request)
         .then(response => {
             if (!response.ok) {

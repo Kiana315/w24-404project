@@ -25,17 +25,14 @@ function createPost(userPost) {
     div_content.classList.add("content");
     div_content.appendChild(p_content);
     p_content.textContent = userPost.content;
-
     return div_post;
 }
 
-function fetchPublicPosts() {
-    let request = new Request(`/api/pps/`);
+function fetchFriendPosts(username) {
+    let request = new Request(`/api/FP/${username}/`);
     fetch(request)
         .then(response => {
-            if (!response.ok) {
-                throw new Error("Invalid Request Response");
-            }
+            if (!response.ok) throw new Error("Invalid Request Response");
             return response.json();
         })
         .then(userPosts => {
@@ -50,7 +47,12 @@ function fetchPublicPosts() {
         });
 }
 
-fetchPublicPosts()
+// todo - How to acquire the username?
+window.addEventListener("load", function(){
+    let username = "Eden";
+    fetchFriendPosts(username);
+})
+
 
 
 

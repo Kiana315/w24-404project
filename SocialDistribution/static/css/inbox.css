@@ -124,11 +124,16 @@ h1, h2 {
     border-radius: 50%;
     display: inline-block;
     margin-right: 10px;
+    padding-right: 10px;
     position: relative;
     top: -1px;
 }
 .message.unread .status-dot {
     background-color: #ff3b30;
+}
+
+.message.star .status-dot {
+    background-color: yellow;
 }
 
 .sender {
@@ -152,9 +157,6 @@ h1, h2 {
     padding: 30px;
     border-top: 1px solid #ddd;
 }
-.message-body p {
-    margin: 0;
-}
 .message-actions button {
     margin-right: 10px;
     padding: 5px 10px;
@@ -162,20 +164,20 @@ h1, h2 {
     cursor: pointer;
 }
 
-.message.unread .sender,
-.message.unread .subject {
+.message.unread .sender, .message.unread .subject {
     font-weight: bold;
     text-align: center;
 }
 
-.delete-btn {
+#inbox-delete-btn {
     margin-top: 20px;
     text-align: right;
     border-radius: 10px;
     background-color: red;
     color: white;
 }
-.star-btn {
+
+#inbox-star-btn {
     margin-top: 20px;
     text-align: right;
     border-radius: 10px;

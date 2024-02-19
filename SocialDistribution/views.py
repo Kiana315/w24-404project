@@ -65,11 +65,7 @@ def profileView(request, username):
 
 
 def signup_view(request):
-    return render(request, 'signup.html')   
-
-
-def inboxView(request, username):
-    return render(request, 'inbox.html')
+    return render(request, 'signup.html')
 
 
 def followersListView(request, username):
@@ -94,14 +90,19 @@ def postView(request, username):
 """
 
 
-class IndexAPIView(TemplateView):
+class IndexView(TemplateView):
     """ * [GET] Get The Home/PP Page """
     template_name = "index.html"
 
 
-class FriendPostsAPIView(TemplateView):
+class FriendPostsView(TemplateView):
     """ * [GET] Get The FP Page """
     template_name = "friendPosts.html"
+
+
+class InboxView(TemplateView):
+    """ * [GET] Get The Inbox Page """
+    template_name = "inbox.html"
 
 
 class PPsAPIView(generics.ListAPIView):
@@ -120,6 +121,7 @@ class FPsAPIView(generics.ListAPIView):
         return self._getFPsForUser(user)
 
     def _getFPsForUser(self, user):
+        # todo: rule needed
         return user.friend_posts.all()
 
 
@@ -127,3 +129,10 @@ class NPsAPIView(generics.CreateAPIView):
     """ [POST] Create A New Post """
     queryset = Post.objects.all()
     serializer_class = PostSerializer
+
+
+class MsgsAPIView(generics.ListAPIView):
+    """ [GET] Get The Inbox Messages """
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
+

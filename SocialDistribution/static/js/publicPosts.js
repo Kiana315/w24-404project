@@ -29,13 +29,11 @@ function createPost(userPost) {
     return div_post;
 }
 
-function fetchPosts() {
-    let request = new Request("/api/FP/<int:pk>/");
+function fetchPublicPosts() {
+    let request = new Request(`/api/pps/`);
     fetch(request)
         .then(response => {
-            if (!response.ok) {
-                throw new Error("Invalid Request Response");
-            }
+            if (!response.ok) throw new Error("Invalid Request Response");
             return response.json();
         })
         .then(userPosts => {
@@ -50,7 +48,8 @@ function fetchPosts() {
         });
 }
 
-fetchPosts()
+
+window.addEventListener("load", fetchPublicPosts)
 
 
 

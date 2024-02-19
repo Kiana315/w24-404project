@@ -43,37 +43,21 @@
         </div>
 
         <div class="inbox-messages">
-        <ul>
-            <li class="message unread" data-sender="Eden" data-subject="Hey, did you get my last message?">
-                <div class="message-header">
-                    <span class="status-dot"></span>
-                    <span class="sender">Eden</span>
-                    <span class="subject">Hey, did you get my last message?</span>
-                </div>
-                <div class="message-body">
-                    <p>Hey, just checking to see if you received my last message. Let me know if you have any questions about the project.</p>
-                    <div class="message-actions">
-                        <button class="delete-btn">Delete</button>
-                        <button class="star-btn">Star</button>
+            <ul class="inbox-messages-container">
+                <li class="message unread">
+                    <div class="message-header">
+                        <span class="status-dot"></span>
+                        <span class="sender">Eden</span>
+                        <span class="subject">Hey, did you get my last message?</span>
                     </div>
-                </div>
-            </li>
-            <li class="message" data-sender="Hazel" data-subject="Meeting is rescheduled to 3 PM">
-                <div class="message-header">
-                    <span class="status-dot"></span>
-                    <span class="sender">Hazel</span>
-                    <span class="subject">Meeting is rescheduled to 3 PM</span>
-                </div>
-                <div class="message-body">
-                    <p>Just a reminder that today's meeting has been rescheduled to 3 PM. Hope to see you there!</p>
-                    <div class="message-actions">
-                        <button class="delete-btn">Delete</button>
-                        <button class="star-btn">Star</button>
+                    <div class="message-body">
+                        <p class="message-text">Hey, just checking to see if you received my last message. Let me know if you have any questions about the project.</p>
+                        <button id="inbox-delete-btn">Delete</button>
+                        <button id="inbox-star-btn">Star</button>
                     </div>
-                </div>
-            </li>
-        </ul>
-    </div>
+                </li>
+            </ul>
+        </div>
     </div>
 
     <script src="../../static/js/inbox.js"></script>

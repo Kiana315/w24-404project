@@ -11,12 +11,20 @@ class User(AbstractUser):
 
 
 class Post(models.Model):
+    VISIBILITY_CHOICES = [
+        ('PUBLIC', 'Public'),
+        ('FRIENDS', 'Friends-Only'),
+    ]
+
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='posts')
     title = models.CharField(max_length=255)
     content = models.TextField()
+    image = models.ImageField(upload_to='posts/images/', null=True, blank=True)
+    visibility = models.CharField(max_length=10, choices=VISIBILITY_CHOICES, default='PUBLIC')
     date_posted = models.DateTimeField(auto_now_add=True)
     last_modified = models.DateTimeField(auto_now=True)
-    is_public = models.BooleanField(default=True)
+
+
 
 
 class Comment(models.Model):

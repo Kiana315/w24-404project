@@ -16,7 +16,7 @@ from rest_framework.response import Response
 from .serializers import PostSerializer
 from .forms import SignUpForm
 from .models import Post
-
+from .permissions import IsAuthorOrReadOnly
 
 """
 +++++++++++++++++++++++++++++++++++ Basic Views +++++++++++++++++++++++++++++++++++
@@ -86,6 +86,7 @@ def post_detail(request, post_id):
 
 
 def postView(request, username):
+    
     return render(request, 'post.html')
 
 
@@ -106,7 +107,7 @@ class FriendPostsAPIView(TemplateView):
 
 class PPsAPIView(generics.ListAPIView):
     """ [GET] Get The Public Posts """
-    queryset = Post.objects.filter(is_public=True)
+    queryset = Post.objects.filter(visibility='PUBLIC')
     serializer_class = PostSerializer
 
 
@@ -127,3 +128,12 @@ class NPsAPIView(generics.CreateAPIView):
     """ [POST] Create A New Post """
     queryset = Post.objects.all()
     serializer_class = PostSerializer
+    permission_classes = [IsAuthorOrReadOnly]  
+
+    def perform_create(self, serializer):
+        serializer.save(author=self.request.user)  # set current user as author
+
+
+class PostDetailView(generics.CreateAPIView):
+    """ [GET] Get The Post Detail """
+    template_name = "post_detail.html"

@@ -6,9 +6,7 @@ body {
     background-attachment: fixed;
 }
 
-.post {
-    margin-top: 50px;
-}
+
 
 .navbar {
     list-style: none;
@@ -56,8 +54,11 @@ body {
     width: 30px;
     border-radius: 50%;
 }
+
 .post {
     background-color: #ffffff;
+    margin-top: 50px;
+
     border-radius: 8px;
     padding: 20px;
     margin: 20px auto;
@@ -83,7 +84,35 @@ body {
     font-size: 16px;
 }
 
-.circle-button {
+/* #circle-button {
+    bottom: 100px;
+    right: 100px;
+    width: 70px;
+    height: 70px;
+    position: fixed;
+    font-size: 50px;
+    line-height: 70px;
+    text-align: center;
+    border-radius: 50%;
+    background-image: linear-gradient(45deg, rgba(25, 213, 150, 0.8) 0%, rgba(78, 190, 246, 0.8) 100%);
+    box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+    transition: transform 0.1s ease-in-out, box-shadow 0.1s ease-in-out;
+    cursor: pointer;
+    color: #dddddd;
+    text-decoration: none;
+    border: none;
+} */
+.circle-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
+}
+.circle-button:active {
+    transform: translateY(0);
+    box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+
+#floating-button {
     bottom: 100px;
     right: 100px;
     width: 70px;
@@ -101,11 +130,167 @@ body {
     text-decoration: none;
     border: none;
 }
-.circle-button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
+
+/* pop up window template */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+    
 }
-.circle-button:active {
-    transform: translateY(0);
-    box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+
+.modal-content {
+    width: 40%;
+    height: auto;
+    display: flex;
+    background-color: #fefefe;
+    margin: 8% auto auto auto;
+    padding: 20px;
+    border-radius: 30px;
+    flex-direction: column;
+
+}
+
+
+.modal-content input[type="text"] {
+    margin-bottom: 10px; 
+    border-radius: 10px;
+    width: 100%;
+    font-family: inherit;
+    height: 40px; 
+    font-size: 1.3em; 
+    border: none;
+    
+}
+.modal-content input[type="text"]:focus,
+.modal-content textarea:focus {
+    /* no border when focus on  */
+    border: none;
+    outline-color: #2fcccc;
+} 
+
+.modal-content textarea {
+    margin-bottom: 10px; 
+    width: 100%;
+    border-radius: 10px;
+    border: none; 
+    font-family: inherit;
+    font-size: 1.1em;
+    height: 100px; 
+    resize: none;
+    
+}
+
+
+.modal-content select {
+    margin-bottom: 10px; 
+    -webkit-appearance: none; /* 对于 WebKit 浏览器移除默认样式 */
+    -moz-appearance: none; /* 对于 Mozilla 浏览器移除默认样式 */
+    appearance: none; /* 移除默认下拉框的样式 */
+    background-color: transparent; /* 背景设为透明 */
+    border: none; /* 移除边框 */
+}
+
+/* Close button */
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    margin: 0px 10px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+
+.separator {
+    width: 100%;
+    height: 1px; 
+    background-color: #ccc; 
+    margin-bottom: 20px; 
+}
+
+.post-container {
+    position: relative;
+    height: 40px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.upload-icon {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%; 
+    text-align: center;
+    margin: auto 20px;
+    cursor: pointer;
+    justify-content: center;
+    align-items: center;
+}
+
+.upload-icon:hover {
+    background-color: rgba(202, 202, 202, 0.6); 
+}
+
+.upload-icon ion-icon {
+    color: #2fcccc; 
+    font-size: 20px; 
+    position: relative;
+    top: 10px;
+}
+
+.visibility-select {
+    position: absolute;
+    right: 150px;
+    display: inline-block;
+    align-items: center;
+    height: 20px;
+    cursor: pointer;
+}
+
+.visibility-select select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    padding-right: 20px; 
+    
+}
+
+.select-arrow {
+    position: absolute;
+    top: 50%;
+    right: 5px;
+    transform: translateY(-50%);
+}
+.visibility-select select:focus {
+    border: none; /* 点击时移除边框 */
+    outline-color: #2fcccc; /* 点击时移除聚焦边框 */
+}
+
+/* Style for the post button */
+.post-button {
+    position: absolute; 
+    right: 20px; 
+     
+    padding: 10px 20px; 
+    background-color: #2fcccc; 
+    color: white;
+    border: none; 
+    border-radius: 20px;
+    cursor: pointer; 
 }

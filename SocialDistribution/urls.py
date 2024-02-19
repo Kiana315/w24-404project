@@ -2,11 +2,14 @@ from django.urls import path
 from .views import *
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
-from .views import LoginView
 from django.contrib.auth.views import LogoutView
+from rest_framework.routers import DefaultRouter
 
 
 app_name = "SocialDistribution"
+
+router = DefaultRouter()
+router.register(r'posts', NPsAPIView)
 
 urlpatterns = [
     path("", IndexAPIView.as_view(), name="home"),
@@ -22,8 +25,9 @@ urlpatterns = [
     path("post/<str:username>", postView, name="post"),
     path("posts/<int:post_id>/", post_detail, name="post_detail"),
 
-    path("api/pps/", PPsAPIView.as_view(), name="API_PPs"),                     # GET PublicPosts
-    path("api/fps/<str:username>/", FPsAPIView.as_view(), name="API_FPs"),      # GET FriendPosts
-    path("api/nps/", NPsAPIView.as_view(), name="API_NPs")                      # POST NewPosts
+    path("api/pps/", PPsAPIView.as_view(), name="API_PPs"),                     # GET PublicPostsList
+    path("api/fps/<str:username>/", FPsAPIView.as_view(), name="API_FPs"),      # GET FriendPostsList
+    path("api/nps/", NPsAPIView.as_view(), name="API_NPs"),                     # POST NewPosts
+    path('api/<str:username>/<int:pk>/', PostDetailView.as_view(), name='post-detail'),  # GET Posts
 ]
 

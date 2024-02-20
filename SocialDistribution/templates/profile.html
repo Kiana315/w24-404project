@@ -8,47 +8,80 @@
 </head>
 
 <body>
-    <button class="top-button back-button" onclick="history.back()">Back</button>
-    <form action="{% url 'logout' %}" method="post">
-        {% csrf_token %}
-        <button type="submit" class="top-button logout-button">Log Out</button>
-    </form>
-
-<div class="profile-container">
-    <div class="profile-header">
-        <img class="profile-photo" src="profile-picture-url.jpg" alt="Profile Picture">
-        <div class="profile-info">
-            <h2>Username</h2>
-            <p>Email: user@example.com</p>
-            <p>Recent Posts</p>
-        </div>
-        <button class="top-button followers-button" onclick="location.href = 'followers'">Followers<br>0</button>
-        <button class="top-button following-button" onclick="location.href = 'following'">Following<br>0</button>
+    <div class="button-container">
+        <button class="back-button" onclick="history.back()">Back</button>
+        <form action="{% url 'logout' %}" method="post">
+            {% csrf_token %}
+            <button type="submit" class="logout-button">Log Out</button>
+        </form>
     </div>
-    <div class="recent-posts">
-        <!-- This section should be populated with actual post data -->
-        <div class="post">
-            <img class="post-photo" src="post1.jpg" alt="Post Picture">
-            <div class="post-info">
-            	<h3 class="post-title">Template 1</h3>
-                <p>Post excerpt or summary...</p>
-                <div class="interactions">
-                    <button class="top-button interaction-button">Like</button>
-                    <button class="top-button interaction-button">Comment</button>
-                    <button class="top-button interaction-button">Share</button>
-                </div>
-        	</div>
+    <div class="profile-container">
+        <div class="profile-header">
+            <img class="profile-avatar" src="profile-picture-url.jpg" alt="Profile Picture">
+            <div class="profile-info">
+                <div class="username" id="username">${user.username}</div>
+                <div class="email" id="email">Email: ${user.email}</div>
+                <div class="bio-container" id="bio">${user.bio}</div>
+            </div>
+            <div class="follow-container">
+                <button class="top-button followers-button" onclick="location.href = 'followers'">Followers<br>0</button>
+                <button class="top-button following-button" onclick="location.href = 'following'">Following<br>0</button>
+            </div>
+            <button class="top-button followers-button" onclick="location.href = 'followers'">Follow</button>
+
         </div>
-        <div class="post">
-        	<div class="post-info">
-            	<h3 class="post-title">Template 2</h3>
-            	<p>Post excerpt or summary...</p>
-                <div class="interactions">
-                    <button class="top-button interaction-button">Like</button>
-                    <button class="top-button interaction-button">Comments</button>
-                    <button class="top-button interaction-button">Share</button>
+    
+        <div class="post-container">
+            <div class="recent-posts">
+                <!-- This section should be populated with actual post data -->
+                <div class="post">
+                    <img class="post-photo" src="post1.jpg" alt="Post Picture">
+                    <div class="post-info">
+                        <h3 class="post-title">Template 1</h3>
+                        <p>Post excerpt or summary...</p>
+                        <div class="interactions">
+                            <button class="top-button interaction-button">Like</button>
+                            <button class="top-button interaction-button">Comment</button>
+                            <button class="top-button interaction-button">Share</button>
+                        </div>
+                    </div>
                 </div>
-        	</div>
+                <div class="post">
+                    <div class="post-info">
+                        <h3 class="post-title">Template 2</h3>
+                        <p>Post excerpt or summary...</p>
+                        <div class="interactions">
+                            <button class="top-button interaction-button">Like</button>
+                            <button class="top-button interaction-button">Comments</button>
+                            <button class="top-button interaction-button">Share</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="post">
+                    <div class="post-info">
+                        <h3 class="post-title">Template 2</h3>
+                        <p>Post excerpt or summary...</p>
+                        <div class="interactions">
+                            <button class="top-button interaction-button">Like</button>
+                            <button class="top-button interaction-button">Comments</button>
+                            <button class="top-button interaction-button">Share</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="post">
+                    <div class="post-info">
+                        <h3 class="post-title">Template 2</h3>
+                        <p>Post excerpt or summary...</p>
+                        <div class="interactions">
+                            <button class="top-button interaction-button">Like</button>
+                            <button class="top-button interaction-button">Comments</button>
+                            <button class="top-button interaction-button">Share</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
+        
+    </div>
 </body>
 </html>

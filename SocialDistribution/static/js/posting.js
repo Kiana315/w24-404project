@@ -50,7 +50,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
         })
         .then(data => {
             // After posted
-            console.log('Success:', data);            
             modal.style.display = "none"; // Close pop-up window
             submitPost();
             // Refresh the page 

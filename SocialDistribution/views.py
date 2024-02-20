@@ -10,6 +10,7 @@ from django.db.models import Q
 
 # REST Pattern:
 from rest_framework import generics, status
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
@@ -19,10 +20,13 @@ from .forms import SignUpForm
 from .models import Post
 from .permissions import IsAuthorOrReadOnly
 
-"""
-+++++++++++++++++++++++++++++++++++ Basic Views +++++++++++++++++++++++++++++++++++
-"""
+
 User = get_user_model()
+
+
+"""
+---------------------------------- Signup/Login Settings ----------------------------------
+"""
 
 
 class LoginView(LoginView):
@@ -59,22 +63,9 @@ def signupView(request):
     return render(request, 'signup.html', {'form': form})
 
 
-def profileView(request, username):
-    user = get_object_or_404(User, username=username)
-    context = {'profile_user': user}
-    return render(request, 'profile.html', context)
-
-
-def signup_view(request):
-    return render(request, 'signup.html')
-
-
-def followersListView(request, username):
-    return render(request, 'peopleList.html')
-
-
-def followingListView(request, username):
-    return render(request, 'peopleList.html')
+"""
+---------------------------------- Posts Presentation Settings ----------------------------------
+"""
 
 
 def post_detail(request, post_id):
@@ -83,13 +74,7 @@ def post_detail(request, post_id):
 
 
 def postView(request, username):
-    
     return render(request, 'post.html')
-
-
-"""
-+++++++++++++++++++++++++++++++++++ REST-based Views +++++++++++++++++++++++++++++++++++
-"""
 
 
 class IndexView(TemplateView):
@@ -102,19 +87,12 @@ class FriendPostsView(TemplateView):
     template_name = "friendPosts.html"
 
 
-class InboxView(TemplateView):
-    """ * [GET] Get The Inbox Page """
-    template_name = "inbox.html"
-
-
 class PPsAPIView(generics.ListAPIView):
     """ [GET] Get The Public Posts """
     serializer_class = PostSerializer
-
     def get_queryset(self):
         # Get all public posts，sorted by publication time in descending order
         return Post.objects.filter(visibility='PUBLIC').order_by('-date_posted')
-    
 
 
 class FPsAPIView(generics.ListAPIView):
@@ -140,27 +118,23 @@ class NPsAPIView(generics.CreateAPIView):
         serializer.save(author=self.request.user)  # set current user as author
 
 
-class PostDetailAPIView(generics.CreateAPIView):
-    """ [GET] Get The Post Detail """
-    template_name = "post_detail.html"
+"""
+---------------------------------- Posts Update/Interaction Settings ----------------------------------
+"""
+
+#class PostDetailAPIView(generics.CreateAPIView):
+#   """ * [GET] Get The Post Detail """
+#   template_name = "post_detail.html"
 
 
-class MsgsAPIView(generics.ListAPIView):
-    """ [GET] Get The Inbox Messages """
+class PostDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
+    """ [GET/PUT/DELETE] Get, Update, or Delete A Specific Post """
     queryset = Post.objects.all()
     serializer_class = PostSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly, IsAuthorOrReadOnly]
 
-
-class UserAPIView(generics.RetrieveAPIView):
-    """ [GET] Get The Profile Info """
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
-    lookup_field = 'username'
     def get_object(self):
-        queryset = self.get_queryset()
-        username = self.kwargs.get('username')
-        obj = get_object_or_404(queryset, username=username)
-        return obj
+        return get_object_or_404(Post, pk=self.kwargs.get('pk'), author__username=self.kwargs.get('username'))
 
 
 class CommentAPIView(generics.ListAPIView):
@@ -179,6 +153,53 @@ class LikeAPIView(generics.ListAPIView):
         likes = get_list_or_404(Like, post_id=postKey)
         return likes
     serializer_class = LikeSerializer
+
+
+"""
+---------------------------------- Message Inbox Settings ----------------------------------
+"""
+
+
+class InboxView(TemplateView):
+    """ * [GET] Get The Inbox Page """
+    template_name = "inbox.html"
+
+
+class MsgsAPIView(generics.ListAPIView):
+    """ [GET] Get The Inbox Messages """
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
+
+
+"""
+----------------------------------  Profile & Identity Settings ----------------------------------
+"""
+
+
+def profileView(request, username):
+    user = get_object_or_404(User, username=username)
+    context = {'profile_user': user}
+    return render(request, 'profile.html', context)
+
+
+def followersListView(request, username):
+    return render(request, 'peopleList.html')
+
+
+def followingListView(request, username):
+    return render(request, 'peopleList.html')
+
+
+class UserAPIView(generics.RetrieveAPIView):
+    """ [GET] Get The Profile Info """
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    lookup_field = 'username'
+    def get_object(self):
+        queryset = self.get_queryset()
+        username = self.kwargs.get('username')
+        obj = get_object_or_404(queryset, username=username)
+        return obj
 
 
 class FollowerAPIView(generics.ListAPIView):

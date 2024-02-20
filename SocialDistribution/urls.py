@@ -12,6 +12,7 @@ router = DefaultRouter()
 router.register(r'posts', NPsAPIView)
 
 urlpatterns = [
+    # Page View Addresses
     path("", IndexView.as_view(), name="home"),
     path('admin/', admin.site.urls, name="admin"),
     path("login/", LoginView.as_view(), name="login"),
@@ -25,10 +26,12 @@ urlpatterns = [
     path("post/<str:username>", postView, name="post"),
     path("posts/<int:post_id>/", post_detail, name="post_detail"),
 
+    # API End-points Addresses
     path("api/pps/", PPsAPIView.as_view(), name="API_PPs"),                                         # GET PublicPostsList       --> Test Success
     path("api/fps/<str:username>/", FPsAPIView.as_view(), name="API_FPs"),                          # GET FriendPostsList       --> Test Success
     path("api/nps/", NPsAPIView.as_view(), name="API_NPs"),                                         # POST NewPosts             --> Test Success
-    path('api/<str:username>/<int:pk>/', PostDetailAPIView.as_view(), name='API_PDetail'),          # POST PostsDetails         --> Test Success
+    path('api/<str:username>/<int:pk>/', PostDetailAPIView.as_view(), name='API_PDetail'),          # GET/PUT/DELETE PostsDetails
+
     path("api/msgs/<str:username>/", MsgsAPIView.as_view(), name="API_MSGs"),                       # GET InboxMessages         --> ?
     path("api/user/<str:username>/", UserAPIView.as_view(), name="API_USER"),                       # GET User/Profile Info     --> Test Success
     path("api/user/<str:username>/follower/", FollowerAPIView.as_view(), name="API_USERFrd"),       # GET User FollowerList     --> Test Success

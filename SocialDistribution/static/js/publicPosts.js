@@ -1,7 +1,5 @@
 'use strict';
 document.addEventListener('DOMContentLoaded', () => {
-    const postContainer = document.getElementById('post-container');
-
     fetch('/api/pps/')
         .then(response => response.json())
         .then(posts => {

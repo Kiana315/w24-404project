@@ -27,12 +27,14 @@
     </div>
     <div class="user-info">
         <img src="https://via.placeholder.com/50" alt="User Avatar" class="user-avatar">
-        <span class="user-name">User Name</span>
+        <span class="user-name">{{ post.author.username }}</span>
     </div>
-    <h1 class="post-title">Title</h1>
+    <h1 class="post-title">{{ post.title }}</h1>
     <div class="scrollable-content">
-        <p class="post-content">Content goes here...</p>
-        <img src="https://via.placeholder.com/600x300" alt="Post Image" class="post-image">
+        <p class="post-content">{{ post.content }}</p>
+        {% if post.image %}
+            <img src="{{ post.image.url }}" alt="Post Image" class="post-image">
+        {% endif %}
         <div class="comments-section">
             <h2>Comments:</h2>
             <div class="comment">

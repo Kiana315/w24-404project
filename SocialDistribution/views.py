@@ -18,7 +18,7 @@ from rest_framework.response import Response
 
 # Project Dependencies:
 from .serializers import *
-from .forms import SignUpForm, AvatarUploadForm
+from .forms import SignUpForm, AvatarUploadForm, UpdateBioForm
 from .models import Post
 from .permissions import IsAuthorOrReadOnly
 
@@ -192,6 +192,15 @@ class MsgsAPIView(generics.ListAPIView):
 def upload_avatar(request, username):
     if request.method == 'POST':
         form = AvatarUploadForm(request.POST, request.FILES, instance=request.user)
+        if form.is_valid():
+            form.save()
+
+    return redirect(profileView, username=username)
+
+
+def update_bio(request, username):
+    if request.method == 'POST':
+        form = UpdateBioForm(request.POST, instance=request.user)
         if form.is_valid():
             form.save()
 

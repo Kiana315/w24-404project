@@ -21,6 +21,7 @@ urlpatterns = [
     path("friendPosts/<str:username>/", FriendPostsView.as_view(), name="friendPosts"),
     path("profile/<str:username>/", profileView, name="profile"),
     path("profile/<str:username>/upload-avatar/", upload_avatar, name="upload-avatar"),
+    path("profile/<str:username>/update-bio/", update_bio, name="update-bio"),
     path("inbox/<str:username>/", InboxView.as_view(), name="inbox"),
     path("profile/<str:username>/followers", followersListView, name="followers"),
     path("profile/<str:username>/following", followingListView, name="following"),

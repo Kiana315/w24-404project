@@ -6,7 +6,12 @@
     <title>User Profile Page</title>
     <link rel="stylesheet" type="text/css" href="../../static/css/profile.css">
 </head>
-
+<style>
+    a, a:link, a:visited, a:hover, a:active {
+        text-decoration: none;
+        color: inherit;
+    }
+</style>
 <body>
 <div class="button-container">
     <button class="back-button" onclick="history.back()">Back</button>
@@ -31,7 +36,11 @@
         <div class="profile-info">
             <div class="username" id="username">{{ user.username }}</div>
             <div class="email" id="email">Email: {{ user.email }}</div>
-            <div class="bio-container" id="bio">{{ user.bio }}</div>
+            <form action="update-bio/" method="post">
+                {% csrf_token %}
+                <textarea class="bio-container" name="bio" type="text" rows="4" cols="50">{{ user.bio }}</textarea>
+                <button type="submit">Save</button>
+            </form>
         </div>
         <div class="follow-container">
             <button class="top-button followers-button" onclick="location.href = 'followers'">Followers<br>0</button>
@@ -46,7 +55,9 @@
             {% for post in posts %}
                 <div class="post">
                     <div class="post-info">
-                        <a href="{% url 'post_detail' post_id=post.id %}"><h3 class="post-title">{{ post.title }}</h3></a>
+                        <a href="{% url 'post_detail' post_id=post.id %}" id="none"><h3
+                                class="post-title">{{ post.title }}</h3>
+                        </a>
                         <p>{{ post.content |slice:":30" }}</p>
                         <div class="interactions">
                             <button class="top-button interaction-button">Like</button>

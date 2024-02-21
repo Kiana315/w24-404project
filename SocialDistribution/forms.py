@@ -1,9 +1,7 @@
 # forms.py
-from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.models import User
 from django import forms
-from django.core.exceptions import ValidationError
 from django.contrib.auth import get_user_model
+from django.contrib.auth.forms import UserCreationForm
 
 User = get_user_model()
 
@@ -16,3 +14,9 @@ class AvatarUploadForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ['avatar']
+
+
+class UpdateBioForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['bio']

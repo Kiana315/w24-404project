@@ -24,8 +24,8 @@ urlpatterns = [
     path("inbox/<str:username>/", InboxView.as_view(), name="inbox"),
     path("profile/<str:username>/followers", followersListView, name="followers"),
     path("profile/<str:username>/following", followingListView, name="following"),
-    path("post/<str:username>", postView, name="post"),
-    path("posts/<int:post_id>/", post_detail, name="post_detail"),
+    #path("posts/<str:username>", postView, name="post"),
+    path("posts/<int:post_id>/", PostDetailView.as_view(), name="post_detail"),
 
     # API End-points Addresses
     path("api/pps/", PPsAPIView.as_view(), name="API_PPs"),                                         # GET PublicPostsList       --> Test Success
@@ -36,8 +36,8 @@ urlpatterns = [
     path("api/user/<str:username>/", UserAPIView.as_view(), name="API_USER"),                       # GET User/Profile Info     --> Test Success
     path("api/user/<str:username>/follower/", FollowerAPIView.as_view(), name="API_USERFrd"),       # GET User FollowerList     --> Test Success
     path("api/user/<str:username>/friends/", FriendAPIView.as_view(), name="API_USERFow"),          # GET User FriendList       --> Test Success
-    path('api/posts/<int:pk>/', PostDetailAPIView.as_view(), name='API_PDetail'),                   # GET/PUT/DELETE PostsDetails
-    path("api/posts/<int:id>/comments/", CommentAPIView.as_view(), name='API_PComms'),              # GET PostCommentList       --> ?
-    path("api/posts/<int:id>/likes/", LikeAPIView.as_view(), name='API_PLikes'),                    # GET PostLikeList          --> ?
+    path('api/posts/<int:post_id>/', PostOperationAPIView.as_view(), name='API_PDetail'),                # GET/PUT/DELETE PostsOperations
+    path("api/posts/<int:post_id>/comments/", CommentAPIView.as_view(), name='API_PComms'),              # GET/POST CommentList/NewComment  --> Test Success
+    path("api/posts/<int:post_id>/likes/", LikeAPIView.as_view(), name='API_PLikes'),                    # GET/POST LikeList/NewLike        --> Test Success
 ]
 

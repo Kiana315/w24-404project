@@ -19,7 +19,7 @@ class CommentAdmin(admin.ModelAdmin):
 
 
 class LikeAdmin(admin.ModelAdmin):
-    list_display = ('like', 'liker', 'date_liked')
+    list_display = ('post', 'liker', 'date_liked')
     list_filter = ('date_liked', 'liker')
 
 
@@ -41,4 +41,5 @@ admin.site.register(Comment, CommentAdmin)
 admin.site.register(Like, LikeAdmin)
 admin.site.register(Follower, FollowerAdmin)
 admin.site.register(Friend, FriendAdmin)
+
 

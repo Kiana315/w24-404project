@@ -35,29 +35,32 @@
         {% if post.image %}
             <img src="{{ post.image.url }}" alt="Post Image" class="post-image">
         {% endif %}
-        <div class="comments-section">
-            <h2>Comments:</h2>
-            <div class="comment">
-                <img src="https://via.placeholder.com/30" alt="User Avatar" class="comment-avatar">
-                <div class="comment-body">
-                    <span class="comment-user-name">User 1</span>
-                    <p class="comment-text">Comment 1...</p>
-                </div>
-            </div>
-            <!-- Repeat for more comments -->
-        </div>
     </div>
-    <div class="post-actions">
-        <button class="action">
-            <span class="material-symbols-outlined">share</span>
-            Share</button>
-        <button class="action">
-            <span class="material-symbols-outlined">comment</span>
-            Comment</button>
-        <button class="action">
-            <span class="material-symbols-outlined">thumb_up</span>
-            Like</button>
-    </div>
+<div class="comments-section">
+    <!-- ... existing comments ... -->
 </div>
+</div>
+
+<div id="comment-form-container" style="display: none;">
+    <textarea id="comment-text" placeholder="Write your comment..."></textarea>
+    <button id="submit-comment" class="action">Click to Comment</button>
+</div>
+
+<!-- Post actions -->
+<div class="post-actions">
+    <button id="post-share" class="action">
+        <span class="material-symbols-outlined">share</span>
+        Share</button>
+    <button id="post-comment" class="action">
+        <span class="material-symbols-outlined">comment</span>
+        Comment</button>
+    <button id="post-like" class="action">
+        <span class="material-symbols-outlined">thumb_up</span>
+        Like</button>
+</div>
+
+
+
+<script src="../../static/js/post_detail.js"></script>
 </body>
 </html>

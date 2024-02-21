@@ -62,6 +62,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     console.log('Like button clicked for post:', post.id);
                     fetch(`/api/posts/${post.id}/likes/`, {
                         method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify({}),
                     })
                     .then(response => {
                         if (response.ok) {

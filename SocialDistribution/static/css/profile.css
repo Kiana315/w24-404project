@@ -160,23 +160,27 @@ body {
 .followers-button {
     margin: 20px 20px;
     top: 10px;
+    border-radius: 8px;
     background-image: linear-gradient(45deg, #23fe44 0%, #065d11 100%);
 }
 
 .following-button {
     margin: 20px 20px;
     top: 10px;
+    border-radius: 8px;
     background-image: linear-gradient(45deg, #23fe44 0%, #065d11 100%);
 }
 
 .follow-button {
     margin: 20px 20px;
     top: 10px;
+    border-radius: 8px;
     background-image: linear-gradient(45deg, #23fe44 0%, #065d11 100%);
 }
 
 .interaction-button {
     margin: 30px 30px;
     top: 5px;
+    border-radius: 8px;
     background-color: #666666;
 }

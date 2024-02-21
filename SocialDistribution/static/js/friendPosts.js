@@ -35,13 +35,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     </div>
                 `;
 
-                // Append userInfoHTML, contentHTML, and interactionHTML to postLink instead of postElement
                 postLink.innerHTML = userInfoHTML + contentHTML;
                 postElement.appendChild(postLink);
                 postElement.innerHTML += interactionHTML;
                 postContainer.appendChild(postElement);
 
-                // Event listeners for like and comment buttons
                 const likeButton = postElement.querySelector('.like-btn');
                 const commentButton = postElement.querySelector('.comment-btn');
                 const commentBox = document.createElement('div');
@@ -60,7 +58,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 likeButton.addEventListener('click', (e) => {
                     e.stopPropagation();
                     console.log('Like button clicked for post:', post.id);
-                    // Implement like functionality here
                     fetch(`/api/posts/${post.id}/likes/`, {
                         method: 'POST',
                     })

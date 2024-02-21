@@ -60,7 +60,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 likeButton.addEventListener('click', (e) => {
                     e.stopPropagation();
                     console.log('Like button clicked for post:', post.id);
-                    // Implement like functionality here
                     fetch(`/api/posts/${post.id}/likes/`, {
                         method: 'POST',
                     })
@@ -87,7 +86,6 @@ document.addEventListener('DOMContentLoaded', () => {
                         if (response.ok) {
                             console.log('>> Comment Sent Successfully;');
                         } else {
-                            // Handle errors
                             console.log('>> Comment Sent Unsuccessfully;');
                         }
                     })

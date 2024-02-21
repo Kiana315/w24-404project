@@ -42,3 +42,4 @@ admin.site.register(Like, LikeAdmin)
 admin.site.register(Follower, FollowerAdmin)
 admin.site.register(Friend, FriendAdmin)
 
+

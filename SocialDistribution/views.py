@@ -217,11 +217,11 @@ def profileView(request, username):
 
 
 def followersListView(request, username):
-    return render(request, 'peopleList.html')
+    return render(request, 'followersList.html')
 
 
 def followingListView(request, username):
-    return render(request, 'peopleList.html')
+    return render(request, 'followingList.html')
 
 
 class UserAPIView(generics.RetrieveAPIView):

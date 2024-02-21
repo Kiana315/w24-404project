@@ -16,7 +16,7 @@ from rest_framework.response import Response
 
 # Project Dependencies:
 from .serializers import *
-from .forms import SignUpForm
+from .forms import SignUpForm, AvatarUploadForm
 from .models import Post
 from .permissions import IsAuthorOrReadOnly
 
@@ -176,9 +176,21 @@ class MsgsAPIView(generics.ListAPIView):
 """
 
 
+def upload_avatar(request, username):
+    if request.method == 'POST':
+        form = AvatarUploadForm(request.POST, request.FILES, instance=request.user)
+        if form.is_valid():
+            form.save()
+
+    return redirect(profileView, username=username)
+
+
 def profileView(request, username):
     user = get_object_or_404(User, username=username)
-    context = {'profile_user': user}
+    context = {
+        'user': user,
+        'posts': Post.objects.filter(author=user)
+    }
     return render(request, 'profile.html', context)
 
 

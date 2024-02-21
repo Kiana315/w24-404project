@@ -217,7 +217,8 @@ def profileView(request, username):
 
 
 def followersListView(request, username):
-    return render(request, 'followersList.html')
+    followers = FollowerAPIView().get_queryset()
+    return render(request, 'followersList.html', followers)
 
 
 def followingListView(request, username):
@@ -243,7 +244,6 @@ class FollowerAPIView(generics.ListAPIView):
         followers = get_list_or_404(Follower, following__username=username)
         return followers
     serializer_class = FollowerSerializer
-
 
 class FriendAPIView(generics.ListAPIView):
     """ [GET] Get The FriendList For A Spec-username """

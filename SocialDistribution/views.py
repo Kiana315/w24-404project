@@ -1,15 +1,17 @@
 # Traditional Pattern:
+from django.http import Http404
 from django.shortcuts import render, redirect, get_list_or_404
 from django.contrib.auth import login, authenticate, get_user_model
 from django.contrib.auth.models import User
 from django.contrib.auth.views import LoginView
 from django.contrib import messages
 from django.shortcuts import get_object_or_404
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, DetailView
 from django.db.models import Q
 
 # REST Pattern:
 from rest_framework import generics, status
+from rest_framework.exceptions import ValidationError
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -68,13 +70,19 @@ def signupView(request):
 """
 
 
-def post_detail(request, post_id):
-    post = get_object_or_404(Post, pk=post_id)
-    return render(request, 'post_detail.html', {'post': post})
+class PostDetailView(DetailView):
+    model = Post
+    template_name = 'post_detail.html'
+    context_object_name = 'post'
+    def get_object(self):
+        post_id = self.kwargs.get('post_id')
+        return get_object_or_404(Post, pk=post_id)
 
 
+"""
 def postView(request, username):
     return render(request, 'post.html')
+"""
 
 
 class IndexView(TemplateView):
@@ -127,7 +135,7 @@ class NPsAPIView(generics.CreateAPIView):
 #   template_name = "post_detail.html"
 
 
-class PostDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
+class PostOperationAPIView(generics.RetrieveUpdateDestroyAPIView):
     """ [GET/PUT/DELETE] Get, Update, or Delete A Specific Post """
     queryset = Post.objects.all()
     serializer_class = PostSerializer
@@ -137,22 +145,27 @@ class PostDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
         return get_object_or_404(Post, pk=self.kwargs.get('pk'), author__username=self.kwargs.get('username'))
 
 
-class CommentAPIView(generics.ListAPIView):
-    """ [GET] Get The CommentList For A Spec-post """
-    def get_queryset(self):
-        postKey = self.kwargs['post_id']
-        comments = get_list_or_404(Comment, post_id=postKey)
-        return comments
+class CommentAPIView(generics.ListCreateAPIView):
+    """ [GET/POST] Get The CommentList For A Spec-post; Create A Comment For A Spec-post """
     serializer_class = CommentSerializer
-
-
-class LikeAPIView(generics.ListAPIView):
-    """ [GET] Get The LikeList For A Spec-post """
     def get_queryset(self):
-        postKey = self.kwargs['post_id']
-        likes = get_list_or_404(Like, post_id=postKey)
-        return likes
+        return get_list_or_404(Comment, post_id=self.kwargs['post_id'])
+    def perform_create(self, serializer):
+        post = get_object_or_404(Post, pk=self.kwargs['post_id'])
+        serializer.save(post=post, user=self.request.user)
+
+
+class LikeAPIView(generics.ListCreateAPIView):
+    """ [GET/POST] Get The LikeList For A Spec-post; Create A Like For A Spec-post """
     serializer_class = LikeSerializer
+    def get_queryset(self):
+        return get_list_or_404(Like, post_id=self.kwargs['post_id'])
+    def perform_create(self, serializer):
+        post = get_object_or_404(Post, pk=self.kwargs['post_id'])
+        user = self.request.user
+        if Like.objects.filter(post=post, user=user).exists():
+            raise ValidationError('You have already liked this post.')
+        serializer.save(post=post, user=user)
 
 
 """

@@ -27,7 +27,7 @@ class LikeSerializer(serializers.ModelSerializer):
     liker_username = serializers.CharField(source='liker.username', read_only=True)
     class Meta:
         model = Like
-        fields = ['id', 'like', 'liker', 'liker_username', 'date_liked']
+        fields = ['id', 'post', 'liker', 'liker_username', 'date_liked']
 
 
 class FollowerSerializer(serializers.ModelSerializer):

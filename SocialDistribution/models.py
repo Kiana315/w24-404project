@@ -30,16 +30,16 @@ class Post(models.Model):
 
 
 class Comment(models.Model):
-    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comments')
-    commenter = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='commenter', default=1)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comment', default=99999)
+    commenter = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='commenters', default=0)
     date_commented = models.DateTimeField(auto_now_add=True)
     comment_text = models.TextField()
     ordering = ['-date_commented']
 
 
 class Like(models.Model):
-    like = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='likes')
-    liker = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='liker', default=1)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='like', default=99999)
+    liker = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='likers', default=0)
     date_liked = models.DateTimeField(auto_now_add=True)
     ordering = ['-date_liked']
 

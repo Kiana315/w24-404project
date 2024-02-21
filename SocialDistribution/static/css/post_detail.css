@@ -4,10 +4,15 @@ body, html {
     height: 100%;
     background-color: #f4f4f4;
     font-family: Arial, sans-serif;
+    background-image: url('../../static/images/post-bg.jpg');
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
 }
 
 .post-container {
-    background-color: white;
+    background-color: rgba(255, 255, 255, 0.9);
     padding: 20px; /* This adds padding around the entire content */
     width: 80%;
     max-width: 600px;
@@ -70,7 +75,7 @@ body, html {
 .post-image {
     width: 100%;
     height: auto;
-    margin-top: 2   0px;
+    margin-top: 20px;
 }
 
 .comments-section {

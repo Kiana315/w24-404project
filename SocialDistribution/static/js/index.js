@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 postElement.className = 'post';
 
                 const postLink = document.createElement('a');
-                postLink.href = `/api/posts/${post.id}`;
+                postLink.href = `/posts/${post.id}`;
                 postLink.className = 'post-link';
 
                 const userInfoHTML = `
@@ -54,48 +54,47 @@ document.addEventListener('DOMContentLoaded', () => {
                 postElement.appendChild(commentBox);
 
                 commentButton.addEventListener('click', (e) => {
-                    e.stopPropagation(); // Prevent the click from triggering the post link
+                    e.stopPropagation();
                     commentBox.style.display = commentBox.style.display === 'none' ? 'block' : 'none';
                 });
                 likeButton.addEventListener('click', (e) => {
-                    e.stopPropagation(); // Prevent the click from triggering the post link
+                    e.stopPropagation();
                     console.log('Like button clicked for post:', post.id);
                     // Implement like functionality here
+                    fetch(`/api/posts/${post.id}/likes/`, {
+                        method: 'POST',
+                    })
+                    .then(response => {
+                        if (response.ok) {
+                            console.log('>> Like Sent Successfully;');
+                        } else {
+                            console.log('>> Like Sent Unsuccessfully;');
+                        }
+                    })
+                    .catch(error => console.error('Error:', error));
                 });
 
-                // Event listener for the comment submission
                 const submitCommentButton = commentBox.querySelector('.submit-comment');
                 submitCommentButton.addEventListener('click', () => {
                     const commentText = commentBox.querySelector('.comment-text').value;
                     console.log('Comment submitted for post:', post.id, 'Comment:', commentText);
-                    // Implement comment functionality here
+                    fetch(`/api/posts/${post.id}/comments/`, {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify({ text: commentText }),
+                    })
+                    .then(response => {
+                        if (response.ok) {
+                            console.log('>> Comment Sent Successfully;');
+                        } else {
+                            // Handle errors
+                            console.log('>> Comment Sent Unsuccessfully;');
+                        }
+                    })
+                    .catch(error => console.error('Error:', error));
                 });
             });
         })
         .catch(error => console.error('Error:', error));
 });
 
-
-/*
-function createPostElement(post) {
-    // 创建帖子元素
-    const postDiv = document.createElement('div');
-    postDiv.className = 'post';
-
-    // 添加用户信息
-    const userInfo = document.createElement('div');
-    userInfo.className = 'user-info';
-    userInfo.innerHTML = `
-        <img src="${post.author.profile_picture}" alt="profile picture" class="avatar">
-        <div class="username">${post.author.username}</div>
-    `;
-    postDiv.appendChild(userInfo);
-
-    // 添加帖子内容
-    const content = document.createElement('div');
-    content.className = 'content';
-    content.innerHTML = `<p>${post.content}</p>`;
-    postDiv.appendChild(content);
-
-    return postDiv;
-}*/

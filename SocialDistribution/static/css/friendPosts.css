@@ -83,13 +83,19 @@ body {
     padding: 20px;
     max-width: 800px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    transition: box-shadow 0.3s ease, transform 0.3s ease; /* Smooth transition for shadow and transform */
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
     cursor: pointer; 
+    .like-btn, .comment-btn, .submit-comment, .post-button {
+        display: none;
+    }
 }
 
 .post:hover {
-    transform: scale(1.02); /* Slightly scale up the post for a "lift" effect */
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15); /* Enhance shadow to give depth */
+    transform: scale(1.02);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+    .like-btn, .comment-btn, .submit-comment, .post-button {
+        display: block;
+    }
 }
 
 .post-link {
@@ -115,8 +121,8 @@ body {
 }
 
 a {
-    text-decoration: none; /* Removes the underline from all hyperlinks */
-    color: black; /* Sets the text color of all hyperlinks to black */
+    text-decoration: none;
+    color: black;
 }
 
 .like-btn,

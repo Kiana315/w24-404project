@@ -4,26 +4,21 @@ document.addEventListener('DOMContentLoaded', (event) => {
     const modal = document.getElementById("newPostModal");
     const btn = document.getElementById("floating-button");
     const form = document.getElementById("newPostForm");
-    
-    
 
     // Open pop-up window when clicking floating button
     btn.addEventListener('click', function() {
         modal.style.display = "block";
     });
-
     // Click the x to close the pop-up window
     document.getElementsByClassName("close")[0].onclick = function() {
         modal.style.display = "none";
     }
-
     // Close pop-up window when clicking outside window
     window.onclick = function(event) {
         if (event.target === modal) {
             modal.style.display = "none";
         }
     }
-
     form.onsubmit = function(event) {
         event.preventDefault(); // Prevent form default submission behavior
 
@@ -41,7 +36,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
         })
         .then(response => {
             if(response.ok) {
-                
                 return response.json();
             } else {
                 emptyPost()
@@ -75,27 +69,3 @@ function getCookie(name) {
     }
     return cookieValue;
 }
-
-
-// function showPopup() {
-//     let popup = document.getElementById("popup");
-//     popup.style.display = "block";
-// }
-
-function submitPost() {
-    alert("Post submitted successfully, please refresh to see your post.");
-}
-
-function emptyPost() {
-    alert("Please write something...");
-}
-
-// function addImage() {
-//     alert("The 'Add Image' feature is not implemented in this demo.");
-// }
-
-// function tagFriends() {
-//     alert("The '@ Tag Friends' feature is not implemented in this demo.");
-// }
-
-// showPopup()

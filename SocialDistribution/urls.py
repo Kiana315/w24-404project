@@ -35,7 +35,7 @@ urlpatterns = [
     path("api/user/<str:username>/", UserAPIView.as_view(), name="API_USER"),                       # GET User/Profile Info     --> Test Success
     path("api/user/<str:username>/follower/", FollowerAPIView.as_view(), name="API_USERFrd"),       # GET User FollowerList     --> Test Success
     path("api/user/<str:username>/friends/", FriendAPIView.as_view(), name="API_USERFow"),          # GET User FriendList       --> Test Success
-    path('api/posts/<int:pk>/', PostDetailAPIView.as_view(), name='API_PDetail'),  # GET/PUT/DELETE PostsDetails
+    path('api/posts/<int:pk>/', PostDetailAPIView.as_view(), name='API_PDetail'),                   # GET/PUT/DELETE PostsDetails
     path("api/posts/<int:id>/comments/", CommentAPIView.as_view(), name='API_PComms'),              # GET PostCommentList       --> ?
     path("api/posts/<int:id>/likes/", LikeAPIView.as_view(), name='API_PLikes'),                    # GET PostLikeList          --> ?
 ]

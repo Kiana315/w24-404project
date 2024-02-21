@@ -1,0 +1,186 @@
+body {
+    font-family: Arial, sans-serif;
+    position: relative;
+    margin: 0;
+    display: flex;           
+    flex-direction: column; 
+    
+}
+
+.button-container {
+    display: flex;           
+    flex-direction: row; 
+    margin: 30px 30px;
+}
+
+.back-button:hover,
+.logout-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
+}
+
+.back-button:active,
+.logout-button:active {
+    transform: translateY(0);
+    box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.back-button {
+    margin-left: 20px;
+    right: 10px;
+    padding: 10px 20px;
+    font-size: 16px;
+    text-align: center;
+    color: white;
+    border: none;
+    border-radius: 30px;
+    box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+    cursor: pointer;
+    transition: transform 0.1s ease-in-out, box-shadow 0.1s ease-in-out;
+    outline: none;
+    top: 10px;
+    background-image: linear-gradient(45deg, #a485ff 0%, #7dd2ff 100%);
+}
+
+.logout-button {
+
+    margin-left: 20px;
+    right: 10px;
+    padding: 10px 20px;
+    font-size: 16px;
+    text-align: center;
+    color: white;
+    border: none;
+    border-radius: 30px;
+    box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+    cursor: pointer;
+    transition: transform 0.1s ease-in-out, box-shadow 0.1s ease-in-out;
+    outline: none;
+    top: 10px;
+    background-image: linear-gradient(45deg, #e00808 0%, #f8990a 100%);
+}
+
+.profile-container {
+    display: flex;
+    flex-direction: row;
+    padding: 0 5%;
+    width: 100%;
+    height: auto;
+    position: relative;
+
+}
+
+.profile-header {
+    width: 20%;
+    height: auto;
+    display: flex;           
+    flex-direction: column; 
+    align-items: center;
+    margin: 20px 40px auto 40px;
+    padding: 50px 0;
+    justify-content: center;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.profile-info {
+    margin: 20px 20px;
+}
+
+.profile-avatar {
+    margin: 30px 30px;
+    border: 1px solid black;
+    width: 150px;
+    height: 150px;
+}
+
+.username {
+    font-size: 24px;
+    margin: 10px 0;
+
+}
+.email {
+    font-size: 16px;
+    margin: 10px 0; 
+}
+.bio-container {
+    font-size: 16px;
+    margin: 10px 0;
+    width: 100%;
+    height: 60px;
+    background-color: #7dd2ff;
+}
+
+.profile-info p {
+    color: #555;
+}
+
+.post-container {
+    width: 50%;
+    display: flex;
+    padding-right: 10%;
+    flex-direction: column;
+}
+
+.recent-posts {
+    margin-top: 20px;
+}
+
+.post {
+    display: flex;
+    align-items: top;
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    position: relative;
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.post-photo {
+    border: 1px solid black;
+    margin-right: 20px;
+    width: 150px;
+    height: 150px;
+}
+
+.post-title {
+    margin: 0;
+}
+
+
+
+
+.follow-container {
+    display: flex;
+    flex-direction: row;
+}
+.followers-button {
+    margin: 20px 20px;
+    top: 10px;
+    border-radius: 8px;
+    background-image: linear-gradient(45deg, #23fe44 0%, #065d11 100%);
+}
+
+.following-button {
+    margin: 20px 20px;
+    top: 10px;
+    border-radius: 8px;
+    background-image: linear-gradient(45deg, #23fe44 0%, #065d11 100%);
+}
+
+.follow-button {
+    margin: 20px 20px;
+    top: 10px;
+    border-radius: 8px;
+    background-image: linear-gradient(45deg, #23fe44 0%, #065d11 100%);
+}
+
+.interaction-button {
+    margin: 30px 30px;
+    top: 5px;
+    border-radius: 8px;
+    background-color: #666666;
+}

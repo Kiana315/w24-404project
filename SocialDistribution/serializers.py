@@ -1,24 +1,46 @@
-# Todo: Fell free to edit, just copy from lab3
 from rest_framework import serializers
-from .models import User, Post, Comment, Like, Follower
+from .models import *
 
 
+class PostSerializer(serializers.ModelSerializer):
+    username = serializers.ReadOnlyField(source='author.username')
+    class Meta:
+        model = Post
+        fields = ['id', 'author', 'username', 'title', 'content', 'image', 'visibility', 'date_posted', 'last_modified']
+        extra_kwargs = {'author': {'read_only': True}}
 
-# class QuestionSerializer(serializers.Serializer):
-#     question_text = serializers.CharField()
-#     pub_date = serializers.DateTimeField()
 
-#     def create(self, validated_data):
-#         """
-#         Create and return a new `Question` instance, given the validated data
-#         """
-#         return Question.object.create(**validated_data)
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['id', 'bio', 'username', 'email', 'avatar']
 
-#     def update(self, instance, validated_data):
-#         """
-#         Update and return an existing `Question` instance, given the validated data
-#         """
-#         instance.question_text = validated_data.get('question_text', instance.question_text)
-#         instance.pub_date = validated_data.get('pub_date', instance.pub_date)
-#         instance.save()
-#         return instance
+
+class CommentSerializer(serializers.ModelSerializer):
+    commenter_username = serializers.CharField(source='commenter.username', read_only=True)
+    class Meta:
+        model = Comment
+        fields = ['id', 'post', 'commenter', 'commenter_username', 'date_commented', 'comment_text']
+
+
+class LikeSerializer(serializers.ModelSerializer):
+    liker_username = serializers.CharField(source='liker.username', read_only=True)
+    class Meta:
+        model = Like
+        fields = ['id', 'post', 'liker', 'liker_username', 'date_liked']
+
+
+class FollowerSerializer(serializers.ModelSerializer):
+    follower = UserSerializer(read_only=True)
+    following = UserSerializer(read_only=True)
+    class Meta:
+        model = Follower
+        fields = ['id', 'follower', 'following', 'date_followed']
+
+
+class FriendSerializer(serializers.ModelSerializer):
+    user1 = UserSerializer(read_only=True)
+    user2 = UserSerializer(read_only=True)
+    class Meta:
+        model = Friend
+        fields = ['id', 'user1', 'user2', 'date_became_friends']

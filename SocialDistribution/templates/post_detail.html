@@ -18,49 +18,51 @@
     </style>
 </head>
 <body>
-<div class="post-container">
-    <div class="back-button-container">
-        <button onclick="history.back()" class="back-button">
-            <span class="material-symbols-outlined">
-                arrow_back_ios</span>
-            Back</button>
+    <div class="post-container" data-post-id="{{ post.id }}">
+        <div class="back-button-container">
+            <button onclick="history.back()" class="back-button">
+                <span class="material-symbols-outlined">
+                    arrow_back_ios</span>
+                Back</button>
+        </div>
+        <div class="user-info">
+            <img src="{{ post.author.avatar}}" alt="User Avatar" class="user-avatar">
+            <span class="user-name">{{ post.author.username }}</span>
+        </div>
+        <h1 class="post-title">{{ post.title }}</h1>
+        <div class="scrollable-content">
+            <p class="post-content">{{ post.content }}</p> 
+            {% if post.image %}
+                <img src="{{ post.image.url }}" alt="Post Image" class="post-image">
+            {% endif %}
+            <div class="comments-section">
+                <h2>Comments:</h2>
+                
+                <div id="comments-container"></div>
+
+            </div>
+        </div>
+        <div class="post-actions">
+            <button id="share-button" class="action">
+                <span class="material-symbols-outlined">share</span>
+                Share
+            </button>
+            <button id="comment-button" class="action">
+                <span class="material-symbols-outlined">comment</span>
+                Comment
+            </button>
+            <div id="comment-form" class="comment-form" style="display: none;">
+                <textarea id="comment-input" placeholder="Add a comment..."></textarea>
+                <button id="submit-comment" class="action">Post Comment</button>
+            </div>
+            <button id="like-button" class="action"> 
+                <span class="material-symbols-outlined">thumb_up</span>
+                Like
+                <span id="like-count">{{ likes_count }}</span>
+            </button>
+        </div>   
     </div>
-    <div class="user-info">
-        <img src="https://via.placeholder.com/50" alt="User Avatar" class="user-avatar">
-        <span class="user-name">{{ post.author.username }}</span>
-    </div>
-    <h1 class="post-title">{{ post.title }}</h1>
-    <div class="scrollable-content">
-        <p class="post-content">{{ post.content }}</p>
-        {% if post.image %}
-            <img src="{{ post.image.url }}" alt="Post Image" class="post-image">
-        {% endif %}
-    </div>
-<div class="comments-section">
-    <!-- ... existing comments ... -->
-</div>
-</div>
 
-<div id="comment-form-container" style="display: none;">
-    <textarea id="comment-text" placeholder="Write your comment..."></textarea>
-    <button id="submit-comment" class="action">Click to Comment</button>
-</div>
-
-<!-- Post actions -->
-<div class="post-actions">
-    <button id="post-share" class="action">
-        <span class="material-symbols-outlined">share</span>
-        Share</button>
-    <button id="post-comment" class="action">
-        <span class="material-symbols-outlined">comment</span>
-        Comment</button>
-    <button id="post-like" class="action">
-        <span class="material-symbols-outlined">thumb_up</span>
-        Like</button>
-</div>
-
-
-
-<script src="../../static/js/post_detail.js"></script>
+    <script src="{% static 'js/post_detail.js' %}"></script>
 </body>
 </html>

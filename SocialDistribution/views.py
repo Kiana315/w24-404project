@@ -1,6 +1,6 @@
 # Traditional Pattern:
 from django.http import Http404
-from django.shortcuts import render, redirect, get_list_or_404
+from django.shortcuts import render, redirect, get_list_or_404, get_object_or_404
 from django.contrib.auth import login, authenticate, get_user_model
 from django.contrib.auth.models import User
 from django.contrib.auth.views import LoginView
@@ -17,6 +17,7 @@ from rest_framework.exceptions import ValidationError
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework.decorators import api_view
 
 # Project Dependencies:
 from .serializers import *
@@ -78,8 +79,29 @@ class PostDetailView(DetailView):
     context_object_name = 'post'
     def get_object(self):
         post_id = self.kwargs.get('post_id')
-        return get_object_or_404(Post, pk=post_id)
+        return get_object_or_404(Post, pk=post_id) 
 
+    # def get_context_data(self, **kwargs):
+    #     context = super().get_context_data(**kwargs)
+    #     post = self.get_object()
+    #     context['likes_count'] = Like.objects.filter(post=post).count()
+    #     return context
+
+    def render_to_response(self, context, **response_kwargs):
+        if self.request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+            post = self.get_object()
+            data = {
+                'id': post.id,
+                'title': post.title,
+                'content': post.content,
+                'image_url': post.image.url if post.image else '',
+                'likes_count': Like.objects.filter(post=post).count(), 
+                'comments': list(post.get_comments().values('user__username', 'text')),
+            }
+            return JsonResponse(data)
+        else:
+            context['likes_count'] = Like.objects.filter(post=self.get_object()).count()
+            return super().render_to_response(context, **response_kwargs)
 
 """
 def postView(request, username):
@@ -144,7 +166,8 @@ class PostOperationAPIView(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [IsAuthenticatedOrReadOnly, IsAuthorOrReadOnly]
 
     def get_object(self):
-        return get_object_or_404(Post, pk=self.kwargs.get('pk'), author__username=self.kwargs.get('username'))
+        post_id = self.kwargs.get('post_id')
+        return get_object_or_404(Post, pk=post_id)
 
 
 class CommentAPIView(generics.ListCreateAPIView):
@@ -154,7 +177,11 @@ class CommentAPIView(generics.ListCreateAPIView):
         return get_list_or_404(Comment, post_id=self.kwargs['post_id'])
     def perform_create(self, serializer):
         post = get_object_or_404(Post, pk=self.kwargs['post_id'])
-        serializer.save(post=post, user=self.request.user)
+        serializer.save(post=post, commenter=self.request.user)
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context.update({'request': self.request})
+        return context
 
 
 class LikeAPIView(generics.ListCreateAPIView):
@@ -165,10 +192,15 @@ class LikeAPIView(generics.ListCreateAPIView):
     def perform_create(self, serializer):
         post = get_object_or_404(Post, pk=self.kwargs['post_id'])
         user = self.request.user
-        if Like.objects.filter(post=post, user=user).exists():
+        if Like.objects.filter(post=post, liker=user).exists():
             raise ValidationError('You have already liked this post.')
-        serializer.save(post=post, user=user)
-
+        serializer.save(post=post, liker=user)
+        post.refresh_from_db()
+        likes_count = post.like.count()
+        response_data = {
+            'likes_count': likes_count,
+        }
+        return Response(response_data, status=status.HTTP_201_CREATED)
 
 """
 ---------------------------------- Message Inbox Settings ----------------------------------

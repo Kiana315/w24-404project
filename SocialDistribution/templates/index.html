@@ -27,14 +27,24 @@
             {% endif %}
         </ul>
     </nav>
-
+    
+    
     
     <div class="post-container" id ="post-container">
+        <div class="search-bar">
+            <ion-icon name="search-outline" style="font-size: 26px; margin: 5px; color: rgb(97, 97, 97);"></ion-icon>
+            <form id="search-form" action="/search" method="get">
+                <input type="text" name="query" placeholder="Search by username or email">
+                <!-- <button type="submit">Search</button> -->
+            </form>
+        </div>
         <!-- Posts will be dynamically loaded here via JavaScript -->
     </div>
 
     
     <button id="floating-button">+</button>
+    
+    
     <div id="newPostModal" class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>

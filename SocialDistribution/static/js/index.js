@@ -1,6 +1,9 @@
 'use strict';
 
+
 document.addEventListener('DOMContentLoaded', () => {
+  
+
     fetch('/api/pps/')
         .then(response => response.json())
         .then(posts => {
@@ -13,10 +16,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 postLink.href = `/posts/${post.id}`;
                 postLink.className = 'post-link';
 
+                const datePosted = new Date(post.date_posted);
+                const formattedDate = `${datePosted.getFullYear()}-${datePosted.getMonth() + 1}-${datePosted.getDate()}`;
+
                 const userInfoHTML = `
                     <div class="user-info">
-                        <img src="${post.author.profile_picture}" alt="profile picture" class="avatar">
-                        <div class="username">${post.author.username}</div>
+                        <img src="${post.author.profile_picture}" alt="profile avatar" class="user-avatar">
+                        <div class="username">${post.author.username || 'Unknown User'}</div>
+                        <div class="post-time">${formattedDate}</div>
                     </div>
                 `;
 
@@ -96,5 +103,4 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         })
         .catch(error => console.error('Error:', error));
-});
-
+})

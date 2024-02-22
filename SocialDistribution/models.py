@@ -49,7 +49,8 @@ class Like(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='like', default=99999)
     liker = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='likers', default=0)
     date_liked = models.DateTimeField(auto_now_add=True)
-    ordering = ['-date_liked']
+    class Meta:
+        ordering = ['-date_liked']
 
 
 class Follow(models.Model):
@@ -60,10 +61,11 @@ class Follow(models.Model):
         unique_together = ('follower', 'following',)
         ordering = ['-date_followed']
 
-    def are_friends(user1, user2):
+    def are_friends(self, user1, user2):
         return Follow.objects.filter(follower=user1, following=user2).exists() and \
                Follow.objects.filter(follower=user2, following=user1).exists()
-    
+
+
 class Friend(models.Model):
     user1 = models.ForeignKey(User, related_name='friends_set1', on_delete=models.CASCADE)
     user2 = models.ForeignKey(User, related_name='friends_set2', on_delete=models.CASCADE)

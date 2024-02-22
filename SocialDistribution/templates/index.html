@@ -41,22 +41,25 @@
             <form id="newPostForm">
                 <input id="titleInput" type="text" name="title" placeholder="Title">
                 <textarea id="contentInput" name="content" placeholder="Tell Something New..."></textarea>
-                <div class="separator"></div>
-                <div class="post-container">
-                    <label for="imageUpload" class="upload-icon">
-                        <ion-icon name="image"></ion-icon>
-                    </label>
-                    <input type="file" id="imageUpload" name="image" style="display: none;">
-                     
-                    <label for="visibility"></label>
-                    <div class="visibility-select">
+                
+                <div class="submit-container">
+                    <div class="left">
+                        <label for="imageUpload" class="upload-icon">
+                            <ion-icon name="image"></ion-icon>
+                        </label>
+                        <input type="file" id="imageUpload" name="image" style="display: none;">
+                    </div>
+                    <div class="right">
+                        <label for="visibility"></label>
+                        
                         <select name="visibility" id="visibility">
                             <option value="PUBLIC" selected>Public</option>
                             <option value="FRIENDS">Friends-Only</option>
                         </select>
+                        
+                        <button class="post-button" type="submit">Save Draft</button>
+                        <button class="post-button" type="submit">Post</button>
                     </div>
-                    <button class="post-button" type="submit">Post</button>
-                    <button class="post-button" type="submit">Save Draft</button>
                 </div>
             </form>
         </div>

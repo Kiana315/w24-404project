@@ -16,6 +16,10 @@ class User(AbstractUser):
         return self.following.filter(following=other_user).exists() and \
                self.followers.filter(follower=other_user).exists()
 
+    @property
+    def avatar_url(self):
+        return self.avatar.url if self.avatar else ""
+
 class Post(models.Model):
     VISIBILITY_CHOICES = [
         ('PUBLIC', 'Public'),

@@ -245,7 +245,7 @@ def profileView(request, username):
     user = get_object_or_404(User, username=username)
     context = {
         'user': user,
-        'posts': Post.objects.filter(author=user)
+        'posts': Post.objects.filter(author=user).order_by('-date_posted')
     }
     return render(request, 'profile.html', context)
 

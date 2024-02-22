@@ -5,10 +5,11 @@ from django.templatetags.static import static
 
 class PostSerializer(serializers.ModelSerializer):
     username = serializers.ReadOnlyField(source='author.username')
+    avatar = serializers.ReadOnlyField(source='author.avatar_url')
     likes_count = serializers.SerializerMethodField()
     class Meta:
         model = Post
-        fields = ['id', 'author', 'username', 'title', 'content', 'image', 'visibility', 'date_posted', 'last_modified', 'likes_count']
+        fields = ['id', 'author', 'username', 'title', 'content', 'image', 'visibility', 'date_posted', 'last_modified', 'likes_count', 'avatar']
         extra_kwargs = {'author': {'read_only': True}}
 
     def get_likes_count(self, obj):

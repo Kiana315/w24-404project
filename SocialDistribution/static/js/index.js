@@ -21,8 +21,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 const userInfoHTML = `
                     <div class="user-info">
-                        <img src="${post.author.profile_picture}" alt="profile avatar" class="user-avatar">
-                        <div class="username">${post.author.username || 'Unknown User'}</div>
+                        <img src="${post.avatar}" alt="profile avatar" class="user-avatar">
+                        <div class="username">${post.username || 'Unknown User'}</div>
                         <div class="post-time">${formattedDate}</div>
                     </div>
                 `;

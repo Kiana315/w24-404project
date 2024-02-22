@@ -125,9 +125,10 @@
             Following<br />0
           </button>
         </div>
-        <button id="follow-btn" class="top-button followers-button">
-          Follow
-        </button>
+        {% if not user.username == request.user.username and not user.username in following_usernames %}
+            <button id="follow-btn" data-username="{{ user.username }}">follow</button>
+        {% endif %}
+        
       </div>
 
       <div class="post-container">
@@ -173,6 +174,7 @@
     <script src="../static/js/index.js"></script>
     <script src="../static/js/posting.js"></script>
     <script src="../static/js/post_detail.js"></script>
+    <script src="../static/js/follow.js"></script>
 
   </body>
 </html>

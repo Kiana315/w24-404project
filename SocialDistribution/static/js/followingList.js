@@ -1,16 +1,24 @@
-// TODO
-document.addEventListener('DOMContentLoaded', function() {
-    const username = '当前用户名';  // 获取当前用户名
-    loadFollowing(username);
+document.addEventListener('DOMContentLoaded', () => {
+    const username = _getURLUsername();
+    fetch(`profile/${username}/following/`)  
+    .then(response => {
+        if (response.status === 200) {
+            return response.json();
+        } else {
+            alert("Something went wrong when fetching followings: " + response.status);
+        }
+    })
+    .then(data => {
+        var followingList = document.getElementById("following-list");  
+        followingList.innerHTML = "";
+
+        data.forEach(following => {  
+            followingList.innerHTML += "<li class='person'><img class='person-photo' src='person1.jpg' alt='Profile Picture'></img><p class='person-name'>" + following.username + "</p></li>";
+        });
+    });
 });
 
-function updateFollowingList(data) {
-    const followingList = document.getElementById('following-list');
-    followingList.innerHTML = '';  // 清空现有内容
-    data.forEach(user => {
-        // 创建新的元素来展示每个用户
-        const userElement = document.createElement('div');
-        userElement.textContent = user.username;
-        followingList.appendChild(userElement);
-    });
+function _getURLUsername() {
+    const pathSections = window.location.pathname.split('/');
+    return pathSections[2];
 }

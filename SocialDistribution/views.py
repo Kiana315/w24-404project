@@ -218,19 +218,6 @@ def profileView(request, username):
     return render(request, 'profile.html', context)
 
 
-def followersListView(request, username):
-    # 获取特定用户的粉丝列表
-    user = User.objects.get(username=username)
-    followers = Follower.objects.filter(following=user)
-
-    # 将数据传递给模板
-    context = {'followers': followers, 'user': user}
-    return render(request, 'followersList.html', context)
-
-
-def followingListView(request, username):
-    return render(request, 'followingList.html')
-
 
 class UserAPIView(generics.RetrieveAPIView):
     """ [GET] Get The Profile Info """
@@ -250,7 +237,7 @@ class FollowerAPIView(generics.ListAPIView):
 
     def get_queryset(self):
         username = self.kwargs['username']
-        followers = get_list_or_404(Follower, following__username=username)
+        followers = get_list_or_404(Follow, following__username=username)
         return followers
     
 
@@ -297,4 +284,13 @@ class FollowingListView(generics.ListAPIView):
         response = super().list(request, *args, **kwargs)
         return render(request, 'followingList.html', {'followers': response.data})
     
-    
+def follow_user(request, username):
+    try:
+        user_to_follow = User.objects.get(username=username)
+        if user_to_follow != request.user and not Follow.objects.filter(follower=request.user, following=user_to_follow).exists():
+            Follow.objects.create(follower=request.user, following=user_to_follow)
+            return JsonResponse({"status": "success"}, status=200)
+        else:
+            return JsonResponse({"error": "Cannot follow"}, status=400)
+    except User.DoesNotExist:
+        return JsonResponse({"error": "User not found"}, status=404)

@@ -1,15 +1,24 @@
-function loadFollowers(username) {
-    fetch(`/profile/${username}/followers/`)
-        .then(response => response.json())
-        .then(data => {
-            // 使用 data 来更新页面
+document.addEventListener('DOMContentLoaded', function() {
+    const followButton = document.getElementById('follow-btn');
+    if (followButton) {
+        followButton.addEventListener('click', function() {
+            const username = this.getAttribute('data-username');
+            fetch(`/follow/${username}/`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': getCookie('csrftoken'),
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    followButton.style.display = 'none'; // 隐藏按钮
+                    // 可选：更新正在关注列表
+                } else {
+                    alert("Something went wrong.");
+                }
+            })
+            .catch(error => console.error('Error:', error));
         });
-}
-
-function loadFollowing(username) {
-    fetch(`/profile/${username}/following/`)
-        .then(response => response.json())
-        .then(data => {
-            // 使用 data 来更新页面
-        });
-}
+    }
+});

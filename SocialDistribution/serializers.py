@@ -34,7 +34,7 @@ class FollowerSerializer(serializers.ModelSerializer):
     follower = UserSerializer(read_only=True)
     following = UserSerializer(read_only=True)
     class Meta:
-        model = Follower
+        model = Follow
         fields = ['id', 'follower', 'following', 'date_followed']
 
 class FriendSerializer(serializers.ModelSerializer):

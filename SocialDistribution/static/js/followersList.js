@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     const username = _getURLUsername()
-    fetch(`api/user/${username}/follower/`)
+    fetch(`profile/${username}/follower/`)
     .then(response => {
         if (response.status == 200) {
             return response.json();

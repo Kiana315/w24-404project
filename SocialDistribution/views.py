@@ -23,7 +23,7 @@ from .serializers import *
 from .forms import SignUpForm, AvatarUploadForm, UpdateBioForm
 from .models import Post
 from .permissions import IsAuthorOrReadOnly
-
+from .models import *
 
 User = get_user_model()
 
@@ -219,8 +219,13 @@ def profileView(request, username):
 
 
 def followersListView(request, username):
-    followers = FollowerAPIView().get_queryset()
-    return render(request, 'followersList.html', followers)
+    # 获取特定用户的粉丝列表
+    user = User.objects.get(username=username)
+    followers = Follower.objects.filter(following=user)
+
+    # 将数据传递给模板
+    context = {'followers': followers, 'user': user}
+    return render(request, 'followersList.html', context)
 
 
 def followingListView(request, username):
@@ -258,11 +263,38 @@ class FriendAPIView(generics.ListAPIView):
     serializer_class = FriendSerializer
 
 def search_user(request):
-    query = request.GET.get('q', '')  # 获取搜索查询参数
+    query = request.GET.get('q', '')  # Get search query parameters
     try:
         user = User.objects.get(username=query)
-        # 或者使用电子邮件搜索：User.objects.get(email=query)
-        # 这里返回一个指向用户个人资料的 URL
+        # Or use eamil search：User.objects.get(email=query)
+        # Returns a URL pointing to the user's profile
         return JsonResponse({'url': f'/profile/{user.username}/'})
     except User.DoesNotExist:
         return JsonResponse({'error': 'User not found'}, status=404)
+    
+
+class FollowersListView(generics.ListAPIView):
+    serializer_class = UserSerializer
+
+
+    def get_queryset(self):
+        username = self.kwargs['username']
+        user = User.objects.get(username=username)
+        return user.followers.all()  
+    
+    def list(self, request, *args, **kwargs):
+        response = super().list(request, *args, **kwargs)
+        return render(request, 'followersList.html', {'followers': response.data})
+
+class FollowingListView(generics.ListAPIView):
+    serializer_class = UserSerializer
+
+    def get_queryset(self):
+        username = self.kwargs['username']
+        user = User.objects.get(username=username)
+        return user.following.all()  
+    def list(self, request, *args, **kwargs):
+        response = super().list(request, *args, **kwargs)
+        return render(request, 'followingList.html', {'followers': response.data})
+    
+    

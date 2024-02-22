@@ -47,7 +47,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
             // After posted
             modal.style.display = "none"; // Close pop-up window
             submitPost();
-            // Refresh the page 
+            
+            
         })
         .catch((error) => {
             console.error('Error:', error);

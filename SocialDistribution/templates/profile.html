@@ -1,6 +1,7 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+<<<<<<< Updated upstream
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -20,6 +21,18 @@
     a:active {
       text-decoration: none;
       color: inherit;
+=======
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@{{ user.username }}</title>
+    <link rel="stylesheet" type="text/css" href="../../static/css/profile.css">
+</head>
+<style>
+    a, a:link, a:visited, a:hover, a:active {
+        text-decoration: none;
+        color: inherit;
+>>>>>>> Stashed changes
     }
 
     .profile-photo {
@@ -108,6 +121,7 @@
           </form>
         </div>
         <div class="follow-container">
+<<<<<<< Updated upstream
           <button
             id="follower-btn"
             class="top-button followers-button"
@@ -164,6 +178,18 @@
           {% endfor %}
         </div>
       </div>
+=======
+            <button id="follower-btn" class="followers-button" onclick="location.href = 'followers'">
+                Followers<br>0
+            </button>
+            <button id="following-btn" class="following-button" onclick="location.href = 'following'">
+                Following<br>0
+            </button>
+        </div>
+
+      
+        <button id="follow-btn" class="followers-button">Follow</button>
+>>>>>>> Stashed changes
     </div>
 
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>

@@ -1,14 +1,18 @@
 from rest_framework import serializers
 from .models import *
+from django.templatetags.static import static
 
 
 class PostSerializer(serializers.ModelSerializer):
     username = serializers.ReadOnlyField(source='author.username')
+    likes_count = serializers.SerializerMethodField()
     class Meta:
         model = Post
-        fields = ['id', 'author', 'username', 'title', 'content', 'image', 'visibility', 'date_posted', 'last_modified']
+        fields = ['id', 'author', 'username', 'title', 'content', 'image', 'visibility', 'date_posted', 'last_modified', 'likes_count']
         extra_kwargs = {'author': {'read_only': True}}
 
+    def get_likes_count(self, obj):
+        return Like.objects.filter(post=obj).count()
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -18,9 +22,16 @@ class UserSerializer(serializers.ModelSerializer):
 
 class CommentSerializer(serializers.ModelSerializer):
     commenter_username = serializers.CharField(source='commenter.username', read_only=True)
+    commenter_avatar_url = serializers.SerializerMethodField()
     class Meta:
         model = Comment
-        fields = ['id', 'post', 'commenter', 'commenter_username', 'date_commented', 'comment_text']
+        fields = ['id', 'post', 'commenter', 'commenter_username', 'commenter_avatar_url', 'date_commented', 'comment_text']
+
+    def get_commenter_avatar_url(self, obj):
+        request = self.context.get('request')
+        if obj.commenter.avatar and hasattr(obj.commenter.avatar, 'url'):
+            return request.build_absolute_uri(obj.commenter.avatar.url)
+        return request.build_absolute_uri(static('images/post-bg.jpg'))
 
 
 class LikeSerializer(serializers.ModelSerializer):

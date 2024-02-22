@@ -38,5 +38,7 @@ urlpatterns = [
     path('api/posts/<int:post_id>/', PostOperationAPIView.as_view(), name='API_PDetail'),                # GET/PUT/DELETE PostsOperations
     path("api/posts/<int:post_id>/comments/", CommentAPIView.as_view(), name='API_PComms'),              # GET/POST CommentList/NewComment  --> Test Success
     path("api/posts/<int:post_id>/likes/", LikeAPIView.as_view(), name='API_PLikes'),                    # GET/POST LikeList/NewLike        --> Test Success
+    # path("api/posts/<int:post_id>/likes/", toggle_like, name='toggle-like'),                    # GET/POST LikeList/NewLike        --> Test Success
+
 ]
 

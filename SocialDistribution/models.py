@@ -34,7 +34,8 @@ class Comment(models.Model):
     commenter = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='commenters', default=0)
     date_commented = models.DateTimeField(auto_now_add=True)
     comment_text = models.TextField()
-    ordering = ['-date_commented']
+    class Meta:
+        ordering = ['-date_commented']
 
 
 class Like(models.Model):

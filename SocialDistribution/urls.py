@@ -5,7 +5,7 @@ from django.contrib.auth import views as auth_views
 from django.contrib.auth.views import LogoutView
 from rest_framework.routers import DefaultRouter
 from django.conf.urls.static import static
-
+from . import views
 
 app_name = "SocialDistribution"
 
@@ -28,6 +28,7 @@ urlpatterns = [
     path("profile/<str:username>/following", followingListView, name="following"),
     #path("posts/<str:username>", postView, name="post"),
     path("posts/<int:post_id>/", PostDetailView.as_view(), name="post_detail"),
+    path('search/', views.search_user, name='search_user'),
 
     # API End-points Addresses
     path("api/pps/", PPsAPIView.as_view(), name="API_PPs"),                                         # GET PublicPostsList       --> Test Success

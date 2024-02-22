@@ -90,6 +90,7 @@ body {
 
 #search-form input, 
 #search-form button {
+    
     border: none;
     background: none;
     outline: none;
@@ -98,6 +99,7 @@ body {
 
 #search-form input {
     margin: 0 10px;
+    width: 100%;
 }
 
 #search-form button {

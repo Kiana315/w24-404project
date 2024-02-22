@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
     const btn = document.getElementById("floating-button");
     const form = document.getElementById("newPostForm");
 
+    
     // Open pop-up window when clicking floating button
     btn.addEventListener('click', function() {
         modal.style.display = "block";

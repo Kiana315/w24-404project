@@ -8,6 +8,8 @@ from django.contrib import messages
 from django.shortcuts import get_object_or_404
 from django.views.generic import TemplateView, DetailView
 from django.db.models import Q
+from django.http import JsonResponse
+
 
 # REST Pattern:
 from rest_framework import generics, status
@@ -239,11 +241,13 @@ class UserAPIView(generics.RetrieveAPIView):
 
 class FollowerAPIView(generics.ListAPIView):
     """ [GET] Get The FollowerList For A Spec-username """
+    serializer_class = FollowerSerializer
+
     def get_queryset(self):
         username = self.kwargs['username']
         followers = get_list_or_404(Follower, following__username=username)
         return followers
-    serializer_class = FollowerSerializer
+    
 
 class FriendAPIView(generics.ListAPIView):
     """ [GET] Get The FriendList For A Spec-username """
@@ -253,3 +257,12 @@ class FriendAPIView(generics.ListAPIView):
         return friends
     serializer_class = FriendSerializer
 
+def search_user(request):
+    query = request.GET.get('q', '')  # 获取搜索查询参数
+    try:
+        user = User.objects.get(username=query)
+        # 或者使用电子邮件搜索：User.objects.get(email=query)
+        # 这里返回一个指向用户个人资料的 URL
+        return JsonResponse({'url': f'/profile/{user.username}/'})
+    except User.DoesNotExist:
+        return JsonResponse({'error': 'User not found'}, status=404)

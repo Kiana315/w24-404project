@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
     const btn = document.getElementById("floating-button");
     const form = document.getElementById("newPostForm");
 
+    
     // Open pop-up window when clicking floating button
     btn.addEventListener('click', function() {
         modal.style.display = "block";
@@ -46,7 +47,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
             // After posted
             modal.style.display = "none"; // Close pop-up window
             submitPost();
-            // Refresh the page 
+            
+            
         })
         .catch((error) => {
             console.error('Error:', error);

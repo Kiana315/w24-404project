@@ -12,6 +12,9 @@ class User(AbstractUser):
     email = models.EmailField()
     avatar = models.ImageField(upload_to='avatars/', default="default_avatar.jpg")
 
+    def is_friend(self, other_user):
+        return self.following.filter(following=other_user).exists() and \
+               self.followers.filter(follower=other_user).exists()
 
 class Post(models.Model):
     VISIBILITY_CHOICES = [

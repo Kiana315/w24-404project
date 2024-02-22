@@ -4,7 +4,8 @@ from django.contrib import admin
 from django.contrib.auth import views as auth_views
 from django.contrib.auth.views import LogoutView
 from rest_framework.routers import DefaultRouter
-
+from django.conf.urls.static import static
+from . import views
 
 app_name = "SocialDistribution"
 
@@ -20,12 +21,17 @@ urlpatterns = [
     path("signup/", signupView, name="signup"),
     path("friendPosts/<str:username>/", FriendPostsView.as_view(), name="friendPosts"),
     path("profile/<str:username>/", profileView, name="profile"),
+    path("profile/<str:username>/upload-avatar/", upload_avatar, name="upload-avatar"),
+    path("profile/<str:username>/update-bio/", update_bio, name="update-bio"),
     path("inbox/<str:username>/", InboxView.as_view(), name="inbox"),
-    path("profile/<str:username>/followers", followersListView, name="followers"),
-    path("profile/<str:username>/following", followingListView, name="following"),
+    # path("profile/<str:username>/followers", FollowersListView.as_view, name="followers"),
+    # path("profile/<str:username>/following", FollowingListView.as_view, name="following"),
     #path("posts/<str:username>", postView, name="post"),
     path("posts/<int:post_id>/", PostDetailView.as_view(), name="post_detail"),
+    path('search/', views.search_user, name='search_user'),
+   
 
+    
     # API End-points Addresses
     path("api/pps/", PPsAPIView.as_view(), name="API_PPs"),                                         # GET PublicPostsList       --> Test Success
     path("api/fps/<str:username>/", FPsAPIView.as_view(), name="API_FPs"),                          # GET FriendPostsList       --> Test Success
@@ -38,7 +44,10 @@ urlpatterns = [
     path('api/posts/<int:post_id>/', PostOperationAPIView.as_view(), name='API_PDetail'),                # GET/PUT/DELETE PostsOperations
     path("api/posts/<int:post_id>/comments/", CommentAPIView.as_view(), name='API_PComms'),              # GET/POST CommentList/NewComment  --> Test Success
     path("api/posts/<int:post_id>/likes/", LikeAPIView.as_view(), name='API_PLikes'),                    # GET/POST LikeList/NewLike        --> Test Success
-    # path("api/posts/<int:post_id>/likes/", toggle_like, name='toggle-like'),                    # GET/POST LikeList/NewLike        --> Test Success
-
+    path('profile/<str:username>/followers/', FollowersListView.as_view(), name='followers-list'),
+    path('profile/<str:username>/following/', FollowingListView.as_view(), name='following-list'),
 ]
 
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

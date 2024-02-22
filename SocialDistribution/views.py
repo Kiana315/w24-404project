@@ -8,6 +8,8 @@ from django.contrib import messages
 from django.shortcuts import get_object_or_404
 from django.views.generic import TemplateView, DetailView
 from django.db.models import Q
+from django.http import JsonResponse
+
 
 # REST Pattern:
 from rest_framework import generics, status
@@ -19,10 +21,10 @@ from rest_framework.decorators import api_view
 
 # Project Dependencies:
 from .serializers import *
-from .forms import SignUpForm
+from .forms import SignUpForm, AvatarUploadForm, UpdateBioForm
 from .models import Post
 from .permissions import IsAuthorOrReadOnly
-
+from .models import *
 
 User = get_user_model()
 
@@ -221,18 +223,45 @@ class MsgsAPIView(generics.ListAPIView):
 """
 
 
+def upload_avatar(request, username):
+    if request.method == 'POST':
+        form = AvatarUploadForm(request.POST, request.FILES, instance=request.user)
+        if form.is_valid():
+            form.save()
+
+    return redirect(profileView, username=username)
+
+
+def update_bio(request, username):
+    if request.method == 'POST':
+        form = UpdateBioForm(request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+
+    return redirect(profileView, username=username)
+
+
 def profileView(request, username):
     user = get_object_or_404(User, username=username)
-    context = {'profile_user': user}
+    context = {
+        'user': user,
+        'posts': Post.objects.filter(author=user)
+    }
     return render(request, 'profile.html', context)
 
 
 def followersListView(request, username):
-    return render(request, 'peopleList.html')
+    # 获取特定用户的粉丝列表
+    user = User.objects.get(username=username)
+    followers = Follower.objects.filter(following=user)
+
+    # 将数据传递给模板
+    context = {'followers': followers, 'user': user}
+    return render(request, 'followersList.html', context)
 
 
 def followingListView(request, username):
-    return render(request, 'peopleList.html')
+    return render(request, 'followingList.html')
 
 
 class UserAPIView(generics.RetrieveAPIView):
@@ -249,12 +278,13 @@ class UserAPIView(generics.RetrieveAPIView):
 
 class FollowerAPIView(generics.ListAPIView):
     """ [GET] Get The FollowerList For A Spec-username """
+    serializer_class = FollowerSerializer
+
     def get_queryset(self):
         username = self.kwargs['username']
         followers = get_list_or_404(Follower, following__username=username)
         return followers
-    serializer_class = FollowerSerializer
-
+    
 
 class FriendAPIView(generics.ListAPIView):
     """ [GET] Get The FriendList For A Spec-username """
@@ -264,3 +294,39 @@ class FriendAPIView(generics.ListAPIView):
         return friends
     serializer_class = FriendSerializer
 
+def search_user(request):
+    query = request.GET.get('q', '')  # Get search query parameters
+    try:
+        user = User.objects.get(username=query)
+        # Or use eamil search：User.objects.get(email=query)
+        # Returns a URL pointing to the user's profile
+        return JsonResponse({'url': f'/profile/{user.username}/'})
+    except User.DoesNotExist:
+        return JsonResponse({'error': 'User not found'}, status=404)
+    
+
+class FollowersListView(generics.ListAPIView):
+    serializer_class = UserSerializer
+
+
+    def get_queryset(self):
+        username = self.kwargs['username']
+        user = User.objects.get(username=username)
+        return user.followers.all()  
+    
+    def list(self, request, *args, **kwargs):
+        response = super().list(request, *args, **kwargs)
+        return render(request, 'followersList.html', {'followers': response.data})
+
+class FollowingListView(generics.ListAPIView):
+    serializer_class = UserSerializer
+
+    def get_queryset(self):
+        username = self.kwargs['username']
+        user = User.objects.get(username=username)
+        return user.following.all()  
+    def list(self, request, *args, **kwargs):
+        response = super().list(request, *args, **kwargs)
+        return render(request, 'followingList.html', {'followers': response.data})
+    
+    

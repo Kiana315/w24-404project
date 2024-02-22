@@ -2,7 +2,8 @@
 
 
 document.addEventListener('DOMContentLoaded', () => {
-    fetch(`/api/fps/eden/`)      //todo change to: `/api/fps/${username}/`
+    const username = _getURLUsername()
+    fetch(`/api/fps/${username}/`)
         .then(response => response.json())
         .then(posts => {
             const postContainer = document.getElementById('post-container');
@@ -94,4 +95,10 @@ document.addEventListener('DOMContentLoaded', () => {
         })
         .catch(error => console.error('Error:', error));
 });
+
+function _getURLUsername() {
+    const pathSections = window.location.pathname.split('/');
+    return pathSections[2];
+}
+
 

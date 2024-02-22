@@ -4,7 +4,60 @@ body {
     margin: 0;
     display: flex;           
     flex-direction: column; 
+    background: url("../images/index-bg.jpg");
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
     
+}
+
+.navbar {
+    list-style: none;
+    overflow: hidden;
+    display: flex;
+    background-color: rgba(255, 255, 255, 0.39);
+    width: 100%;
+    height: 8%;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+    color: #ffffff;
+    position: relative;
+}
+.navbar ul{
+    margin: 10px 10px;
+    display: flex;
+    list-style-type: none;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+.navbar li {
+    padding: 0 15px;
+}
+.navbar a {
+    display: block;
+    color: #ffffff;
+    text-align: center;
+    font-weight: bold;
+    cursor: pointer;
+    height: 98%;
+    width: 60px;
+    padding: 5px;
+    text-decoration: none;
+    font-size: 15px;
+}
+.navbar a:hover {
+    background-color: #ddd;
+    color: black;
+    border-radius: 10px;
+}
+
+.user-avatar {
+    height: 30px;
+    width: 30px;
+    border-radius: 50%;
 }
 
 .button-container {
@@ -25,7 +78,7 @@ body {
     box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
 }
 
-.back-button {
+/* .back-button {
     margin-left: 20px;
     right: 10px;
     padding: 10px 20px;
@@ -40,7 +93,7 @@ body {
     outline: none;
     top: 10px;
     background-image: linear-gradient(45deg, #a485ff 0%, #7dd2ff 100%);
-}
+} */
 
 .logout-button {
 
@@ -67,6 +120,7 @@ body {
     width: 100%;
     height: auto;
     position: relative;
+    /* background-color: #ffffff; */
 
 }
 
@@ -82,6 +136,7 @@ body {
     border-radius: 10px;
     border: 1px solid #ddd;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background-color:rgba(255, 255, 255, 0.7);
 }
 
 .profile-info {
@@ -109,7 +164,7 @@ body {
     margin: 10px 0;
     width: 100%;
     height: 60px;
-    background-color: #7dd2ff;
+    background-color:rgba(255, 255, 255, 0.2);
 }
 
 .profile-info p {
@@ -137,6 +192,7 @@ body {
     background-color: #ffffff;
     border: 1px solid #ddd;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background-color:rgba(255, 255, 255, 0.8);
 }
 
 .post-photo {
@@ -183,4 +239,48 @@ body {
     top: 5px;
     border-radius: 8px;
     background-color: #666666;
+}
+
+.post-actions {
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.3);
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    /* max-height: 15px; */
+    width: 150%;
+    /* max-width: 600px; */
+    margin: 5px auto;
+    border-radius: 8px;
+    /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); */
+}
+
+.action {
+    flex: 1;
+    background: none;
+    border: none;
+    padding: 6px;
+    text-align: center;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.action .material-symbols-outlined {
+    margin-right: 5px; /* Adjust the space between the icon and the text */
+}
+
+.action:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 24px;
+    width: 1px;
+    background-color: #000;
+}
+.action:hover {
+    background-color: #e9e9e9;
 }

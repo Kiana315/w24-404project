@@ -61,6 +61,12 @@ h1, h2 {
     border-radius: 10px;
 }
 
+/* .user-avatar {
+    height: 30px;
+    width: 30px;
+    border-radius: 50%;
+} */
+
 
 .inbox-filters {
     margin-bottom: 20px;

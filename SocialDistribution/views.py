@@ -342,8 +342,52 @@ class FriendsAPIView(generics.ListAPIView):
         return Friend.objects.filter(Q(user1=user) | Q(user2=user)).distinct()
 
 
+class CreateFollowerAPIView(APIView):
+    """ [POST] Create New Follower Relation Case  """
+    def post(self, request, username):
+        new_follower = get_object_or_404(User, username=username)
+        if request.user != new_follower:
+            try:
+                Follower.objects.create(user=request.user, follower=new_follower)
+                return Response(status=status.HTTP_201_CREATED)
+            except IntegrityError:
+                return Response({"detail": "Already followed by this user."}, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            return Response({"detail": "Cannot add yourself as a follower."}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class CreateFollowingAPIView(APIView):
+    """ [POST] Create New Following Relation Case """
+    def post(self, request, username):
+        user_to_follow = get_object_or_404(User, username=username)
+        if request.user != user_to_follow:
+            try:
+                Following.objects.create(user=request.user, following=user_to_follow)
+                return Response(status=status.HTTP_201_CREATED)
+            except IntegrityError:
+                return Response({"detail": "Already following."}, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            return Response({"detail": "Cannot follow yourself."}, status=status.HTTP_400_BAD_REQUEST)
+
+
+"""
+class CreateFriendAPIView(APIView):
+    def post(self, request, username):
+        user_to_befriend = get_object_or_404(User, username=username)
+        if request.user != user_to_befriend:
+            try:
+                Friend.create_friendship(request.user, user_to_befriend)
+                return Response(status=status.HTTP_201_CREATED)
+            except ValidationError as e:
+                return Response({"detail": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            return Response({"detail": "Cannot become friends with yourself."}, status=status.HTTP_400_BAD_REQUEST)
+"""
+
+
 @api_view(['POST'])
-def create_friendship_view(request, user1_id, user2_id):
+def createFriendshipAPIView(request, user1_id, user2_id):
+    """ [POST] Post New Friend Relation Case """
     user1 = get_object_or_404(User, pk=user1_id)
     user2 = get_object_or_404(User, pk=user2_id)
     if user1_id == user2_id:
@@ -355,18 +399,3 @@ def create_friendship_view(request, user1_id, user2_id):
         return JsonResponse({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
     except Exception as e:
         return JsonResponse({'error': 'An unexpected error occurred.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-
-"""
-def follow_user(request, username):
-    try:
-        user_to_follow = User.objects.get(username=username)
-        if user_to_follow != request.user and not Follow.objects.filter(follower=request.user,
-                                                                        following=user_to_follow).exists():
-            Follow.objects.create(follower=request.user, following=user_to_follow)
-            return JsonResponse({"status": "success"}, status=200)
-        else:
-            return JsonResponse({"error": "Cannot follow"}, status=400)
-    except User.DoesNotExist:
-        return JsonResponse({"error": "User not found"}, status=404)
-        """

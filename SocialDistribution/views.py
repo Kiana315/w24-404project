@@ -284,27 +284,6 @@ class UserAPIView(generics.RetrieveAPIView):
         return obj
 
 
-class FollowerAPIView(generics.ListAPIView):
-    """ [GET] Get The FollowerList For A Spec-username """
-    serializer_class = FollowerSerializer
-
-    def get_queryset(self):
-        username = self.kwargs['username']
-        followers = get_list_or_404(Follow, following__username=username)
-        return followers
-
-
-class FriendAPIView(generics.ListAPIView):
-    """ [GET] Get The FriendList For A Spec-username """
-
-    def get_queryset(self):
-        username = self.kwargs['username']
-        friends = Friend.objects.filter(Q(user1__username=username) | Q(user2__username=username))
-        return friends
-
-    serializer_class = FriendSerializer
-
-
 def search_user(request):
     query = request.GET.get('q', '')  # Get search query parameters
     try:
@@ -316,34 +295,69 @@ def search_user(request):
         return JsonResponse({'error': 'User not found'}, status=404)
 
 
-class FollowersListView(generics.ListAPIView):
+"""
+---------------------------------- Friend System Settings ----------------------------------
+"""
+
+
+class FollowerView(TemplateView):
+    """ * [GET] Get The FollowerList Page """
+    template_name = "followersList.html"
+
+
+class FollowingView(TemplateView):
+    """ * [GET] Get The FollowingList Page """
+    template_name = "followingList.html"
+
+
+class FriendView(TemplateView):
+    """ * [GET] Get The FollowingList Page """
+    template_name = "friendList.html"
+
+
+class FollowersAPIView(generics.ListAPIView):
     """ [GET] Get The FollowerList For A Spec-username """
     serializer_class = FollowerSerializer
-
     def get_queryset(self):
         username = self.kwargs['username']
         user = User.objects.get(username=username)
         return user.followers.all()
 
-    def list(self, request, *args, **kwargs):
-        response = super().list(request, *args, **kwargs)
-        return render(request, 'followersList.html', {'followers': response.data})
 
-
-class FollowingListView(generics.ListAPIView):
+class FollowingAPIView(generics.ListAPIView):
     """ [GET] Get The FollowingList For A Spec-username """
-    serializer_class = UserSerializer  # todo incorrect, currently no following model set
-
+    serializer_class = FollowingSerializer
     def get_queryset(self):
         username = self.kwargs['username']
         user = User.objects.get(username=username)
         return user.following.all()
 
-    def list(self, request, *args, **kwargs):
-        response = super().list(request, *args, **kwargs)
-        return render(request, 'followingList.html', {'followers': response.data})
+
+class FriendsAPIView(generics.ListAPIView):
+    """ [GET] Get The FriendsList For A Spec-username """
+    serializer_class = FriendSerializer
+    def get_queryset(self):
+        username = self.kwargs['username']
+        user = User.objects.get(username=username)
+        return Friend.objects.filter(Q(user1=user) | Q(user2=user)).distinct()
 
 
+@api_view(['POST'])
+def create_friendship_view(request, user1_id, user2_id):
+    user1 = get_object_or_404(User, pk=user1_id)
+    user2 = get_object_or_404(User, pk=user2_id)
+    if user1_id == user2_id:
+        return JsonResponse({'error': 'A user cannot befriend themselves.'}, status=status.HTTP_400_BAD_REQUEST)
+    try:
+        Friend.create_friendship(user1, user2)
+        return JsonResponse({'message': 'Friendship created successfully.'}, status=status.HTTP_201_CREATED)
+    except ValidationError as e:
+        return JsonResponse({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+    except Exception as e:
+        return JsonResponse({'error': 'An unexpected error occurred.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+"""
 def follow_user(request, username):
     try:
         user_to_follow = User.objects.get(username=username)
@@ -355,3 +369,4 @@ def follow_user(request, username):
             return JsonResponse({"error": "Cannot follow"}, status=400)
     except User.DoesNotExist:
         return JsonResponse({"error": "User not found"}, status=404)
+        """

@@ -18,6 +18,7 @@ from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
+from rest_framework.exceptions import PermissionDenied
 
 # Project Dependencies:
 from .serializers import *
@@ -173,15 +174,43 @@ class PostOperationAPIView(generics.RetrieveUpdateDestroyAPIView):
 class CommentAPIView(generics.ListCreateAPIView):
     """ [GET/POST] Get The CommentList For A Spec-post; Create A Comment For A Spec-post """
     serializer_class = CommentSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
     def get_queryset(self):
-        return get_list_or_404(Comment, post_id=self.kwargs['post_id'])
+        post_id = self.kwargs['post_id']
+        post = get_object_or_404(Post, pk=post_id)
+        user = self.request.user
+
+        # If the post is friends-only, filter comments
+        if post.visibility == 'FRIENDS':
+            friends = User.objects.filter(
+                Q(friends_set1__user2=post.author) | 
+                Q(friends_set2__user1=post.author)
+            ).distinct()
+            
+            # Check if the user is a friend or the author of the post
+            if user in friends or user == post.author:
+                return Comment.objects.filter(post=post)
+            else:
+                # If not a friend or the author, the user should not see any comments
+                return Comment.objects.none()
+
+        # If the post is public, return all comments
+        return Comment.objects.filter(post=post)
+
     def perform_create(self, serializer):
-        post = get_object_or_404(Post, pk=self.kwargs['post_id'])
-        serializer.save(post=post, commenter=self.request.user)
+        post_id = self.kwargs['post_id']
+        post = get_object_or_404(Post, pk=post_id)
+        user = self.request.user
+        if post.visibility == 'FRIENDS' and not post.author.is_friend(user) and user != post.author:
+            raise PermissionDenied('You do not have permission to comment on this post.')
+        serializer.save(post=post, commenter=user)
+
     def get_serializer_context(self):
         context = super().get_serializer_context()
         context.update({'request': self.request})
         return context
+
 
 
 class LikeAPIView(generics.ListCreateAPIView):

@@ -18,7 +18,7 @@
     <br>
     <h1 class="signup-title">- Welcome Aboard - </h1>
     <h2 class="signup-comment"> Please sign up to join our community!! </h2>
-    <form action="{% url 'signup' %}" method="post">
+    <form action="{% url 'PAGE_Signup' %}" method="post">
         {% csrf_token %}
         <input type="text" class="signup-input" name="username" placeholder="Username" required autofocus>
         <input type="email" class="signup-input" name="email" placeholder="Email Address" required>

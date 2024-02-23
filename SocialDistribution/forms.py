@@ -20,3 +20,16 @@ class UpdateBioForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ['bio']
+
+
+class UpdateUserNameForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['username']
+
+    def clean_your_field(self):
+        username = self.cleaned_data['username']
+        if User.objects.filter(username=username).exists():
+            raise forms.ValidationError("username already taken.")
+
+        return username

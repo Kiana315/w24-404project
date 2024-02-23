@@ -1,21 +1,23 @@
 document.addEventListener('DOMContentLoaded', () => {
+    console.log("TEST")
     const username = _getURLUsername()
-    fetch(`profile/${username}/follower/`)
-    .then(response => {
-        if (response.status == 200) {
-            return response.json();
-        } else {
-            alert("Something went wrong when fetching followers: " + response.status);
-        }
-    })
-    .then(data => {
-        var followersList = document.getElementById("followers-list");
-        followersList.innerHTML = "";
-
-        for (follower in data) {
-            followersList.innerHTML += "<li class='person'><img class='person-photo' src='person1.jpg' alt='Profile Picture'></img><p class='person-name'>" + follower.username + "</p></li>";
-        }
-    })
+    fetch(`/api/user/${username}/followers/`)
+        .then(response => {
+            if (response.status === 200) {
+                console.log(response.json())  // todo - current the data is empty OR the resolving method doesn't work correctly
+                return response.json();
+            } else {
+                console.log("Something went wrong when fetching followers: " + response.status);
+            }
+        })
+        .then(data => {
+            let followersList = document.getElementById("followers-list");
+            for (let follower in data) {
+                followersList.innerHTML += "<li class='person'>" +
+                    "<img class='person-photo' src='person1.jpg' alt='Profile Picture'>" +
+                    "<p class='person-name'>" + follower.follower.username + "</p></li>";
+            }
+        })
 });
 
 function _getURLUsername() {

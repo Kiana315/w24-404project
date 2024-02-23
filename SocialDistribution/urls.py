@@ -13,39 +13,48 @@ router = DefaultRouter()
 router.register(r'posts', NPsAPIView)
 
 urlpatterns = [
-    # Page View Addresses
-    path("", IndexView.as_view(), name="home"),
-    path('admin/', admin.site.urls, name="admin"),
-    path("login/", LoginView.as_view(), name="login"),
-    path('logout/', LogoutView.as_view(), name='logout'),
-    path("signup/", signupView, name="signup"),
-    path("friendPosts/<str:username>/", FriendPostsView.as_view(), name="friendPosts"),
-    path("profile/<str:username>/", profileView, name="profile"),
-    path("profile/<str:username>/upload-avatar/", upload_avatar, name="upload-avatar"),
-    path("profile/<str:username>/update-bio/", update_bio, name="update-bio"),
-    path("inbox/<str:username>/", InboxView.as_view(), name="inbox"),
-    # path("profile/<str:username>/followers", FollowersListView.as_view, name="followers"),
-    # path("profile/<str:username>/following", FollowingListView.as_view, name="following"),
-    #path("posts/<str:username>", postView, name="post"),
-    path("posts/<int:post_id>/", PostDetailView.as_view(), name="post_detail"),
-    path('search/', views.search_user, name='search_user'),
-   
+    # Basic PAGE View Settings:
+    path("", IndexView.as_view(), name="PAGE_Home"),
+    path('admin/', admin.site.urls, name="PAGE_Admin"),
+    path("login/", LoginView.as_view(), name="PAGE_Login"),
+    path('logout/', LogoutView.as_view(), name='PAGE_Logout'),
+    path("signup/", signupView, name="PAGE_Signup"),
+    path("friendPosts/<str:username>/", FriendPostsView.as_view(), name="PAGE_FriendPosts"),
+    path("profile/<str:username>/", profileView, name="PAGE_Profile"),
+    path("inbox/<str:username>/", InboxView.as_view(), name="PAGE_Inbox"),
+    path("posts/<int:post_id>/", PostDetailView.as_view(), name="PAGE_postDetail"),
 
-    
-    # API End-points Addresses
-    path("api/pps/", PPsAPIView.as_view(), name="API_PPs"),                                         # GET PublicPostsList       --> Test Success
-    path("api/fps/<str:username>/", FPsAPIView.as_view(), name="API_FPs"),                          # GET FriendPostsList       --> Test Success
-    path("api/nps/", NPsAPIView.as_view(), name="API_NPs"),                                         # POST NewPosts             --> Test Success
+    # Identity API System:
+    path("api/user/<str:username>/", UserAPIView.as_view(), name="API_USER"),                                       # GET Self User/Profile Info        --> Test Success
+    path("api/user/<str:username>/<str:username>/", UserAPIView.as_view(), name="API_USER_TWO"),                    # GET Other's User/Profile Info     --> Test Success
+    path("profile/<str:username>/upload-avatar/", upload_avatar, name="API_UploadAvatar"),
+    path("profile/<str:username>/update-bio/", update_bio, name="API_UpdateBio"),
+    path("profile/<str:username>/update-username/", update_username, name="API_UpdateUsername"),
 
-    path("api/msgs/<str:username>/", MsgsAPIView.as_view(), name="API_MSGs"),                       # GET InboxMessages         --> ?
-    path("api/user/<str:username>/", UserAPIView.as_view(), name="API_USER"),                       # GET User/Profile Info     --> Test Success
-    path("api/user/<str:username>/followers/", FollowerAPIView.as_view(), name="API_USERFrd"),       # GET User FollowerList     --> Test Success
-    path("api/user/<str:username>/friends/", FriendAPIView.as_view(), name="API_USERFow"),          # GET User FriendList       --> Test Success
-    path('api/posts/<int:post_id>/', PostOperationAPIView.as_view(), name='API_PDetail'),                # GET/PUT/DELETE PostsOperations
-    path("api/posts/<int:post_id>/comments/", CommentAPIView.as_view(), name='API_PComms'),              # GET/POST CommentList/NewComment  --> Test Success
-    path("api/posts/<int:post_id>/likes/", LikeAPIView.as_view(), name='API_PLikes'),                    # GET/POST LikeList/NewLike        --> Test Success
-    path('profile/<str:username>/followers/', FollowersListView.as_view(), name='followers-list'),
-    path('profile/<str:username>/following/', FollowingListView.as_view(), name='following-list'),
+    # Friend API System:
+    path('search/', views.search_user, name='PAGE_SearchUser'),
+    path('profile/<str:username>/followers/', FollowerView.as_view(), name='PAGE_FollowersList'),
+    path('profile/<str:username>/following/', FollowingView.as_view(), name='PAGE_FollowingList'),
+    path('profile/<str:username>/friends/', FriendView.as_view(), name='PAGE_FriendList'),
+
+    path("api/user/<str:username>/followers/", FollowersAPIView.as_view(), name="API_GETFollowers"),                # GET User FollowerList     --> Test Success
+    path("api/user/<str:username>/following/", FollowingAPIView.as_view(), name="API_GETFollowing"),                # GET User FollowerList     --> Test Success
+    path("api/user/<str:username>/friends/", FriendsAPIView.as_view(), name="API_GETFriends"),                      # GET User FriendList       --> Test Success
+
+    path('api/user/<int:user1_id>/followerOf/<int:user2_id>/', CreateFollowerAPIView.as_view(), name='API_POSTFollowerOf'),   # POST Create FriendList
+    path('api/user/<int:user1_id>/following/<int:user2_id>/', CreateFollowingAPIView.as_view(), name='API_POSTFollowing'),   # POST Create FriendList
+    path('api/user/<int:user1_id>/friend/<int:user2_id>/', createFriendshipAPIView, name='API_POSTFriend'),      # POST Create FriendList    --> ??
+
+    # Post API System:
+    path("api/pps/", PPsAPIView.as_view(), name="API_PPs"),                                                     # GET PublicPostsList       --> Test Success
+    path("api/fps/<str:username>/", FPsAPIView.as_view(), name="API_FPs"),                                      # GET FriendPostsList       --> Test Success
+    path("api/nps/", NPsAPIView.as_view(), name="API_NPs"),                                                     # POST NewPosts             --> Test Success
+    path('api/posts/<int:post_id>/', PostOperationAPIView.as_view(), name='API_PDetail'),                       # GET/PUT/DELETE PostsOperations
+    path("api/posts/<int:post_id>/comments/", CommentAPIView.as_view(), name='API_PComms'),                     # GET/POST CommentList/NewComment  --> Test Success
+    path("api/posts/<int:post_id>/likes/", LikeAPIView.as_view(), name='API_PLikes'),                           # GET/POST LikeList/NewLike        --> Test Success
+
+    # Inbox API System:
+    path("api/msgs/<str:username>/", MsgsAPIView.as_view(), name="API_MSGs"),                                   # GET InboxMessages         --> ?
 ]
 
 

@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     const username = _getURLUsername();
-    fetch(`/api/user/${username}/following/`)
+    fetch(`/api/user/${username}/friends/`)
         .then(response => {
             if (response.status === 200) {
                 return response.json();
@@ -9,9 +9,9 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         })
         .then(data => {
-            let followingList = document.getElementById("following-list");
-            data.forEach(following => {
-                followingList.innerHTML += "<li class='person'><img class='person-photo' src='person1.jpg' alt='Profile Picture'><p class='person-name'>" + following.username + "</p></li>";
+            let followingList = document.getElementById("friends-list");
+            data.forEach(friend => {
+                followingList.innerHTML += "<li class='person'><img class='person-photo' src='person1.jpg' alt='Profile Picture'><p class='person-name'>" + friend.username + "</p></li>";
             });
         });
 });

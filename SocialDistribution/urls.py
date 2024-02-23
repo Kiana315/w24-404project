@@ -29,9 +29,9 @@ urlpatterns = [
     #path("posts/<str:username>", postView, name="post"),
     path("posts/<int:post_id>/", PostDetailView.as_view(), name="post_detail"),
     path('search/', views.search_user, name='search_user'),
-   
 
-    
+
+
     # API End-points Addresses
     path("api/pps/", PPsAPIView.as_view(), name="API_PPs"),                                         # GET PublicPostsList       --> Test Success
     path("api/fps/<str:username>/", FPsAPIView.as_view(), name="API_FPs"),                          # GET FriendPostsList       --> Test Success
@@ -46,6 +46,7 @@ urlpatterns = [
     path("api/posts/<int:post_id>/likes/", LikeAPIView.as_view(), name='API_PLikes'),                    # GET/POST LikeList/NewLike        --> Test Success
     path('profile/<str:username>/followers/', FollowersListView.as_view(), name='followers-list'),
     path('profile/<str:username>/following/', FollowingListView.as_view(), name='following-list'),
+    #path('profile/<str:username>/friends/', FriendsListView.as_view(), name='friends-list'),
 ]
 
 

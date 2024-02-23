@@ -280,7 +280,6 @@ class FriendAPIView(generics.ListAPIView):
         friends = Friend.objects.filter(Q(user1__username=username) | Q(user2__username=username))
         return friends
     serializer_class = FriendSerializer
-
 def search_user(request):
     query = request.GET.get('q', '')  # Get search query parameters
     try:
@@ -293,21 +292,21 @@ def search_user(request):
     
 
 class FollowersListView(generics.ListAPIView):
-    serializer_class = UserSerializer
-
-
+    """ [GET] Get The FollowerList For A Spec-username """
+    serializer_class = FollowerSerializer
     def get_queryset(self):
         username = self.kwargs['username']
         user = User.objects.get(username=username)
-        return user.followers.all()  
-    
+        return user.followers.all()
+
     def list(self, request, *args, **kwargs):
         response = super().list(request, *args, **kwargs)
         return render(request, 'followersList.html', {'followers': response.data})
 
-class FollowingListView(generics.ListAPIView):
-    serializer_class = UserSerializer
 
+class FollowingListView(generics.ListAPIView):
+    """ [GET] Get The FollowingList For A Spec-username """
+    serializer_class = UserSerializer   # todo incorrect, currently no following model set
     def get_queryset(self):
         username = self.kwargs['username']
         user = User.objects.get(username=username)
@@ -315,7 +314,8 @@ class FollowingListView(generics.ListAPIView):
     def list(self, request, *args, **kwargs):
         response = super().list(request, *args, **kwargs)
         return render(request, 'followingList.html', {'followers': response.data})
-    
+
+
 def follow_user(request, username):
     try:
         user_to_follow = User.objects.get(username=username)

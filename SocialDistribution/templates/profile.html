@@ -108,8 +108,9 @@
                     onchange="this.form.submit()"
             />
         </form>
-        <div class="profile-info" style="text-align: center">
-            <div class="username" id="username">{{ user.username }}</div>
+        <div id="profile-info" class="profile-info" style="text-align: center">
+            <div class="username" id="username" onclick="editUserName()">{{ user.username }}</div>
+            <input type="text" id="edit-username" onblur="handleUserNameBlur()" style="display: none">
             <div class="email" id="email">Email: {{ user.email }}</div>
             <form action="update-bio/" method="post">
                 {% csrf_token %}
@@ -194,6 +195,7 @@
 <script src="../../static/js/posting.js"></script>
 <script src="../../static/js/post_detail.js"></script>
 <script src="../../static/js/follow.js"></script>
+<script src="../../static/js/profile.js"></script>
 
 </body>
 </html>

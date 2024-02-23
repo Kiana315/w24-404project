@@ -10,7 +10,6 @@ from django.views.generic import TemplateView, DetailView
 from django.db.models import Q
 from django.http import JsonResponse
 
-
 # REST Pattern:
 from rest_framework import generics, status
 from rest_framework.exceptions import ValidationError
@@ -21,13 +20,12 @@ from rest_framework.decorators import api_view
 
 # Project Dependencies:
 from .serializers import *
-from .forms import SignUpForm, AvatarUploadForm, UpdateBioForm
+from .forms import SignUpForm, AvatarUploadForm, UpdateBioForm, UpdateUserNameForm
 from .models import Post
 from .permissions import IsAuthorOrReadOnly
 from .models import *
 
 User = get_user_model()
-
 
 """
 ---------------------------------- Signup/Login Settings ----------------------------------
@@ -36,7 +34,7 @@ User = get_user_model()
 
 class LoginView(LoginView):
     template_name = 'login.html'
-    
+
 
 def signupView(request):
     if request.method == 'POST':
@@ -77,11 +75,13 @@ class PostDetailView(DetailView):
     model = Post
     template_name = 'post_detail.html'
     context_object_name = 'post'
+
     def get_object(self):
         post_id = self.kwargs.get('post_id')
-        return get_object_or_404(Post, pk=post_id) 
+        return get_object_or_404(Post, pk=post_id)
 
-    # def get_context_data(self, **kwargs):
+        # def get_context_data(self, **kwargs):
+
     #     context = super().get_context_data(**kwargs)
     #     post = self.get_object()
     #     context['likes_count'] = Like.objects.filter(post=post).count()
@@ -95,13 +95,14 @@ class PostDetailView(DetailView):
                 'title': post.title,
                 'content': post.content,
                 'image_url': post.image.url if post.image else '',
-                'likes_count': Like.objects.filter(post=post).count(), 
+                'likes_count': Like.objects.filter(post=post).count(),
                 'comments': list(post.get_comments().values('user__username', 'text')),
             }
             return JsonResponse(data)
         else:
             context['likes_count'] = Like.objects.filter(post=self.get_object()).count()
             return super().render_to_response(context, **response_kwargs)
+
 
 """
 def postView(request, username):
@@ -122,6 +123,7 @@ class FriendPostsView(TemplateView):
 class PPsAPIView(generics.ListAPIView):
     """ [GET] Get The Public Posts """
     serializer_class = PostSerializer
+
     def get_queryset(self):
         # Get all public posts，sorted by publication time in descending order
         return Post.objects.filter(visibility='PUBLIC').order_by('-date_posted')
@@ -146,6 +148,7 @@ class NPsAPIView(generics.CreateAPIView):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
     permission_classes = [IsAuthorOrReadOnly]
+
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)  # set current user as author
 
@@ -154,7 +157,8 @@ class NPsAPIView(generics.CreateAPIView):
 ---------------------------------- Posts Update/Interaction Settings ----------------------------------
 """
 
-#class PostDetailAPIView(generics.CreateAPIView):
+
+# class PostDetailAPIView(generics.CreateAPIView):
 #   """ * [GET] Get The Post Detail """
 #   template_name = "post_detail.html"
 
@@ -173,11 +177,14 @@ class PostOperationAPIView(generics.RetrieveUpdateDestroyAPIView):
 class CommentAPIView(generics.ListCreateAPIView):
     """ [GET/POST] Get The CommentList For A Spec-post; Create A Comment For A Spec-post """
     serializer_class = CommentSerializer
+
     def get_queryset(self):
         return get_list_or_404(Comment, post_id=self.kwargs['post_id'])
+
     def perform_create(self, serializer):
         post = get_object_or_404(Post, pk=self.kwargs['post_id'])
         serializer.save(post=post, commenter=self.request.user)
+
     def get_serializer_context(self):
         context = super().get_serializer_context()
         context.update({'request': self.request})
@@ -187,8 +194,10 @@ class CommentAPIView(generics.ListCreateAPIView):
 class LikeAPIView(generics.ListCreateAPIView):
     """ [GET/POST] Get The LikeList For A Spec-post; Create A Like For A Spec-post """
     serializer_class = LikeSerializer
+
     def get_queryset(self):
         return get_list_or_404(Like, post_id=self.kwargs['post_id'])
+
     def perform_create(self, serializer):
         post = get_object_or_404(Post, pk=self.kwargs['post_id'])
         user = self.request.user
@@ -201,6 +210,7 @@ class LikeAPIView(generics.ListCreateAPIView):
             'likes_count': likes_count,
         }
         return Response(response_data, status=status.HTTP_201_CREATED)
+
 
 """
 ---------------------------------- Message Inbox Settings ----------------------------------
@@ -241,6 +251,17 @@ def update_bio(request, username):
     return redirect(profileView, username=username)
 
 
+def update_username(request, username):
+    if request.method == 'POST':
+        form = UpdateUserNameForm(request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+        else:
+            return JsonResponse({'error': form.errors}, safe=False)
+
+        return JsonResponse({'error': ''}, safe=False)
+
+
 def profileView(request, username):
     user = get_object_or_404(User, username=username)
     context = {
@@ -250,12 +271,12 @@ def profileView(request, username):
     return render(request, 'profile.html', context)
 
 
-
 class UserAPIView(generics.RetrieveAPIView):
     """ [GET] Get The Profile Info """
     queryset = User.objects.all()
     serializer_class = UserSerializer
     lookup_field = 'username'
+
     def get_object(self):
         queryset = self.get_queryset()
         username = self.kwargs.get('username')
@@ -271,15 +292,19 @@ class FollowerAPIView(generics.ListAPIView):
         username = self.kwargs['username']
         followers = get_list_or_404(Follow, following__username=username)
         return followers
-    
+
 
 class FriendAPIView(generics.ListAPIView):
     """ [GET] Get The FriendList For A Spec-username """
+
     def get_queryset(self):
         username = self.kwargs['username']
         friends = Friend.objects.filter(Q(user1__username=username) | Q(user2__username=username))
         return friends
+
     serializer_class = FriendSerializer
+
+
 def search_user(request):
     query = request.GET.get('q', '')  # Get search query parameters
     try:
@@ -289,11 +314,12 @@ def search_user(request):
         return JsonResponse({'url': f'/profile/{user.username}/'})
     except User.DoesNotExist:
         return JsonResponse({'error': 'User not found'}, status=404)
-    
+
 
 class FollowersListView(generics.ListAPIView):
     """ [GET] Get The FollowerList For A Spec-username """
     serializer_class = FollowerSerializer
+
     def get_queryset(self):
         username = self.kwargs['username']
         user = User.objects.get(username=username)
@@ -306,11 +332,13 @@ class FollowersListView(generics.ListAPIView):
 
 class FollowingListView(generics.ListAPIView):
     """ [GET] Get The FollowingList For A Spec-username """
-    serializer_class = UserSerializer   # todo incorrect, currently no following model set
+    serializer_class = UserSerializer  # todo incorrect, currently no following model set
+
     def get_queryset(self):
         username = self.kwargs['username']
         user = User.objects.get(username=username)
-        return user.following.all()  
+        return user.following.all()
+
     def list(self, request, *args, **kwargs):
         response = super().list(request, *args, **kwargs)
         return render(request, 'followingList.html', {'followers': response.data})
@@ -319,7 +347,8 @@ class FollowingListView(generics.ListAPIView):
 def follow_user(request, username):
     try:
         user_to_follow = User.objects.get(username=username)
-        if user_to_follow != request.user and not Follow.objects.filter(follower=request.user, following=user_to_follow).exists():
+        if user_to_follow != request.user and not Follow.objects.filter(follower=request.user,
+                                                                        following=user_to_follow).exists():
             Follow.objects.create(follower=request.user, following=user_to_follow)
             return JsonResponse({"status": "success"}, status=200)
         else:

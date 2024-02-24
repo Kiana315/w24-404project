@@ -36,17 +36,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 const interactionHTML = `
                     <div class="interact-container">
-                        <button id="share-button" type="button">
+                        <button type="button" data-post-id="${post.id}">
                             <ion-icon size="small" name="share-outline" style="margin-right: 8px;"></ion-icon>
                             Share
                         </button>
-                        <button id="comment-button" type="button">
+                        <button type="button" data-post-id="${post.id}">
                             <ion-icon size="small" name="chatbox-ellipses-outline" style="margin-right: 8px;"></ion-icon>
                             Comment
                         </button>
-                        <button id="like-button" type="button"> 
+                        <button  type="button" data-post-id="${post.id}"> 
                             <ion-icon size="small" name="heart-outline" style="margin-right: 8px;"></ion-icon>
-                            <span id="like-count">{{ likes_count }}</span>
+                            Like
                         </button>
                     </div>
                 `;
@@ -60,13 +60,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Event listeners for like and comment buttons
                 const likeButton = postElement.querySelector('.like-btn');
                 const commentButton = postElement.querySelector('.comment-btn');
-                const commentBox = document.createElement('div');
-                commentBox.className = 'comment-box';
-                commentBox.style.display = 'none';
-                commentBox.innerHTML = `
-                    <textarea class="comment-text" placeholder="Add a comment..."></textarea>
-                    <button type="button" class="submit-comment">Post Comment</button>
-                `;
+                // const commentBox = document.createElement('div');
+                // commentBox.className = 'comment-box';
+                // commentBox.style.display = 'none';
+                // commentBox.innerHTML = `
+                //     <textarea class="comment-text" placeholder="Add a comment..."></textarea>
+                //     <button type="button" class="submit-comment">Post Comment</button>
+                // `;
 
                 postElement.appendChild(commentBox);
 

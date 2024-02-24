@@ -167,6 +167,42 @@ function deletePost() {
     }
 }
 
+document.addEventListener('DOMContentLoaded', function() {
+    // 获取弹出框和关闭按钮
+    var modal = document.getElementById("editModal");
+    var closeButton = document.querySelector(".close");
+
+    // 获取 "Edit" 按钮并添加点击事件监听器
+    var editButton = document.getElementById("edit-button");
+    editButton.addEventListener('click', function() {
+        modal.style.display = "block";
+        // 填充表单数据
+        // var currentData = ...; 获取当前需要编辑的数据
+        // document.getElementById("editContent").value = currentData;
+    });
+
+    // 点击关闭按钮时隐藏弹出框
+    closeButton.addEventListener('click', function() {
+        modal.style.display = "none";
+    });
+
+    // 提交表单的逻辑
+    var form = document.getElementById("editForm");
+    form.addEventListener('submit', function(event) {
+        event.preventDefault();
+        // 提交数据到服务器
+        // var updatedData = document.getElementById("editContent").value;
+        // ... 发送 AJAX 请求等操作
+    });
+
+    // 点击弹出框外部时也隐藏弹出框
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    };
+});
+
 function getCookie(name) {
     let cookieValue = null;
     if (document.cookie && document.cookie !== '') {

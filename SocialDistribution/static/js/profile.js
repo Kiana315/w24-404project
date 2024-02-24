@@ -72,14 +72,30 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(response => {
                 if (response.ok) {
                     followButton.style.display = 'none';
-                    alert("Follow Success!");
                 } else {
                     alert("Already Followed...");
                 }
             })
             .catch(error => console.error('Error:', error));
+
+
+            fetch(`/api/user/${targetUsername}/following/${selfUsername}/`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': getCookie('csrftoken'),
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert("Follow Success!");
+                }
+            })
+            .catch(error => console.error('Error:', error));
         });
     }
+
+
 });
 
 function _getURLTargetUsername() {

@@ -25,7 +25,7 @@ urlpatterns = [
     path("posts/<int:post_id>/", PostDetailView.as_view(), name="PAGE_postDetail"),
 
     # Identity API System:
-    path("api/user/<str:username>/", UserAPIView.as_view(), name="API_USER"),                                       # GET Self User/Profile Info        --> Test Success
+    path("api/user/<str:username>/", UserAPIView.as_view(), name="API_USER"),                                   # GET Self User/Profile Info        --> Test Success
     path("api/user/<str:user1_id>/<str:user2_id>/", UserAPIView.as_view(), name="API_USER_TWO"),                # GET Other's User/Profile Info     --> Test Success
     path("profile/<str:username>/upload-avatar/", upload_avatar, name="API_UploadAvatar"),
     path("profile/<str:username>/update-bio/", update_bio, name="API_UpdateBio"),

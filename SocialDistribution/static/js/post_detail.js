@@ -161,7 +161,7 @@ function deletePost() {
             }
         }).then(response => {
             if (response.status === 204) {
-                window.history.back();  // 或者重定向到其他页面
+                window.location.href = '/';
             } else {
                 alert("Something went wrong.");
             }

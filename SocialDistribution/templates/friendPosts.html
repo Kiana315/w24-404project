@@ -49,8 +49,10 @@
     <!-- Posts will be dynamically loaded here via JavaScript -->
 </div>
 
+{% if user.is_authenticated %}
+    <button id="floating-button">+</button>
+{% endif %}
 
-<button id="floating-button">+</button>
 <div id="newPostModal" class="modal">
     <div class="modal-content">
         <span class="close">&times;</span>

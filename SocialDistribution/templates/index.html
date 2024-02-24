@@ -29,20 +29,21 @@
     </nav>
     
     
-    
-    <div class="post-container" id ="post-container">
-        <div class="search-bar">
-            <ion-icon name="search-outline" style="font-size: 26px; margin: 5px; color: rgb(97, 97, 97);"></ion-icon>
-            <form id="search-form" action="/search" method="get">
-                <input type="text" name="q" placeholder="Search by username">
-                <!-- <button type="submit">ugly Search button</button>    -->
-            </form>
+    {% if user.is_authenticated %}
+        <div class="post-container" id ="post-container">
+            <div class="search-bar">
+                <ion-icon name="search-outline" style="font-size: 26px; margin: 5px; color: rgb(97, 97, 97);"></ion-icon>
+                <form id="search-form" action="/search" method="get">
+                    <input type="text" name="q" placeholder="Search by username">
+                    <!-- <button type="submit">ugly Search button</button>    -->
+                </form>
+            </div>
+            <!-- Posts will be dynamically loaded here via JavaScript -->
         </div>
-        <!-- Posts will be dynamically loaded here via JavaScript -->
-    </div>
 
-    
-    <button id="floating-button">+</button>
+
+        <button id="floating-button">+</button>
+    {% endif %}
     
     
     <div id="newPostModal" class="modal">

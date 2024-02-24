@@ -20,8 +20,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    fetchComments();
-
     if (likeButton) {
         likeButton.addEventListener('click', function() {
             const likeCount = parseInt(likeCountElement.textContent, 10);

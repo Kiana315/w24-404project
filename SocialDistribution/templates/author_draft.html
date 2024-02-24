@@ -86,7 +86,7 @@
                         <img src="{{ post.image.url }}" alt="" width="120" height="120"/>
                     {% endif %}
                     <div class="post-info">
-                        <a href="{% url 'post_detail' post_id=post.id %}" id="none"
+                        <a href="{% url 'PAGE_postDetail' post_id=post.id %}" id="none"
                         ><h3 class="post-title">{{ post.title }}</h3>
                         </a>
                         <p>{{ post.content |slice:":30" }}</p>

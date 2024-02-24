@@ -18,6 +18,9 @@ body {
     background-position: center center;
     background-repeat: no-repeat;
     background-attachment: fixed;
+    position: relative;
+    display: flex;           
+    flex-direction: column; 
 }
 
 .navbar {
@@ -118,7 +121,6 @@ body {
     position: relative;
     margin-top: 20px;
     width: 100%;
-    height: auto;
     align-items: center;
     
 }
@@ -184,6 +186,7 @@ body {
     justify-content: space-between; 
     width: 100%; 
 }
+
 .interact-container button {
     height: 36px;
     flex: 1;  
@@ -202,9 +205,7 @@ a {
     color: black;
 }
 
-/* .like-btn,
-.comment-btn,
-.submit-comment, 
+ 
 .post-button {
     background-color: var(--btn-bg-color);
     color: white;
@@ -215,27 +216,9 @@ a {
     margin-right: 30px;
     margin-top: 10px;
     
-} */
-
-/* .like-btn:hover,
-.comment-btn:hover,
-.submit-comment:hover {
-    background-color: var(--btn-hover-color);
-} */
-
-/* .comment-box {
-    width: 100%;
-    margin-top: 10px;
 }
 
-.comment-text {
-    width: calc(100% - 20px);
-    padding: 10px;
-    border: 1px solid #e1e1e1;
-    border-radius: 5px;
-    height: 100px;
-    margin-bottom: 5px;
-} */
+
 
 /* Floating Action Button */
 #floating-button {

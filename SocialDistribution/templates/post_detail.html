@@ -14,11 +14,11 @@
                 <ion-icon size="small" name="chevron-back-outline" style="margin-right: 8px;"></ion-icon>
                 Back</button>
             <button id="more-options-button" class="more-options-button">
-                <ion-icon size="large" name="ellipsis-horizontal"></ion-icon>
+                <ion-icon size="large" name="ellipsis-horizontal" style="cursor: pointer;"></ion-icon>
                 </button>
         </div>
         
-        <div id="options-container" class="options-container" style="display: none; cursor: pointer;">
+        <div id="options-container" class="options-container" style="display: none;">
             <button class="option-button">
                 <ion-icon size="small" name="create-outline" style="margin-right: 8px;"></ion-icon>
                 Edit</button>
@@ -27,6 +27,16 @@
                 Delete</button>
             <!-- Add more buttons as needed -->
         </div>
+        <div id="edit-post-modal" class="modal">
+            <div class="modal-content">
+                <span class="close-button">&times;</span>
+                <form id="edit-post-form">
+                    <textarea id="edit-post-content"></textarea>
+                    <button type="submit">Update Post</button>
+                </form>
+            </div>
+        </div>
+        
 
         <div class="user-info">
             <img src="{{ post.author.avatar}}" alt="User Avatar" class="user-avatar">

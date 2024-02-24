@@ -53,10 +53,17 @@ urlpatterns = [
     path('api/posts/<int:post_id>/', PostOperationAPIView.as_view(), name='API_PDetail'),                       # GET/PUT/DELETE PostsOperations
     path("api/posts/<int:post_id>/comments/", CommentAPIView.as_view(), name='API_PComms'),                     # GET/POST CommentList/NewComment  --> Test Success
     path("api/posts/<int:post_id>/likes/", LikeAPIView.as_view(), name='API_PLikes'),                           # GET/POST LikeList/NewLike        --> Test Success
+   
+   
+    path('posts/<int:post_id>/delete/', delete_post, name='delete_post'),
+    path('posts/<int:post_id>/update/', update_post, name='update_post'),
+
 
     # Inbox API System:
     path("api/msgs/<str:username>/", MsgsAPIView.as_view(), name="API_MSGs"),                                   # GET InboxMessages         --> ?
-    path('posts/<int:post_id>/delete/', delete_post, name='delete_post'),
+    
+    
+    
 ]
 
 

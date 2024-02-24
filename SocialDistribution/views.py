@@ -126,7 +126,7 @@ class PPsAPIView(generics.ListAPIView):
 
     def get_queryset(self):
         # Get all public posts，sorted by publication time in descending order
-        return Post.objects.filter(visibility='PUBLIC').order_by('-date_posted')
+        return Post.objects.filter(visibility='PUBLIC', is_draft=False).order_by('-date_posted')
 
 
 class FPsAPIView(generics.ListAPIView):
@@ -161,6 +161,15 @@ class NPsAPIView(generics.CreateAPIView):
 # class PostDetailAPIView(generics.CreateAPIView):
 #   """ * [GET] Get The Post Detail """
 #   template_name = "post_detail.html"
+
+
+def author_draft_view(request, username):
+    user = get_object_or_404(User, username=username)
+    context = {
+        'user': user,
+        'posts': Post.objects.filter(author=user, is_draft=True).order_by('-date_posted')
+    }
+    return render(request, 'author_draft.html', context)
 
 
 class PostOperationAPIView(generics.RetrieveUpdateDestroyAPIView):
@@ -266,7 +275,7 @@ def profileView(request, username):
     user = get_object_or_404(User, username=username)
     context = {
         'user': user,
-        'posts': Post.objects.filter(author=user).order_by('-date_posted')
+        'posts': Post.objects.filter(author=user, is_draft=False).order_by('-date_posted')
     }
     return render(request, 'profile.html', context)
 

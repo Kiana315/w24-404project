@@ -2,47 +2,66 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Post Page</title>
-<link rel="stylesheet" href="{% static 'css/post_detail.css' %}">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
-<style>
-    .material-symbols-outlined {
-      font-variation-settings:
-      'FILL' 0,
-      'wght' 400,
-      'GRAD' 0,
-      'opsz' 24
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post Page</title>
+    <link rel="stylesheet" href="{% static 'css/post_detail.css' %}">
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"/>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0,
+            'wght' 400,
+            'GRAD' 0,
+            'opsz' 24
+        }
     </style>
 </head>
 <body>
-    <div class="post-container" data-post-id="{{ post.id }}">
-        <div class="back-button-container">
-            <button onclick="history.back()" class="back-button">
+<div class="post-container" data-post-id="{{ post.id }}">
+    <div class="back-button-container">
+        <button onclick="history.back()" class="back-button">
                 <span class="material-symbols-outlined">
                     arrow_back_ios</span>
-                Back</button>
-        </div>
-        <div class="user-info">
-            <img src="{{ post.author.avatar}}" alt="User Avatar" class="user-avatar">
-            <span class="user-name">{{ post.author.username }}</span>
-        </div>
-        <h1 class="post-title">{{ post.title }}</h1>
-        <div class="scrollable-content">
-            <p class="post-content">{{ post.content }}</p> 
-            {% if post.image %}
-                <img src="{{ post.image.url }}" alt="Post Image" class="post-image">
-            {% endif %}
+            Back
+        </button>
+    </div>
+    <div class="user-info">
+        <img src="{{ post.author.avatar.url }}" alt="User Avatar" class="user-avatar" width="60" height="60">
+        <span class="user-name">{{ post.author.username }}</span>
+    </div>
+    <h1 class="post-title" id="post-title">{{ post.title }}</h1>
+    <div class="scrollable-content">
+        <span id="post-id" style="display: none">{{ post.id }}</span>
+        <p class="post-content" id="post-content">{{ post.content }}</p>
+        {% if post.image %}
+            <img src="{{ post.image.url }}" alt="Post Image" class="post-image">
+        {% endif %}
+        {% if not post.is_draft %}
             <div class="comments-section">
                 <h2>Comments:</h2>
-                
                 <div id="comments-container"></div>
-
             </div>
-        </div>
-        <div class="post-actions">
+        {% endif %}
+    </div>
+    <div class="post-actions">
+        {% if post.is_draft %}
+            <button id="share-button" class="action" onclick="EditPost()">
+                <span class="material-symbols-outlined">
+                    <ion-icon name="create-outline">Edit</ion-icon>
+                </span>
+                Edit
+            </button>
+            <button id="comment-button" class="action" onclick="deletePost()">
+                <span class="material-symbols-outlined"><ion-icon name="trash-outline">Delete</ion-icon></span>
+                Delete
+            </button>
+            <button id="like-button" class="action" onclick="sendPost()">
+                <span class="material-symbols-outlined"><ion-icon name="send-outline">Send</ion-icon></span>
+                Post
+            </button>
+        {% else %}
             <button id="share-button" class="action">
                 <span class="material-symbols-outlined">share</span>
                 Share
@@ -55,14 +74,125 @@
                 <textarea id="comment-input" placeholder="Add a comment..."></textarea>
                 <button id="submit-comment" class="action">Post Comment</button>
             </div>
-            <button id="like-button" class="action"> 
+            <button id="like-button" class="action">
                 <span class="material-symbols-outlined">thumb_up</span>
                 Like
                 <span id="like-count">{{ likes_count }}</span>
             </button>
-        </div>   
+        {% endif %}
     </div>
+</div>
 
-    <script src="{% static 'js/post_detail.js' %}"></script>
+<div id="newPostModal" class="modal" style="display: none">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <form id="newPostForm">
+            <input id="titleInput" type="text" name="title" placeholder="Title">
+            <textarea id="contentInput" name="content" placeholder="Tell Something New..."></textarea>
+
+            <div class="submit-container">
+                <div class="left">
+                    <label for="imageUpload" class="upload-icon">
+                        <ion-icon name="image"></ion-icon>
+                    </label>
+                    <input type="file" id="imageUpload" name="image" style="display: none;">
+                </div>
+                <div class="right">
+                    <label for="visibility"></label>
+
+                    <select name="visibility" id="visibility">
+                        <option value="PUBLIC" selected>Public</option>
+                        <option value="FRIENDS">Friends-Only</option>
+                    </select>
+                    <button class="post-button" type="submit">Save Draft</button>
+                    <button class="post-button" type="submit">Post</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+    function closeModal() {
+        var modal = document.getElementById('newPostModal')
+        modal.style.display = 'none';
+    }
+
+    function EditPost() {
+        var postTitle = document.getElementById("post-title")
+        var postContent = document.getElementById("post-content")
+
+        var titleInput = document.getElementById("titleInput")
+        titleInput.value = postTitle.innerText
+        var contentInput = document.getElementById("contentInput")
+        contentInput.value = postContent.innerText
+
+        const modal = document.getElementById("newPostModal");
+        modal.style.display = 'block'
+    }
+
+    function sendPost() {
+        var modal = document.getElementById('newPostModal')
+        var data = {
+            title: document.getElementById("post-title").innerText,
+            content: document.getElementById("post-content").innerText,
+        }
+
+        var postId = document.getElementById("post-id").innerText
+
+        // Send AJAX request to server
+        fetch(`/api/posts/${postId}/`, {
+            method: 'PUT',
+            body: JSON.stringify(data),
+            headers: {
+                'X-CSRFToken': getCookie('csrftoken'), // Get CSRF token
+                'Content-type': 'application/json'
+            },
+            credentials: 'same-origin' // For CSRF token verification
+        })
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    throw new Error('Something went wrong');
+                }
+            })
+            .then(data => {
+                // After posted
+                modal.style.display = "none"; // Close pop-up window
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+                // Add error message
+            });
+    }
+
+    function deletePost() {
+        var postId = document.getElementById("post-id").innerText
+        // Send AJAX request to server
+        fetch(`/api/posts/${postId}/`, {
+            method: 'DELETE',
+            headers: {
+                'X-CSRFToken': getCookie('csrftoken'), // Get CSRF token
+                'Content-type': 'application/json'
+            },
+            credentials: 'same-origin' // For CSRF token verification
+        }).then(response => {
+            if (response.ok) {
+                return {};
+            } else {
+                throw new Error('Something went wrong');
+            }
+        }).then(data => {
+            history.back();
+            window.onload = function () {
+                location.reload();
+            };
+        }).catch((error) => {
+            console.error('Error:', error);
+            // Add error message
+        });
+    }
+</script>
+<script src="{% static 'js/common.js' %}"></script>
 </body>
 </html>

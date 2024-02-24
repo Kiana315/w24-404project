@@ -7,9 +7,14 @@ class PostSerializer(serializers.ModelSerializer):
     username = serializers.ReadOnlyField(source='author.username')
     avatar = serializers.ReadOnlyField(source='author.avatar_url')
     likes_count = serializers.SerializerMethodField()
+    is_draft = serializers.BooleanField(default=False)
+
     class Meta:
         model = Post
-        fields = ['id', 'author', 'username', 'title', 'content', 'image', 'visibility', 'date_posted', 'last_modified', 'likes_count', 'avatar']
+        fields = [
+            'id', 'author', 'username', 'title', 'content', 'image', 'visibility',
+            'date_posted', 'last_modified', 'likes_count', 'avatar', 'is_draft'
+        ]
         extra_kwargs = {'author': {'read_only': True}}
 
     def get_likes_count(self, obj):

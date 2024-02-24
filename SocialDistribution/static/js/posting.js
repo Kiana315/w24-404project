@@ -5,7 +5,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
     const btn = document.getElementById("floating-button");
     const form = document.getElementById("newPostForm");
 
-    
     // Open pop-up window when clicking floating button
     btn.addEventListener('click', function() {
         modal.style.display = "block";
@@ -25,6 +24,9 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
         // Create FormData Obj
         var formData = new FormData(form);
+        if (event.submitter.innerText === "Save Draft"){
+            formData.append("is_draft", "true")
+        }
 
         // Send AJAX request to server
         fetch('/api/nps/', {

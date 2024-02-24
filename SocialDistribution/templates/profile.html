@@ -144,10 +144,15 @@
         {% if not user.username == request.user.username and not user.username in following_usernames %}
             <button id="follow-btn" data-username="{{ user.username }}">follow</button>
         {% endif %}
-
     </div>
 
+
     <div class="post-container">
+        <div>
+            <button><a href="draft">
+                <ion-icon name="file-tray-full-outline">Post Draft</ion-icon>
+            </a></button>
+        </div>
         <div class="recent-posts">
             <!-- This section should be populated with actual post data -->
             {% for post in posts %}

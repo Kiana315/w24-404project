@@ -33,6 +33,7 @@ class Post(models.Model):
     visibility = models.CharField(max_length=10, choices=VISIBILITY_CHOICES, default='PUBLIC')
     date_posted = models.DateTimeField(auto_now_add=True)
     last_modified = models.DateTimeField(auto_now=True)
+    is_draft = models.BooleanField(default=False)
     ordering = ['-date_posted']
 
 

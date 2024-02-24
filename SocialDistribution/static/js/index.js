@@ -46,7 +46,6 @@ document.addEventListener('DOMContentLoaded', () => {
                         </button>
                         <button id="like-button" type="button"> 
                             <ion-icon size="small" name="heart-outline" style="margin-right: 8px;"></ion-icon>
-                            
                             <span id="like-count">{{ likes_count }}</span>
                         </button>
                     </div>

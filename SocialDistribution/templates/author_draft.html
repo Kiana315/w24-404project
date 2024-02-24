@@ -41,18 +41,17 @@
             <ion-icon name="home" size="large"></ion-icon>
         </a></li>
         {% if user.is_authenticated %}
-            <li><a href="{% url 'friendPosts' username=user.username %}">
+            <li><a href="{% url 'PAGE_FriendList' username=user.username %}">
                 <ion-icon name="people" size="large"></ion-icon>
             </a></li>
-            <li><a href="{% url 'inbox' username=user.username %}">
+            <li><a href="{% url 'PAGE_Inbox' username=user.username %}">
                 <ion-icon name="mail" size="large" target="_blank"></ion-icon>
             </a></li>
             {% if user.avatar %}
-                <li><a href="{% url 'profile' username=user.username %}"><img class="user-avatar"
-                                                                              src="{{ user.avatar.url }}"
-                                                                              alt="User avatar"></a></li>
+                <li><a href="{% url 'PAGE_Profile' username=user.username %}"><img class="user-avatar"
+                                                                              src="{{ user.avatar.url }}" alt="User avatar"></a></li>
             {% else %}
-                <li><a href="{% url 'profile' username=user.username %}">
+                <li><a href="{% url 'PAGE_Profile' username=user.username %}">
                     <ion-icon name="person-circle" size="large"></ion-icon>
                 </a></li>
             {% endif %}
@@ -72,7 +71,7 @@
 
 <div class="button-container">
     <!-- <button class="back-button" onclick="history.back()">Back</button> -->
-    <form action="{% url 'logout' %}" method="post">
+    <form action="{% url 'PAGE_Logout' %}" method="post">
         {% csrf_token %}
         <button type="submit" class="logout-button">Log Out</button>
     </form>

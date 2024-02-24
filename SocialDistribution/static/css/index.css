@@ -176,20 +176,35 @@ body {
     color: #888;
     font-size: small;
 }
-.interactions {
-    position: absolute;
-    top: 20px;
-    right: 20px;
+.interact-container {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    border-top: 1px solid #aaa;
+    justify-content: space-between; 
+    width: 100%; 
 }
+.interact-container button {
+    height: 36px;
+    flex: 1;  
+    margin-top: 15px;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    align-items: center; 
+    justify-content: center; 
+    display: flex;
+}
+
 
 a {
     text-decoration: none;
     color: black;
 }
 
-.like-btn,
+/* .like-btn,
 .comment-btn,
-.submit-comment,
+.submit-comment, 
 .post-button {
     background-color: var(--btn-bg-color);
     color: white;
@@ -200,15 +215,15 @@ a {
     margin-right: 30px;
     margin-top: 10px;
     
-}
+} */
 
-.like-btn:hover,
+/* .like-btn:hover,
 .comment-btn:hover,
 .submit-comment:hover {
     background-color: var(--btn-hover-color);
-}
+} */
 
-.comment-box {
+/* .comment-box {
     width: 100%;
     margin-top: 10px;
 }
@@ -220,7 +235,7 @@ a {
     border-radius: 5px;
     height: 100px;
     margin-bottom: 5px;
-}
+} */
 
 /* Floating Action Button */
 #floating-button {

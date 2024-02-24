@@ -39,6 +39,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
         })
         .then(response => {
             if(response.ok) {
+                window.location.href = '/';
                 return response.json();
             } else {
                 emptyPost()
@@ -49,8 +50,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
             // After posted
             modal.style.display = "none"; // Close pop-up window
             submitPost();
-            
-            
+
         })
         .catch((error) => {
             console.error('Error:', error);

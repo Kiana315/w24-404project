@@ -55,3 +55,36 @@ function handleUserNameBlur() {
             el.focus();
         });
 }
+
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    const followButton = document.getElementById('follow-btn');
+    if (followButton) {
+        followButton.addEventListener('click', function() {
+            const selfUsername = this.getAttribute('data-username');
+            const targetUsername = _getURLTagetUsername()
+            fetch(`api/user/${selfUsername}/followerOf/${targetUsername}}/`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': getCookie('csrftoken'),
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    followButton.style.display = 'none';
+                } else {
+                    alert("Something went wrong.");
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    }
+});
+
+
+function _getURLTagetUsername() {
+    const pathSections = window.location.pathname.split('/');
+    return pathSections[-1];
+}

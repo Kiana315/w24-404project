@@ -2,43 +2,42 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Post Page</title>
-    <link rel="stylesheet" href="{% static 'css/post_detail.css' %}">
-    <link rel="stylesheet" href="{% static 'css/index.css' %}">
-    <link rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"/>
-    <style>
-        .material-symbols-outlined {
-            font-variation-settings: 'FILL' 0,
-            'wght' 400,
-            'GRAD' 0,
-            'opsz' 24
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Post Page</title>
+<link rel="stylesheet" href="{% static 'css/post_detail.css' %}">
 </head>
 <body>
-<div class="post-container" data-post-id="{{ post.id }}">
-    <div class="back-button-container">
-        <button onclick="history.back()" class="back-button">
-                <span class="material-symbols-outlined">
-                    arrow_back_ios</span>
-            Back
-        </button>
-    </div>
-    <div class="user-info">
-        <img src="{{ post.author.avatar.url }}" alt="User Avatar" class="user-avatar" width="60" height="60">
-        <span class="user-name">{{ post.author.username }}</span>
-    </div>
-    <h1 class="post-title" id="post-title">{{ post.title }}</h1>
-    <div class="scrollable-content">
-        <span id="post-id" style="display: none">{{ post.id }}</span>
-        <p class="post-content" id="post-content">{{ post.content }}</p>
-        {% if post.image %}
-            <img src="{{ post.image.url }}" alt="Post Image" class="post-image">
-        {% endif %}
-        {% if not post.is_draft %}
+    <div class="post-container" data-post-id="{{ post.id }}">
+        <div class="back-button-container">
+            <button onclick="history.back()" class="back-button">
+                <ion-icon size="small" name="chevron-back-outline" style="margin-right: 8px;"></ion-icon>
+                Back</button>
+            <button id="more-options-button" class="more-options-button">
+                <ion-icon size="large" name="ellipsis-horizontal"></ion-icon>
+                </button>
+        </div>
+
+        <div id="options-container" class="options-container" style="display: none; cursor: pointer;">
+            <button class="option-button">
+                <ion-icon size="small" name="create-outline" style="margin-right: 8px;"></ion-icon>
+                Edit</button>
+            <button class="option-button" onclick="deletePost()">
+                <ion-icon size="small" name="trash-outline" style="margin-right: 8px;"></ion-icon>
+                Delete</button>
+            <!-- Add more buttons as needed -->
+        </div>
+
+        <div class="user-info">
+            <img src="{{ post.author.avatar}}" alt="User Avatar" class="user-avatar">
+            <span class="user-name">{{ post.author.username }}</span>
+        </div>
+        <h1 class="post-title">{{ post.title }}</h1>
+        <div class="scrollable-content">
+            <p class="post-content">{{ post.content }}</p> 
+            {% if post.image %}
+                <img src="{{ post.image.url }}" alt="Post Image" class="post-image">
+            {% endif %}
             <div class="comments-section">
                 <h2>Comments:</h2>
                 <div id="comments-container"></div>
@@ -63,19 +62,19 @@
             </button>
         {% else %}
             <button id="share-button" class="action">
-                <span class="material-symbols-outlined">share</span>
+                <ion-icon size="small" name="share-outline" style="margin-right: 8px;"></ion-icon>
                 Share
             </button>
             <button id="comment-button" class="action">
-                <span class="material-symbols-outlined">comment</span>
+                <ion-icon size="small" name="chatbox-ellipses-outline" style="margin-right: 8px;"></ion-icon>
                 Comment
             </button>
             <div id="comment-form" class="comment-form" style="display: none;">
                 <textarea id="comment-input" placeholder="Add a comment..."></textarea>
                 <button id="submit-comment" class="action">Post Comment</button>
             </div>
-            <button id="like-button" class="action">
-                <span class="material-symbols-outlined">thumb_up</span>
+            <button id="like-button" class="action"> 
+                <ion-icon size="small" name="heart-outline" style="margin-right: 8px;"></ion-icon>
                 Like
                 <span id="like-count">{{ likes_count }}</span>
             </button>
@@ -194,5 +193,8 @@
     }
 </script>
 <script src="{% static 'js/common.js' %}"></script>
+    <script src="{% static 'js/post_detail.js' %}"></script>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 </body>
 </html>

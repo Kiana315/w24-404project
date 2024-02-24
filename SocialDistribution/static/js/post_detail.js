@@ -1,6 +1,8 @@
 'use strict';
 
 document.addEventListener('DOMContentLoaded', function() {
+    const moreOptionsButton = document.getElementById('more-options-button');
+    const optionsContainer = document.getElementById('options-container');
     const postContainer = document.querySelector('.post-container');
     const postId = postContainer.getAttribute('data-post-id');
     const likeButton = document.getElementById('like-button');
@@ -9,6 +11,14 @@ document.addEventListener('DOMContentLoaded', function() {
     const commentForm = document.getElementById('comment-form');
     const submitCommentButton = document.getElementById('submit-comment');
     const commentInput = document.getElementById('comment-input');
+
+    moreOptionsButton.addEventListener('click', function() {
+        if (optionsContainer.style.display === 'none') {
+            optionsContainer.style.display = 'block';
+        } else {
+            optionsContainer.style.display = 'none';
+        }
+    });
 
     fetchComments();
 
@@ -65,7 +75,7 @@ document.addEventListener('DOMContentLoaded', function() {
             })
             .then(response => {
                 if (!response.ok) {
-                    throw new Error('Network response was not ok');
+                    throw new Error(`HTTP error! status: ${response.status}, statusText: ${response.statusText}`);
                 }
             })
             .then(() => {
@@ -75,6 +85,8 @@ document.addEventListener('DOMContentLoaded', function() {
             })
             .catch(error => {
                 console.error('Error:', error);
+                console.log('Error message:', error.message);
+                alert(error.message);
             });
         });
     }
@@ -85,7 +97,7 @@ function fetchComments() {
     fetch(`/api/posts/${postId}/comments/`)
         .then(response => {
             if (!response.ok) {
-                throw new Error('Network response was not ok');
+                throw new Error(`HTTP error! status: ${response.status}, statusText: ${response.statusText}`);
             }
             return response.json();
         })
@@ -94,6 +106,8 @@ function fetchComments() {
         })
         .catch(error => {
             console.error('Error:', error);
+            console.log('Error message:', error.message);
+            alert(error.message);
         });
 }
 
@@ -128,6 +142,31 @@ function renderComments(comments) {
 
         commentsContainer.appendChild(commentElement);
     });
+}
+
+function getPostIdFromUrl() {
+    const path = window.location.pathname;
+    const pathParts = path.split('/');  // split the url
+    const postId = pathParts[pathParts.length - 2];  // get the post ID from url
+    return postId;
+}
+
+function deletePost() {
+    const postId = getPostIdFromUrl();
+    if (confirm("Are you sure you want to delete this post?")) {
+        fetch(`/posts/${postId}/delete/`, {
+            method: 'DELETE',
+            headers: {
+                'X-CSRFToken': getCookie('csrftoken')
+            }
+        }).then(response => {
+            if (response.status === 204) {
+                window.location.href = '/';
+            } else {
+                alert("Something went wrong.");
+            }
+        }).catch(error => console.error('Error:', error));
+    }
 }
 
 function getCookie(name) {

@@ -13,12 +13,12 @@
         <ul>
             <li><a href="/"><ion-icon name="home" size="large"></ion-icon></a></li>
             {% if user.is_authenticated %}
-                <li><a href="{% url 'friendPosts' username=user.username %}"><ion-icon name="people" size="large"></ion-icon></a></li>
-                <li><a href="{% url 'inbox' username=user.username %}"><ion-icon name="mail" size="large" target="_blank"></ion-icon></a></li>
+                <li><a href="{% url 'PAGE_FriendPosts' username=user.username %}"><ion-icon name="people" size="large"></ion-icon></a></li>
+                <li><a href="{% url 'PAGE_Inbox' username=user.username %}"><ion-icon name="mail" size="large" target="_blank"></ion-icon></a></li>
                 {% if user.avatar %}
-                    <li><a href="{% url 'profile' username=user.username %}"><img class="user-avatar" src="{{ user.avatar.url }}" alt="User avatar"></a></li>
+                    <li><a href="{% url 'PAGE_Profile' username=user.username %}"><img class="user-avatar" src="{{ user.avatar.url }}" alt="User avatar"></a></li>
                 {% else %}
-                    <li><a href="{% url 'profile' username=user.username %}"><ion-icon name="person-circle" size="large"></ion-icon></a></li>
+                    <li><a href="{% url 'PAGE_Profile' username=user.username %}"><ion-icon name="person-circle" size="large"></ion-icon></a></li>
                 {% endif %}
             {% else %}
                 <li><a href="login/"><ion-icon name="people" size="large"></ion-icon></a></li>
@@ -29,20 +29,22 @@
     </nav>
     
     
-    
-    <div class="post-container" id ="post-container">
-        <div class="search-bar">
-            <ion-icon name="search-outline" style="font-size: 26px; margin: 5px; color: rgb(97, 97, 97);"></ion-icon>
-            <form id="search-form" action="/search" method="get">
-                <input type="text" name="q" placeholder="Search by username">
-                <!-- <button type="submit">ugly Search button</button>    -->
-            </form>
+    {% if user.is_authenticated %}
+        <div class="post-container" id ="post-container">
+            <div class="search-bar">
+                <ion-icon name="search-outline" style="font-size: 26px; margin: 5px; color: rgb(97, 97, 97);"></ion-icon>
+                <form id="search-form" action="/search" method="get">
+                    <input type="hidden" name="user1_id" value="{{ request.user.username }}">
+                    <input type="text" name="user2_id" placeholder="Search by username">
+                    <!-- <button type="submit">ugly Search button</button>    -->
+                </form>
+            </div>
+            <!-- Posts will be dynamically loaded here via JavaScript -->
         </div>
-        <!-- Posts will be dynamically loaded here via JavaScript -->
-    </div>
 
-    
-    <button id="floating-button">+</button>
+
+        <button id="floating-button">+</button>
+    {% endif %}
     
     
     <div id="newPostModal" class="modal">

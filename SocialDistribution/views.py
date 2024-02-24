@@ -17,6 +17,7 @@ from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
+from rest_framework.exceptions import PermissionDenied
 
 # Project Dependencies:
 from .serializers import *
@@ -57,7 +58,7 @@ def signupView(request):
                 user.save()
                 user = authenticate(username=username, password=password)
                 login(request, user)
-                return redirect('login')
+                return redirect('PAGE_Login')
         else:
             messages.error(request, "Passwords do not match")
             return render(request, 'signup.html')
@@ -152,6 +153,17 @@ class NPsAPIView(generics.CreateAPIView):
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)  # set current user as author
 
+def delete_post(request, post_id):
+    try:
+        post = get_object_or_404(Post, pk=post_id)
+        post.delete()
+        return JsonResponse({"status": "success"}, status=204)
+    except Post.DoesNotExist:
+        return JsonResponse({"error": "Post not found"}, status=404)
+    except Exception as e:
+        return JsonResponse({"error": str(e)}, status=500)
+
+
 
 """
 ---------------------------------- Posts Update/Interaction Settings ----------------------------------
@@ -186,18 +198,43 @@ class PostOperationAPIView(generics.RetrieveUpdateDestroyAPIView):
 class CommentAPIView(generics.ListCreateAPIView):
     """ [GET/POST] Get The CommentList For A Spec-post; Create A Comment For A Spec-post """
     serializer_class = CommentSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
     def get_queryset(self):
-        return get_list_or_404(Comment, post_id=self.kwargs['post_id'])
+        post_id = self.kwargs['post_id']
+        post = get_object_or_404(Post, pk=post_id)
+        user = self.request.user
+
+        # If the post is friends-only, filter comments
+        if post.visibility == 'FRIENDS':
+            friends = User.objects.filter(
+                Q(friends_set1__user2=post.author) | 
+                Q(friends_set2__user1=post.author)
+            ).distinct()
+            
+            # Check if the user is a friend or the author of the post
+            if user in friends or user == post.author:
+                return Comment.objects.filter(post=post)
+            else:
+                # If not a friend or the author, the user should not see any comments
+                return Comment.objects.none()
+
+        # If the post is public, return all comments
+        return Comment.objects.filter(post=post)
 
     def perform_create(self, serializer):
-        post = get_object_or_404(Post, pk=self.kwargs['post_id'])
-        serializer.save(post=post, commenter=self.request.user)
+        post_id = self.kwargs['post_id']
+        post = get_object_or_404(Post, pk=post_id)
+        user = self.request.user
+        if post.visibility == 'FRIENDS' and not post.author.is_friend(user) and user != post.author:
+            raise PermissionDenied('You do not have permission to comment on this post.')
+        serializer.save(post=post, commenter=user)
 
     def get_serializer_context(self):
         context = super().get_serializer_context()
         context.update({'request': self.request})
         return context
+
 
 
 class LikeAPIView(generics.ListCreateAPIView):
@@ -293,27 +330,6 @@ class UserAPIView(generics.RetrieveAPIView):
         return obj
 
 
-class FollowerAPIView(generics.ListAPIView):
-    """ [GET] Get The FollowerList For A Spec-username """
-    serializer_class = FollowerSerializer
-
-    def get_queryset(self):
-        username = self.kwargs['username']
-        followers = get_list_or_404(Follow, following__username=username)
-        return followers
-
-
-class FriendAPIView(generics.ListAPIView):
-    """ [GET] Get The FriendList For A Spec-username """
-
-    def get_queryset(self):
-        username = self.kwargs['username']
-        friends = Friend.objects.filter(Q(user1__username=username) | Q(user2__username=username))
-        return friends
-
-    serializer_class = FriendSerializer
-
-
 def search_user(request):
     query = request.GET.get('q', '')  # Get search query parameters
     try:
@@ -325,42 +341,107 @@ def search_user(request):
         return JsonResponse({'error': 'User not found'}, status=404)
 
 
-class FollowersListView(generics.ListAPIView):
+"""
+---------------------------------- Friend System Settings ----------------------------------
+"""
+
+
+class FollowerView(TemplateView):
+    """ * [GET] Get The FollowerList Page """
+    template_name = "followersList.html"
+
+
+class FollowingView(TemplateView):
+    """ * [GET] Get The FollowingList Page """
+    template_name = "followingList.html"
+
+
+class FriendView(TemplateView):
+    """ * [GET] Get The FollowingList Page """
+    template_name = "friendList.html"
+
+
+class FollowersAPIView(generics.ListAPIView):
     """ [GET] Get The FollowerList For A Spec-username """
     serializer_class = FollowerSerializer
-
     def get_queryset(self):
         username = self.kwargs['username']
         user = User.objects.get(username=username)
         return user.followers.all()
 
-    def list(self, request, *args, **kwargs):
-        response = super().list(request, *args, **kwargs)
-        return render(request, 'followersList.html', {'followers': response.data})
 
-
-class FollowingListView(generics.ListAPIView):
+class FollowingAPIView(generics.ListAPIView):
     """ [GET] Get The FollowingList For A Spec-username """
-    serializer_class = UserSerializer  # todo incorrect, currently no following model set
-
+    serializer_class = FollowingSerializer
     def get_queryset(self):
         username = self.kwargs['username']
         user = User.objects.get(username=username)
         return user.following.all()
 
-    def list(self, request, *args, **kwargs):
-        response = super().list(request, *args, **kwargs)
-        return render(request, 'followingList.html', {'followers': response.data})
+
+class FriendsAPIView(generics.ListAPIView):
+    """ [GET] Get The FriendsList For A Spec-username """
+    serializer_class = FriendSerializer
+    def get_queryset(self):
+        username = self.kwargs['username']
+        user = User.objects.get(username=username)
+        return Friend.objects.filter(Q(user1=user) | Q(user2=user)).distinct()
 
 
-def follow_user(request, username):
-    try:
-        user_to_follow = User.objects.get(username=username)
-        if user_to_follow != request.user and not Follow.objects.filter(follower=request.user,
-                                                                        following=user_to_follow).exists():
-            Follow.objects.create(follower=request.user, following=user_to_follow)
-            return JsonResponse({"status": "success"}, status=200)
+class CreateFollowerAPIView(APIView):
+    """ [POST] Create New Follower Relation Case  """
+    def post(self, request, username):
+        new_follower = get_object_or_404(User, username=username)
+        if request.user != new_follower:
+            try:
+                Follower.objects.create(user=request.user, follower=new_follower)
+                return Response(status=status.HTTP_201_CREATED)
+            except IntegrityError:
+                return Response({"detail": "Already followed by this user."}, status=status.HTTP_400_BAD_REQUEST)
         else:
-            return JsonResponse({"error": "Cannot follow"}, status=400)
-    except User.DoesNotExist:
-        return JsonResponse({"error": "User not found"}, status=404)
+            return Response({"detail": "Cannot add yourself as a follower."}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class CreateFollowingAPIView(APIView):
+    """ [POST] Create New Following Relation Case """
+    def post(self, request, username):
+        user_to_follow = get_object_or_404(User, username=username)
+        if request.user != user_to_follow:
+            try:
+                Following.objects.create(user=request.user, following=user_to_follow)
+                return Response(status=status.HTTP_201_CREATED)
+            except IntegrityError:
+                return Response({"detail": "Already following."}, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            return Response({"detail": "Cannot follow yourself."}, status=status.HTTP_400_BAD_REQUEST)
+
+
+"""
+class CreateFriendAPIView(APIView):
+    def post(self, request, username):
+        user_to_befriend = get_object_or_404(User, username=username)
+        if request.user != user_to_befriend:
+            try:
+                Friend.create_friendship(request.user, user_to_befriend)
+                return Response(status=status.HTTP_201_CREATED)
+            except ValidationError as e:
+                return Response({"detail": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            return Response({"detail": "Cannot become friends with yourself."}, status=status.HTTP_400_BAD_REQUEST)
+"""
+
+
+@api_view(['POST'])
+def createFriendshipAPIView(request, user1_id, user2_id):
+    """ [POST] Post New Friend Relation Case """
+    user1 = get_object_or_404(User, pk=user1_id)
+    user2 = get_object_or_404(User, pk=user2_id)
+    if user1_id == user2_id:
+        return JsonResponse({'error': 'A user cannot befriend themselves.'}, status=status.HTTP_400_BAD_REQUEST)
+    try:
+        Friend.create_friendship(user1, user2)
+        return JsonResponse({'message': 'Friendship created successfully.'}, status=status.HTTP_201_CREATED)
+    except ValidationError as e:
+        return JsonResponse({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+    except Exception as e:
+        return JsonResponse({'error': 'An unexpected error occurred.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

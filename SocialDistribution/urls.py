@@ -23,16 +23,6 @@ urlpatterns = [
     path("inbox/<str:username>/", InboxView.as_view(), name="PAGE_Inbox"),
     path("posts/<int:post_id>/", PostDetailView.as_view(), name="PAGE_postDetail"),
 
-    # Identity API System:
-    path("api/user/<str:username>/", UserAPIView.as_view(), name="API_USER"),                                                               # GET Self User/Profile Info        --> Test Success
-    path("api/user/<str:user1_id>/<str:user2_id>/", UserAPIView.as_view(), name="API_USER_TWO"),                                            # GET Other's User/Profile Info     --> Test Success
-    path("profile/<str:username>/", profileView, name="PAGE_Profile"),
-    path("profile/<str:selfUsername>/<str:targetUsername>/", otherProfileView, name="PAGE_OtherProfile"),
-    path("profile/<str:username>/upload-avatar/", upload_avatar, name="API_UploadAvatar"),
-    path("profile/<str:username>/update-bio/", update_bio, name="API_UpdateBio"),
-    path("profile/<str:username>/update-username/", update_username, name="API_UpdateUsername"),
-    path("profile/<str:username>/draft/", author_draft_view, name="author-draft"),
-
     # Friend API System:
     path('search/', views.search_user, name='PAGE_SearchUser'),
     path('profile/<str:username>/followers/', FollowerView.as_view(), name='PAGE_FollowersList'),
@@ -46,6 +36,16 @@ urlpatterns = [
     path('api/user/<str:selfUsername>/following/<str:targetUsername>/', CreateFollowingAPIView.as_view(), name='API_POSTFollowing'),        # POST Create Following Case        --> Test Success
     path('api/user/<str:selfUsername>/friend/<str:targetUsername>/', createFriendshipAPIView, name='API_POSTFriend'),                       # POST Create Friend Case           --> Unknown
     path('api/user/<str:username1>/anyRelations/<str:username2>/', AnalyzeRelationAPIView.as_view(), name='API_AnalyzeRelation'),           # GET Check Relations b/w Users     --> Unknown
+
+    # Identity API System:
+    path("api/user/<str:username>/", UserAPIView.as_view(), name="API_USER"),                                                               # GET Self User/Profile Info        --> Test Success
+    path("api/user/<str:user1_id>/<str:user2_id>/", UserAPIView.as_view(), name="API_USER_TWO"),                                            # GET Other's User/Profile Info     --> Test Success
+    path("profile/<str:username>/", profileView, name="PAGE_Profile"),
+    path("profile/<str:selfUsername>/<str:targetUsername>/", otherProfileView, name="PAGE_OtherProfile"),
+    path("profile/<str:username>/upload-avatar/", upload_avatar, name="API_UploadAvatar"),
+    path("profile/<str:username>/update-bio/", update_bio, name="API_UpdateBio"),
+    path("profile/<str:username>/update-username/", update_username, name="API_UpdateUsername"),
+    path("profile/<str:username>/draft/", author_draft_view, name="author-draft"),
 
     # Post API System:
     path("api/pps/", PPsAPIView.as_view(), name="API_PPs"),                                                                                 # GET PublicPostsList               --> Test Success

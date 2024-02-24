@@ -126,20 +126,22 @@
             </form>
         </div>
         <div class="follow-container">
+            <a href = "{% url 'PAGE_FollowersList' username=user.username %}">
             <button
                     id="follower-btn"
                     class="top-button followers-button"
-                    onclick="location.href = 'followers'"
             >
                 Followers<br/>0
             </button>
+            </a>
+            <a href = "{% url 'PAGE_FollowingList' username=user.username %}">
             <button
                     id="following-btn"
                     class="top-button following-button"
-                    onclick="location.href = 'following'"
             >
                 Following<br/>0
             </button>
+            </a>
         </div>
         {% if not user.username == request.user.username and not user.username in following_usernames %}
             <button id="follow-btn" data-username="{{ user.username }}">follow</button>
@@ -199,7 +201,6 @@
 <script src="../../static/js/index.js"></script>
 <script src="../../static/js/posting.js"></script>
 <script src="../../static/js/post_detail.js"></script>
-<script src="../../static/js/follow.js"></script>
 <script src="../../static/js/profile.js"></script>
 
 </body>

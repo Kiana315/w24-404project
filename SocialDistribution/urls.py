@@ -33,6 +33,7 @@ urlpatterns = [
 
     # Friend API System:
     path('search/', views.search_user, name='PAGE_SearchUser'),
+    path('api/user/<str:user1_id>/<str:user2_id>/', UserAPIView.as_view(), name='API_USER_TWO'),
     path('profile/<str:username>/followers/', FollowerView.as_view(), name='PAGE_FollowersList'),
     path('profile/<str:username>/following/', FollowingView.as_view(), name='PAGE_FollowingList'),
     path('profile/<str:username>/friends/', FriendView.as_view(), name='PAGE_FriendList'),

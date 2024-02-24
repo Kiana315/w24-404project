@@ -9,11 +9,14 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         })
         .then(data => {
+            console.log("data", data);
             let followingList = document.getElementById("following-list");
             for (let following of data) {
-                followingList.innerHTML += "<li class='person'>" +
-                    "<img class='person-photo' src='person1.jpg' alt='Profile Picture'>" +
-                    "<p class='person-name'>" + following.following.username + "</p></li>";
+                followingList.innerHTML += `
+                    <li class='person' onclick="window.location.href='/profile/${username}/${following.following.username}/'">
+                        <img class='person-photo' src='person1.jpg' alt='Profile Picture'>
+                        <p class='person-name'>${following.following.username}</p>
+                    </li>`;
             }
         })
 });

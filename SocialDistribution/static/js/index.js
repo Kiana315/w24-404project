@@ -35,9 +35,20 @@ document.addEventListener('DOMContentLoaded', () => {
                 `;
 
                 const interactionHTML = `
-                    <div class="interactions">
-                        <button type="button" class="like-btn">Like</button>
-                        <button type="button" class="comment-btn">Comment</button>
+                    <div class="interact-container">
+                        <button id="share-button" type="button">
+                            <ion-icon size="small" name="share-outline" style="margin-right: 8px;"></ion-icon>
+                            Share
+                        </button>
+                        <button id="comment-button" type="button">
+                            <ion-icon size="small" name="chatbox-ellipses-outline" style="margin-right: 8px;"></ion-icon>
+                            Comment
+                        </button>
+                        <button id="like-button" type="button"> 
+                            <ion-icon size="small" name="heart-outline" style="margin-right: 8px;"></ion-icon>
+                            
+                            <span id="like-count">{{ likes_count }}</span>
+                        </button>
                     </div>
                 `;
 
@@ -104,3 +115,4 @@ document.addEventListener('DOMContentLoaded', () => {
         })
         .catch(error => console.error('Error:', error));
 })
+

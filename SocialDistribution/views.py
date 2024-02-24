@@ -446,11 +446,11 @@ class CreateFollowingAPIView(APIView):
 
 
 @api_view(['POST'])
-def createFriendshipAPIView(request, user1_id, user2_id):
+def createFriendshipAPIView(request, selfUsername, targetUsername):
     """ [POST] Post New Friend Relation Case """
-    user1 = get_object_or_404(User, pk=user1_id)
-    user2 = get_object_or_404(User, pk=user2_id)
-    if user1_id == user2_id:
+    user1 = get_object_or_404(User, username=selfUsername)
+    user2 = get_object_or_404(User, username=targetUsername)
+    if user1 == user2:
         return JsonResponse({'error': 'A user cannot befriend themselves.'}, status=status.HTTP_400_BAD_REQUEST)
     try:
         Friend.create_friendship(user1, user2)
@@ -459,3 +459,25 @@ def createFriendshipAPIView(request, user1_id, user2_id):
         return JsonResponse({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
     except Exception as e:
         return JsonResponse({'error': 'An unexpected error occurred.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+
+class AnalyzeRelationAPIView(APIView):
+    """ [GET] Get The Relationship Between Two Users """
+    def get(self, request, username1, username2):
+        user1 = get_object_or_404(User, username=username1)
+        user2 = get_object_or_404(User, username=username2)
+
+        user1_follows_user2 = Following.objects.filter(user=user1, following=user2).exists()
+        user2_follows_user1 = Following.objects.filter(user=user2, following=user1).exists()
+        user1_followed_by_user2 = Follower.objects.filter(user=user1, follower=user2).exists()
+        user2_followed_by_user1 = Follower.objects.filter(user=user2, follower=user1).exists()
+
+        data = {
+            'user1_follows_user2': user1_follows_user2,
+            'user2_follows_user1': user2_follows_user1,
+            'user1_followed_by_user2': user1_followed_by_user2,
+            'user2_followed_by_user1': user2_followed_by_user1,
+            'mutual_follow': user1_follows_user2 and user2_follows_user1 and user1_followed_by_user2 and user2_followed_by_user1,
+        }
+        return Response(data)

@@ -29,15 +29,6 @@
         
             <!-- Add more buttons as needed -->
         </div>
-        <div id="edit-post-modal" class="modal">
-            <div class="modal-content">
-                <span class="close-button">&times;</span>
-                <form id="edit-post-form">
-                    <textarea id="edit-post-content"></textarea>
-                    <button type="submit">Update Post</button>
-                </form>
-            </div>
-        </div>
 
 
     <div class="user-info">
@@ -272,9 +263,17 @@
         });
     }
 </script>
-<script src="{% static 'js/common.js' %}"></script>
-<script src="{% static 'js/post_detail.js' %}"></script>
-<script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-<script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+
+<script type="text/javascript">
+    const currentPostTitle = "{{ post.title }}";
+    const currentPostContent = "{{ post.content }}";
+</script>
+
+    <script src="{% static 'js/common.js' %}"></script>
+    <script src="{% static 'js/post_detail.js' %}"></script>
+    <script src="{% static 'js/editing.js' %}"></script>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+
 </body>
 </html>

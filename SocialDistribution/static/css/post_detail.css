@@ -67,6 +67,8 @@ body, html {
 
 .option-button {
     display: block;
+    border: none;
+    cursor: pointer;
     margin: 5px 0; /* Add space between buttons */
 }
 

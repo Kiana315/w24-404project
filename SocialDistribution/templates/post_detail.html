@@ -17,15 +17,17 @@
                 <ion-icon size="large" name="ellipsis-horizontal"></ion-icon>
                 </button>
         </div>
-        <div id="options-container" class="options-container" style="display: none;">
+        
+        <div id="options-container" class="options-container" style="display: none; cursor: pointer;">
             <button class="option-button">
                 <ion-icon size="small" name="create-outline" style="margin-right: 8px;"></ion-icon>
                 Edit</button>
-            <button class="option-button">
+            <button class="option-button" onclick="deletePost()">
                 <ion-icon size="small" name="trash-outline" style="margin-right: 8px;"></ion-icon>
                 Delete</button>
             <!-- Add more buttons as needed -->
         </div>
+
         <div class="user-info">
             <img src="{{ post.author.avatar}}" alt="User Avatar" class="user-avatar">
             <span class="user-name">{{ post.author.username }}</span>

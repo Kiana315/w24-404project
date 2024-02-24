@@ -55,6 +55,7 @@ urlpatterns = [
 
     # Inbox API System:
     path("api/msgs/<str:username>/", MsgsAPIView.as_view(), name="API_MSGs"),                                   # GET InboxMessages         --> ?
+    path('posts/<int:post_id>/delete/', delete_post, name='delete_post'),
 ]
 
 

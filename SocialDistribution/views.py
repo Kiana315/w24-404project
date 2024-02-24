@@ -153,6 +153,17 @@ class NPsAPIView(generics.CreateAPIView):
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)  # set current user as author
 
+def delete_post(request, post_id):
+    try:
+        post = get_object_or_404(Post, pk=post_id)
+        post.delete()
+        return JsonResponse({"status": "success"}, status=204)
+    except Post.DoesNotExist:
+        return JsonResponse({"error": "Post not found"}, status=404)
+    except Exception as e:
+        return JsonResponse({"error": str(e)}, status=500)
+
+
 
 """
 ---------------------------------- Posts Update/Interaction Settings ----------------------------------

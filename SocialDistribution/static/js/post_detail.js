@@ -144,6 +144,31 @@ function renderComments(comments) {
     });
 }
 
+function getPostIdFromUrl() {
+    const path = window.location.pathname;
+    const pathParts = path.split('/');  // split the url
+    const postId = pathParts[pathParts.length - 2];  // get the post ID from url
+    return postId;
+}
+
+function deletePost() {
+    const postId = getPostIdFromUrl();
+    if (confirm("Are you sure you want to delete this post?")) {
+        fetch(`/posts/${postId}/delete/`, {
+            method: 'DELETE',
+            headers: {
+                'X-CSRFToken': getCookie('csrftoken')
+            }
+        }).then(response => {
+            if (response.status === 204) {
+                window.history.back();  // 或者重定向到其他页面
+            } else {
+                alert("Something went wrong.");
+            }
+        }).catch(error => console.error('Error:', error));
+    }
+}
+
 function getCookie(name) {
     let cookieValue = null;
     if (document.cookie && document.cookie !== '') {

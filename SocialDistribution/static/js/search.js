@@ -38,8 +38,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
         const currentUser = currentUserInput.value;
         const searchQuery = searchQueryInput.value;
-
-        // 构造新的 URL 并重定向
-        window.location.href = `/api/user/${currentUser}/${searchQuery}/`;
+        window.location.href = `profile/${currentUser}/${searchQuery}`;
     });
 });

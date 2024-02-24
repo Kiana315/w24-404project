@@ -1,19 +1,17 @@
 function editUserName() {
-    var el = document.getElementById("username");
+    let el = document.getElementById("username");
     el.style.display = 'none';
 
-    var input = document.getElementById("edit-username");
+    let input = document.getElementById("edit-username");
     input.style.display = 'inline';
     input.focus();
     input.value = el.innerText;
 }
 
 function handleUserNameBlur() {
-    var el = document.getElementById("edit-username");
-
-    var formData = new FormData();
+    let el = document.getElementById("edit-username");
+    let formData = new FormData();
     formData.append("username", el.value)
-
     fetch(`update-username/`, {
         method: 'POST',
         headers: {
@@ -28,13 +26,13 @@ function handleUserNameBlur() {
             return response.json();
         })
         .then(data => {
-            var errEl = document.getElementById("update-username-error")
+            let errEl = document.getElementById("update-username-error")
             if (errEl) {
                 errEl.remove()
             }
             if (data.error !== '') {
-                var parentElement = document.getElementById("profile-info");
-                var spanElement = document.createElement("span");
+                let parentElement = document.getElementById("profile-info");
+                let spanElement = document.createElement("span");
                 spanElement.textContent = data.error;
                 spanElement.style.color = 'red';
                 spanElement.setAttribute("id", "update-username-error")
@@ -42,10 +40,10 @@ function handleUserNameBlur() {
                 el.focus();
             } else {
                 el.style.display = 'none'
-                var username = document.getElementById("username");
+                let username = document.getElementById("username");
                 username.innerText = el.value
                 username.style.display = 'inline';
-                var parts = window.location.pathname.split('/')
+                let parts = window.location.pathname.split('/')
                 parts[parts.length - 2] = el.value
                 history.replaceState(null, "User Profile Page", parts.join('/'));
             }
@@ -57,14 +55,14 @@ function handleUserNameBlur() {
 }
 
 
-
 document.addEventListener('DOMContentLoaded', function() {
     const followButton = document.getElementById('follow-btn');
     if (followButton) {
         followButton.addEventListener('click', function() {
-            const selfUsername = this.getAttribute('data-username');
-            const targetUsername = _getURLTagetUsername()
-            fetch(`api/user/${selfUsername}/followerOf/${targetUsername}}/`, {
+            const selfUsername = _getURLSelfUsername();
+            const targetUsername = _getURLTargetUsername();
+
+            fetch(`/api/user/${selfUsername}/followerOf/${targetUsername}/`, {
                 method: 'POST',
                 headers: {
                     'X-CSRFToken': getCookie('csrftoken'),
@@ -74,8 +72,9 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(response => {
                 if (response.ok) {
                     followButton.style.display = 'none';
+                    alert("Follow Success!");
                 } else {
-                    alert("Something went wrong.");
+                    alert("Already Followed...");
                 }
             })
             .catch(error => console.error('Error:', error));
@@ -83,8 +82,28 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
+function _getURLTargetUsername() {
+    const pathSections = window.location.pathname.split('/').filter(Boolean);;
+    return pathSections[pathSections.length - 1];
+}
 
-function _getURLTagetUsername() {
-    const pathSections = window.location.pathname.split('/');
-    return pathSections[-1];
+function _getURLSelfUsername() {
+    const pathSections = window.location.pathname.split('/').filter(Boolean);;
+    return pathSections[pathSections.length - 2];
+}
+
+
+function getCookie(name){
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
 }

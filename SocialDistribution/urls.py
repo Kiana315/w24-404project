@@ -20,7 +20,6 @@ urlpatterns = [
     path('logout/', LogoutView.as_view(), name='PAGE_Logout'),
     path("signup/", signupView, name="PAGE_Signup"),
     path("friendPosts/<str:username>/", FriendPostsView.as_view(), name="PAGE_FriendPosts"),
-    path("profile/<str:username>/", profileView, name="PAGE_Profile"),
     path("inbox/<str:username>/", InboxView.as_view(), name="PAGE_Inbox"),
     path("posts/<int:post_id>/", PostDetailView.as_view(), name="PAGE_postDetail"),
 
@@ -29,6 +28,8 @@ urlpatterns = [
     # GET Self User/Profile Info        --> Test Success
     path("api/user/<str:user1_id>/<str:user2_id>/", UserAPIView.as_view(), name="API_USER_TWO"),
     # GET Other's User/Profile Info     --> Test Success
+    path("profile/<str:username>/", profileView, name="PAGE_Profile"),
+    path("profile/<str:selfUsername>/<str:targetUsername>/", otherProfileView, name="PAGE_OtherProfile"),
     path("profile/<str:username>/upload-avatar/", upload_avatar, name="API_UploadAvatar"),
     path("profile/<str:username>/update-bio/", update_bio, name="API_UpdateBio"),
     path("profile/<str:username>/update-username/", update_username, name="API_UpdateUsername"),
@@ -36,24 +37,17 @@ urlpatterns = [
 
     # Friend API System:
     path('search/', views.search_user, name='PAGE_SearchUser'),
-    path('api/user/<str:user1_id>/<str:user2_id>/', UserAPIView.as_view(), name='API_USER_TWO'),
     path('profile/<str:username>/followers/', FollowerView.as_view(), name='PAGE_FollowersList'),
     path('profile/<str:username>/following/', FollowingView.as_view(), name='PAGE_FollowingList'),
     path('profile/<str:username>/friends/', FriendView.as_view(), name='PAGE_FriendList'),
 
-    path("api/user/<str:username>/followers/", FollowersAPIView.as_view(), name="API_GETFollowers"),
-    # GET User FollowerList     --> Test Success
-    path("api/user/<str:username>/following/", FollowingAPIView.as_view(), name="API_GETFollowing"),
-    # GET User FollowerList     --> Test Success
-    path("api/user/<str:username>/friends/", FriendsAPIView.as_view(), name="API_GETFriends"),
-    # GET User FriendList       --> Test Success
+    path("api/user/<str:username>/followers/", FollowersAPIView.as_view(), name="API_GETFollowers"),        # GET User FollowerList     --> Test Success
+    path("api/user/<str:username>/following/", FollowingAPIView.as_view(), name="API_GETFollowing"),        # GET User FollowerList     --> Test Success
+    path("api/user/<str:username>/friends/", FriendsAPIView.as_view(), name="API_GETFriends"),              # GET User FriendList       --> Test Success
 
-    path('api/user/<int:user1_id>/followerOf/<int:user2_id>/', CreateFollowerAPIView.as_view(),
-         name='API_POSTFollowerOf'),  # POST Create FriendList
-    path('api/user/<int:user1_id>/following/<int:user2_id>/', CreateFollowingAPIView.as_view(),
-         name='API_POSTFollowing'),  # POST Create FriendList
-    path('api/user/<int:user1_id>/friend/<int:user2_id>/', createFriendshipAPIView, name='API_POSTFriend'),
-    # POST Create FriendList    --> ??
+    path('api/user/<str:selfUsername>/followerOf/<str:targetUsername>/', CreateFollowerAPIView.as_view(), name='API_POSTFollowerOf'),       # POST Create FollowerOf Case     --> Test Success
+    path('api/user/<str:selfUsername>/following/<str:targetUsername>/', CreateFollowingAPIView.as_view(), name='API_POSTFollowing'),        # POST Create Following Case
+    path('api/user/<str:selfUsername>/friend/<str:targetUsername>/', createFriendshipAPIView, name='API_POSTFriend'),                       # POST Create Friend Case
 
     # Post API System:
     path("api/pps/", PPsAPIView.as_view(), name="API_PPs"),                                                     # GET PublicPostsList       --> Test Success

@@ -437,7 +437,7 @@ class CreateFollowingAPIView(APIView):
         target_user = get_object_or_404(User, username=targetUsername)
         if self_user != target_user:
             try:
-                Following.objects.create(user=self_user, following=target_user)
+                Following.objects.create(user=target_user, following=self_user)
                 return Response(status=status.HTTP_201_CREATED)
             except IntegrityError:
                 return Response({"detail": "Already following."}, status=status.HTTP_400_BAD_REQUEST)

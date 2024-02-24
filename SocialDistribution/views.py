@@ -58,7 +58,7 @@ def signupView(request):
                 user.save()
                 user = authenticate(username=username, password=password)
                 login(request, user)
-                return redirect('login')
+                return redirect('PAGE_Login')
         else:
             messages.error(request, "Passwords do not match")
             return render(request, 'signup.html')

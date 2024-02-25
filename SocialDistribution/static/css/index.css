@@ -198,7 +198,9 @@ body {
     justify-content: center; 
     display: flex;
 }
-
+.interact-container button:hover {
+    background-color: var(--icon-hover-bg-color);
+}
 
 a {
     text-decoration: none;
@@ -215,9 +217,7 @@ a {
     cursor: pointer;
     margin-right: 30px;
     margin-top: 10px;
-    
 }
-
 
 
 /* Floating Action Button */

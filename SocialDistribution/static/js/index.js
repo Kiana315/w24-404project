@@ -57,55 +57,103 @@ document.addEventListener('DOMContentLoaded', () => {
                 postElement.innerHTML += interactionHTML;
                 postContainer.appendChild(postElement);
 
-                // Event listeners for like and comment buttons
-                const likeButton = postElement.querySelector('.like-btn');
-                const commentButton = postElement.querySelector('.comment-btn');
                 
-
-                
-
-                commentButton.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    commentBox.style.display = commentBox.style.display === 'none' ? 'block' : 'none';
-                });
-                likeButton.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    console.log('Like button clicked for post:', post.id);
+                // Event listeners for like button
+                const likeButton = postElement.querySelector(`#like-${post.id}`);
+                likeButton.addEventListener('click', function() {
+                    console.log("like clicked",`api/posts/${post.id}/likes/`);
+                    // 点赞操作的 AJAX 请求
+                    // 更新点赞计数
                     fetch(`/api/posts/${post.id}/likes/`, {
                         method: 'POST',
-                        headers: {'Content-Type': 'application/json'},
-                        body: JSON.stringify({}),
-                    })
-                    .then(response => {
-                        if (response.ok) {
-                            console.log('>> Like Sent Successfully;');
-                        } else {
-                            console.log('>> Like Sent Unsuccessfully;');
+                        headers: {
+                            'X-CSRFToken': getCookie('csrftoken'), 
+                            'Content-Type': 'application/json'
                         }
                     })
-                    .catch(error => console.error('Error:', error));
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.status === 'success') {
+                            // 更新页面上的点赞计数
+                            const likeCountSpan = postElement.querySelector(`#like-${post.id} .like-count`);
+                            likeCountSpan.textContent = data.likes_count; // 假设后端返回更新后的点赞计数
+                        } else {
+                            // 处理错误情况
+                            console.error('Error:', data.error);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
                 });
 
-                const submitCommentButton = commentBox.querySelector('.submit-comment');
-                submitCommentButton.addEventListener('click', () => {
-                    const commentText = commentBox.querySelector('.comment-text').value;
-                    console.log('Comment submitted for post:', post.id, 'Comment:', commentText);
-                    fetch(`/api/posts/${post.id}/comments/`, {
-                        method: 'POST',
-                        headers: {'Content-Type': 'application/json'},
-                        body: JSON.stringify({ text: commentText }),
-                    })
-                    .then(response => {
-                        if (response.ok) {
-                            console.log('>> Comment Sent Successfully;');
-                        } else {
-                            console.log('>> Comment Sent Unsuccessfully;');
-                        }
-                    })
-                    .catch(error => console.error('Error:', error));
+
+                // Event listeners for like button
+                const commentButton = postElement.querySelector(`#comment-${post.id}`);
+                commentButton.addEventListener('click', function() {
+                    console.log("comment clicked");
+                    // 评论操作的 AJAX 请求
+                    // 更新评论计数
                 });
+
+                
+
+                // commentButton.addEventListener('click', (e) => {
+                //     e.stopPropagation();
+                //     commentBox.style.display = commentBox.style.display === 'none' ? 'block' : 'none';
+                // });
+                // likeButton.addEventListener('click', (e) => {
+                //     e.stopPropagation();
+                //     console.log('Like button clicked for post:', post.id);
+                //     fetch(`/api/posts/${post.id}/likes/`, {
+                //         method: 'POST',
+                //         headers: {'Content-Type': 'application/json'},
+                //         body: JSON.stringify({}),
+                //     })
+                //     .then(response => {
+                //         if (response.ok) {
+                //             console.log('>> Like Sent Successfully;');
+                //         } else {
+                //             console.log('>> Like Sent Unsuccessfully;');
+                //         }
+                //     })
+                //     .catch(error => console.error('Error:', error));
+                // });
+
+                // const submitCommentButton = commentBox.querySelector('.submit-comment');
+                // submitCommentButton.addEventListener('click', () => {
+                //     const commentText = commentBox.querySelector('.comment-text').value;
+                //     console.log('Comment submitted for post:', post.id, 'Comment:', commentText);
+                //     fetch(`/api/posts/${post.id}/comments/`, {
+                //         method: 'POST',
+                //         headers: {'Content-Type': 'application/json'},
+                //         body: JSON.stringify({ text: commentText }),
+                //     })
+                //     .then(response => {
+                //         if (response.ok) {
+                //             console.log('>> Comment Sent Successfully;');
+                //         } else {
+                //             console.log('>> Comment Sent Unsuccessfully;');
+                //         }
+                //     })
+                //     .catch(error => console.error('Error:', error));
+                // });
             });
         })
         .catch(error => console.error('Error:', error));
 })
 
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}

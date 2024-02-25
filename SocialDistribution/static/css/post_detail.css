@@ -1,14 +1,13 @@
-body, html {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    background-color: #f4f4f4;
-    font-family: Arial, sans-serif;
-    background-image: url('../../static/images/post-bg.jpg');
+body  {
+    background: url("../images/index-bg.jpg");
     background-size: cover;
     background-position: center center;
     background-repeat: no-repeat;
     background-attachment: fixed;
+    position: relative;
+    display: flex;           
+    flex-direction: column; 
+    margin: 0;
 }
 
 .post-container {

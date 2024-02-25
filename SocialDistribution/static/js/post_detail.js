@@ -282,7 +282,8 @@ function deletePost(button) {
             }
         }).then(response => {
             if (response.status === 204) {
-                window.location.reload();
+                window.location.href = '/';
+                
             } else {
                 alert("Something went wrong.");
             }

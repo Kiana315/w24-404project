@@ -9,16 +9,24 @@ class PostSerializer(serializers.ModelSerializer):
     likes_count = serializers.SerializerMethodField()
     is_draft = serializers.BooleanField(default=False)
 
+    is_shared = serializers.SerializerMethodField() 
+    shared_post_id = serializers.IntegerField(source='shared_post.id', read_only=True)
+    shared_post_title = serializers.CharField(source='shared_post.title', read_only=True)
+
     class Meta:
         model = Post
         fields = [
             'id', 'author', 'username', 'title', 'content', 'image', 'visibility',
-            'date_posted', 'last_modified', 'likes_count', 'avatar', 'is_draft'
+            'date_posted', 'last_modified', 'likes_count', 'avatar', 'is_draft',
+            'is_shared', 'shared_post_id', 'shared_post_title',
         ]
         extra_kwargs = {'author': {'read_only': True}}
 
     def get_likes_count(self, obj):
         return Like.objects.filter(post=obj).count()
+    
+    def get_is_shared(self, obj):
+        return obj.shared_post is not None
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -45,7 +53,6 @@ class LikeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Like
         fields = ['id', 'post', 'liker', 'liker_username', 'date_liked']
-
 
 class FollowerSerializer(serializers.ModelSerializer):
     follower = UserSerializer(read_only=True)

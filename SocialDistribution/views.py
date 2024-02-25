@@ -10,10 +10,12 @@ from django.shortcuts import get_object_or_404
 from django.views.generic import TemplateView, DetailView
 from django.db.models import Q
 from django.http import JsonResponse
+from django.views.decorators.http import require_POST
 
 # REST Pattern:
 from rest_framework import generics, status
 from rest_framework.exceptions import ValidationError
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -270,6 +272,36 @@ class LikeAPIView(generics.ListCreateAPIView):
             'likes_count': likes_count,
         }
         return Response(response_data, status=status.HTTP_201_CREATED)
+
+def check_like_status(request, post_id):
+    post = get_object_or_404(Post, pk=post_id)
+    user = request.user
+
+    has_liked = Like.objects.filter(post=post, liker=user).exists()
+
+    return JsonResponse({'has_liked': has_liked})
+
+class SharePostView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, post_id):
+        original_post = get_object_or_404(Post, pk=post_id)
+
+        # check if the post is friends-only
+        if original_post.visibility != 'PUBLIC':
+            raise PermissionDenied('This post cannot be shared as it is not public.')
+        # create a new post object
+        new_post = Post.objects.create(
+            author=request.user,
+            title=original_post.title,
+            content=original_post.content,  # could add something more to show this is a repost
+            image=original_post.image,
+            shared_post=original_post,
+            # add other stuff as needed
+        )
+
+        return Response({'success': True, 'post_id': new_post.pk}, status=status.HTTP_201_CREATED)
+
 
 
 """

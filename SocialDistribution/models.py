@@ -1,9 +1,10 @@
 from django.db import models
 from django.conf import settings
 from django.contrib.auth.models import AbstractUser
-from django.db import models
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
+from django.db.models import Q
+
 
 
 class User(AbstractUser):
@@ -14,6 +15,12 @@ class User(AbstractUser):
     username = models.CharField(max_length=150, unique=True)
     email = models.EmailField()
     avatar = models.ImageField(upload_to='avatars/', default="default_avatar.jpg")
+
+    def is_friend(self, other_user):
+        return Friend.objects.filter(
+            Q(user1=self, user2=other_user) | Q(user1=other_user, user2=self)
+        ).exists()
+
     @property
     def avatar_url(self):
         return self.avatar.url if self.avatar else ""
@@ -32,6 +39,7 @@ class Post(models.Model):
     date_posted = models.DateTimeField(auto_now_add=True)
     last_modified = models.DateTimeField(auto_now=True)
     is_draft = models.BooleanField(default=False)
+    shared_post = models.ForeignKey('self', on_delete=models.CASCADE, related_name='shared_posts', null=True, blank=True)
     ordering = ['-date_posted']
 
 

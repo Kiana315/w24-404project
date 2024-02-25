@@ -11,6 +11,15 @@ document.addEventListener('DOMContentLoaded', function() {
     const commentForm = document.getElementById('comment-form');
     const submitCommentButton = document.getElementById('submit-comment');
     const commentInput = document.getElementById('comment-input');
+    const shareButton = document.getElementById('share-button');
+    var shareModal = document.getElementById('shareModal');
+    var closeSpan = document.getElementsByClassName('close_share');
+    var confirmShare = document.getElementById('confirmShare');
+    var shareText = document.getElementById('shareText');
+
+    fetchComments();
+
+    checkLikeStatusAndUpdateIcon(postId);
 
     moreOptionsButton.addEventListener('click', function() {
         if (optionsContainer.style.display === 'none') {
@@ -22,7 +31,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     if (likeButton) {
         likeButton.addEventListener('click', function() {
-            const likeCount = parseInt(likeCountElement.textContent, 10);
+            // const likeCount = parseInt(likeCountElement.textContent, 10);
 
             console.log('Like button clicked for post:', postId);
 
@@ -36,10 +45,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
-                return response.json(); 
+                checkLikeStatusAndUpdateIcon(postId);   
             })
             .then(data => {
-                likeCountElement.textContent = data.likes_count; 
+                fetchLikes(); 
+                // likeCountElement.textContent = data.likes_count; 
                 likeButton.classList.add('liked');
             })
             .catch(error => {
@@ -88,10 +98,131 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     }
+
+    if (shareButton) {
+        shareButton.addEventListener('click', function() {
+            shareModal.style.display = "block";
+        });
+    }
+    
+    closeSpan.onclick = function() {
+        shareModal.style.display = "none";
+    }
+    
+    // when user clicks the outside of the model, close the model
+    window.onclick = function(event) {
+        if (event.target == shareModal) {
+            shareModal.style.display = "none";
+        }
+    }
+    
+    confirmShare.onclick = function() {
+        // type thoughts of the post
+        var text = shareText.value;
+    
+        fetch(`/api/posts/${postId}/share/`, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': getCookie('csrftoken'),
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ text: text })
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}, statusText: ${response.statusText}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            if(data.success) {
+                console.log('Post shared successfully', data.post_id);
+                // Update UI design to see repost style
+            } else {
+                console.error('Failed to share the post');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert(error.message);
+        });
+    
+        shareModal.style.display = "none";
+        shareText.value = '';
+    }
+    
+    
 });
 
+function checkLikeStatusAndUpdateIcon(postId) {
+    fetch(`/api/posts/${postId}/check-like/`)
+        .then(response => response.json())
+        .then(data => {
+            updateLikeIcon(data.has_liked);
+        })
+        .catch(error => console.error('Error:', error));
+}
+
+function updateLikeIcon(isLiked) {
+    const likeIcon = document.getElementById('like-icon');
+
+    if (isLiked) {
+        likeIcon.setAttribute('name', 'heart');
+        likeIcon.style.color = 'red';
+    } else {
+        likeIcon.setAttribute('name', 'heart-outline');
+    }
+}
+
+function fetchLikes() {
+    const postContainer = document.querySelector('.post-container');
+    if (!postContainer) {
+        console.log('Post container not found, skipping likes fetch.');
+        return;
+    }
+
+    const postId = postContainer.getAttribute('data-post-id');
+    if (!postId) {
+        console.error('No post ID found for fetching likes.');
+        return;
+    }
+
+    fetch(`/api/posts/${postId}/likes/`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}, statusText: ${response.statusText}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            updateLikesDisplay(data.length);
+        })
+        .catch(error => {
+            console.error('Error fetching likes:', error);
+        });
+}
+
+function updateLikesDisplay(likesCount) {
+    console.log('Updating likes count:', likesCount);
+    const likesCountElement = document.getElementById('like-count');
+    if (likesCountElement) {
+        likesCountElement.textContent = likesCount;
+    }
+}
+
 function fetchComments() {
-    const postId = document.querySelector('.post-container').getAttribute('data-post-id');
+    const postContainer = document.querySelector('.post-container');
+    if (!postContainer) {
+        console.log('Post container not found, skipping comments fetch.');
+        return;
+    }
+
+    const postId = postContainer.getAttribute('data-post-id');
+    if (!postId) {
+        console.error('No post ID found for fetching comments.');
+        return;
+    }
+
     fetch(`/api/posts/${postId}/comments/`)
         .then(response => {
             if (!response.ok) {
@@ -104,7 +235,7 @@ function fetchComments() {
         })
         .catch(error => {
             console.error('Error:', error);
-            console.log('Error message:', error.message);
+            console.log('Error message:', error.message);   
             alert(error.message);
         });
 }
@@ -166,8 +297,6 @@ function deletePost() {
         }).catch(error => console.error('Error:', error));
     }
 }
-
-
 
 function getCookie(name) {
     let cookieValue = null;

@@ -33,10 +33,14 @@
         <!-- Add more buttons as needed -->
     </div>
 
-
-    <div class="user-info" onclick="redirectProfile()">
+    <div class="user-info">
+        {% if post.author.avatar %}
         <img src="{{ post.author.avatar.url }}" alt="User Avatar" class="user-avatar" width="50" height="50">
-        <span class="user-name" id="userName">{{ post.author.username }}</span>
+    {% else %}
+        <img src="{% static 'images/default_avatar.png' %}" alt="Default Avatar" class="user-avatar" width="50" height="50">
+    {% endif %}
+    
+        <span class="user-name">{{ post.author.username }}</span>
     </div>
     <h1 class="post-title" id="postTitle">{{ post.title }}</h1>
     <div class="scrollable-content">
@@ -82,11 +86,20 @@
                 <button id="submit-comment" class="action">Post Comment</button>
             </div>
             <button id="like-button" class="action">
-                <ion-icon size="small" name="heart-outline" style="margin-right: 8px;"></ion-icon>
+                <ion-icon id="like-icon" size="small" name="heart-outline" style="margin-right: 8px;"></ion-icon>
                 Like
                 <span id="like-count">{{ likes_count }}</span>
             </button>
         {% endif %}
+    </div>
+</div>
+
+<div id="shareModal" class="modal">
+    <div class="modal-content">
+      <span class="close" id="close_share">&times;</span>
+      <h2>Share This Post</h2>
+      <textarea id="shareText" placeholder="Add your thoughts to this post..."></textarea>
+      <button id="confirmShare">Share</button>
     </div>
 </div>
 

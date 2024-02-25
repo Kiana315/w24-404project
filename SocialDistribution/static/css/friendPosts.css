@@ -18,9 +18,13 @@ body {
     background-position: center center;
     background-repeat: no-repeat;
     background-attachment: fixed;
+    position: relative;
+    display: flex;           
+    flex-direction: column; 
+    margin: 0;
 }
 
-.navbar {
+/* .navbar {
     list-style: none;
     overflow: hidden;
     display: flex;
@@ -60,7 +64,7 @@ body {
     background-color: #ddd;
     color: black;
     border-radius: 10px;
-}
+} */
 
 .user-avatar {
     height: 30px;

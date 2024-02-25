@@ -2,7 +2,13 @@ body {
     font-family: 'Arial', sans-serif;
     background-image: url('../../static/images/inbox-bg.jpg');
     background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
     background-attachment: fixed;
+    position: relative;
+    display: flex;           
+    flex-direction: column; 
+    margin: 0;
 }
 
 .inbox-container {
@@ -20,7 +26,7 @@ h1, h2 {
 }
 
 
-.navbar {
+/* .navbar {
     list-style: none;
     overflow: hidden;
     display: flex;
@@ -33,19 +39,17 @@ h1, h2 {
     color: #ffffff;
     position: relative;
 }
-
-.navbar ul {
-    list-style-type: none;
+.navbar ul{
+    margin: 10px 10px;
     display: flex;
+    list-style-type: none;
     justify-content: center;
     align-items: center;
     text-align: center;
 }
-
 .navbar li {
-    padding: 0px 15px;
+    padding: 0 15px;
 }
-
 .navbar a {
     display: block;
     color: #ffffff;
@@ -58,12 +62,11 @@ h1, h2 {
     text-decoration: none;
     font-size: 15px;
 }
-
 .navbar a:hover {
     background-color: #ddd;
     color: black;
     border-radius: 10px;
-}
+} */
 
 /* .user-avatar {
     height: 30px;

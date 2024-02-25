@@ -1,0 +1,37 @@
+
+<nav class="navbar">
+    <ul>
+        <li><a href="/">
+            <ion-icon name="home" size="large"></ion-icon>
+        </a></li>
+        {% if user.is_authenticated %}
+            <li><a href="{% url 'PAGE_FriendPosts' username=user.username %}">
+                <ion-icon name="people" size="large"></ion-icon>
+            </a></li>
+            <li><a href="{% url 'PAGE_Inbox' username=user.username %}">
+                <ion-icon name="mail" size="large" target="_blank"></ion-icon>
+            </a></li>
+            {% if user.avatar %}
+                <li><a href="{% url 'PAGE_Profile' username=user.username %}"><img class="user-avatar"
+                                                                                    src="{{ user.avatar.url }}"
+                                                                                    alt="User avatar"></a></li>
+            {% else %}
+                <li><a href="{% url 'PAGE_Profile' username=user.username %}">
+                    <ion-icon name="person-circle" size="large"></ion-icon>
+                </a></li>
+            {% endif %}
+        {% else %}
+            <li><a href="login/">
+                <ion-icon name="people" size="large"></ion-icon>
+            </a></li>
+            <li><a href="login/">
+                <ion-icon name="mail" size="large"></ion-icon>
+            </a></li>
+            <li><a href="login/">
+                <ion-icon name="person" size="large"></ion-icon>
+            </a></li>
+        {% endif %}
+    </ul>
+</nav>
+
+

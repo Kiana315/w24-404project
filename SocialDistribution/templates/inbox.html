@@ -9,7 +9,7 @@
 </head>
 
 <body>
-    <nav class="navbar">
+    <!-- <nav class="navbar">
         <ul>
             <li><a href="/"><ion-icon name="home" size="large"></ion-icon></a></li>
             {% if user.is_authenticated %}
@@ -26,7 +26,8 @@
                 <li><a href="login/"><ion-icon name="person" size="large"></ion-icon></a></li>
             {% endif %}
         </ul>
-    </nav>
+    </nav> -->
+    {% include 'navbar.html' %}
 
     <div class="inbox-container">
         <h1>- Your Inbox -</h1>

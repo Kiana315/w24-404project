@@ -1,7 +1,7 @@
 :root {
     --text-color: #ffffff;
     --bg-color: rgba(255, 255, 255, 0.39);
-    --btn-hover-color: #0056b3;
+    --btn-hover-color: #2f83cc;
     --btn-bg-color: #2fcccc;;
     --modal-bg-color: rgba(0,0,0,0.4);
     --modal-content-bg-color: rgba(254, 254, 254, 0.9);
@@ -21,6 +21,7 @@ body {
     position: relative;
     display: flex;           
     flex-direction: column; 
+    margin: 0;
 }
 
 .navbar {
@@ -219,6 +220,10 @@ a {
     margin-top: 10px;
 }
 
+.post-button:active,
+.post-button:hover {
+    background-color: var(--btn-hover-color);
+}
 
 /* Floating Action Button */
 #floating-button {

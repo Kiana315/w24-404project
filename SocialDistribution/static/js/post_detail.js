@@ -17,8 +17,6 @@ document.addEventListener('DOMContentLoaded', function() {
     var confirmShare = document.getElementById('confirmShare');
     var shareText = document.getElementById('shareText');
 
-    fetchComments();
-
     checkLikeStatusAndUpdateIcon(postId);
 
     moreOptionsButton.addEventListener('click', function() {

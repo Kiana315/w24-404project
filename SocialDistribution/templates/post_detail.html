@@ -15,28 +15,7 @@
             <ion-icon size="small" name="chevron-back-outline" style="margin-right: 8px;"></ion-icon>
             Back
         </button>
-        {% if request.user == post.author %}
-        <button id="more-options-button" class="more-options-button">
-            <ion-icon size="large" name="ellipsis-horizontal" style="cursor: pointer;"></ion-icon>
-        </button>
-        {% endif %}
     </div>
-
-    <!-- Make sure users can only edit their own posts -->
-    
-    <div id="options-container" class="options-container" style="display: none;">
-        <button class="option-button" id="edit-btn">
-            <ion-icon size="small" name="create-outline" style="margin-right: 8px;"></ion-icon>
-            Edit
-        </button>
-        <button class="option-button" data-post-id="{{ post.id }}" onclick="deletePost(this)">
-            <ion-icon size="small" name="trash-outline" style="margin-right: 8px;"></ion-icon>
-            Delete
-        </button>
-
-        <!-- Add more buttons as needed -->
-    </div>
-    
 
     <div class="user-info" onclick="redirectProfile()">
         {% if post.author.avatar %}
@@ -62,13 +41,13 @@
     </div>
     <div class="post-actions">
         {% if post.is_draft %}
-            <button id="edit-button" class="action" onclick="EditPost()">
+            <button id="edit-button" class="action" onclick="EditPost()" type="button">
                 <span class="material-symbols-outlined">
                     <ion-icon name="create-outline">Edit</ion-icon>
                 </span>
                 Edit
             </button>
-            <button id="delete-button" class="action" onclick="deletePost()">
+            <button id="delete-button" class="action" onclick="deletePost(this)" data-post-id="{{ post.id }}">
                 <span class="material-symbols-outlined"><ion-icon name="trash-outline">Delete</ion-icon></span>
                 Delete
             </button>
@@ -138,7 +117,7 @@
 </div>
 <script>
     function closeModal() {
-        var modal = document.getElementById('newPostModal')
+        var modal = document.getElementById('editModal')
         modal.style.display = 'none';
     }
 
@@ -151,14 +130,14 @@
         var contentInput = document.getElementById("contentInput")
         contentInput.value = postContent.innerText
 
-        const modal = document.getElementById("newPostModal");
+        const modal = document.getElementById("editModal");
         modal.style.display = 'block'
     }
 
     document.addEventListener('DOMContentLoaded', (event) => {
         // Get elements
-        const modal = document.getElementById("newPostModal");
-        const form = document.getElementById("newPostForm");
+        const modal = document.getElementById("editModal");
+        const form = document.getElementById("editForm");
         const postId = document.getElementById("postId").innerText;
 
         // Click the x to close the pop-up window
@@ -218,7 +197,7 @@
     });
 
     function sendPost() {
-        var modal = document.getElementById('newPostModal')
+        var modal = document.getElementById('editModal')
         var data = {
             title: document.getElementById("postTitle").innerText,
             content: document.getElementById("postContent").innerText,
@@ -256,34 +235,6 @@
                 // Add error message
             });
     }
-
-    function deletePost() {
-        var postId = document.getElementById("post-id").innerText
-        // Send AJAX request to server
-        fetch(`/api/posts/${postId}/`, {
-            method: 'DELETE',
-            headers: {
-                'X-CSRFToken': getCookie('csrftoken'), // Get CSRF token
-                'Content-type': 'application/json'
-            },
-            credentials: 'same-origin' // For CSRF token verification
-        }).then(response => {
-            if (response.ok) {
-                return {};
-            } else {
-                throw new Error('Something went wrong');
-            }
-        }).then(data => {
-            history.back();
-            window.onload = function () {
-                location.reload();
-            };
-        }).catch((error) => {
-            console.error('Error:', error);
-            // Add error message
-        });
-    }
-
     function redirectProfile() {
         var el = document.getElementById("userName")
         window.location = `/profile/${el.innerText}`

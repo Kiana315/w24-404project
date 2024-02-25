@@ -20,18 +20,21 @@
         </button>
     </div>
 
+    <!-- Make sure users can only edit their own posts -->
+    {% if request.user == post.author %}
     <div id="options-container" class="options-container" style="display: none;">
         <button class="option-button" id="edit-btn">
             <ion-icon size="small" name="create-outline" style="margin-right: 8px;"></ion-icon>
             Edit
         </button>
-        <button class="option-button" onclick="deletePost()">
+        <button class="option-button" data-post-id="{{ post.id }}" onclick="deletePost(this)">
             <ion-icon size="small" name="trash-outline" style="margin-right: 8px;"></ion-icon>
             Delete
         </button>
 
         <!-- Add more buttons as needed -->
     </div>
+    {% endif %}
 
     <div class="user-info">
         {% if post.author.avatar %}

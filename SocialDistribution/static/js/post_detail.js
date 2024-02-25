@@ -3,10 +3,10 @@
 document.addEventListener('DOMContentLoaded', function() {
     const moreOptionsButton = document.getElementById('more-options-button');
     const optionsContainer = document.getElementById('options-container');
-    const postContainer = document.querySelector('.post-container');
-    const postId = postContainer.getAttribute('data-post-id');
     const likeButton = document.getElementById('like-button');
     const likeCountElement = document.getElementById('like-count');
+    const postContainer = document.querySelector('.post-container');
+    const postId = postContainer.getAttribute('data-post-id');
     const commentButton = document.getElementById('comment-button');
     const commentForm = document.getElementById('comment-form');
     const submitCommentButton = document.getElementById('submit-comment');
@@ -273,24 +273,18 @@ function renderComments(comments) {
     });
 }
 
-function getPostIdFromUrl() {
-    const path = window.location.pathname;
-    const pathParts = path.split('/');  // split the url
-    const postId = pathParts[pathParts.length - 2];  // get the post ID from url
-    return postId;
-}
 
-function deletePost() {
-    const postId = getPostIdFromUrl();
+function deletePost(button) {
+    const postId = button.getAttribute('data-post-id');
     if (confirm("Are you sure you want to delete this post?")) {
-        fetch(`/posts/${postId}/delete/`, {
+        fetch(`/api/posts/${postId}/delete/`, {
             method: 'DELETE',
             headers: {
                 'X-CSRFToken': getCookie('csrftoken')
             }
         }).then(response => {
             if (response.status === 204) {
-                window.location.href = '/';
+                window.location.reload();
             } else {
                 alert("Something went wrong.");
             }

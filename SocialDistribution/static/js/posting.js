@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
         })
         .then(response => {
             if(response.ok) {
-                window.location.href = '/';
+                window.location.reload();
                 return response.json();
             } else {
                 emptyPost()

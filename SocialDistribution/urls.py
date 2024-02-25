@@ -58,8 +58,8 @@ urlpatterns = [
     path('api/posts/<int:post_id>/share/', SharePostView.as_view(), name='share_post'),
 
 
-    path('posts/<int:post_id>/delete/', delete_post, name='delete_post'),
-    path('posts/<int:post_id>/update/', update_post, name='update_post'),
+    path('api/posts/<int:post_id>/delete/', DeletePostView.as_view(), name='API_delete_post'),       # DELETE post
+    path('api/posts/<int:post_id>/update/', UpdatePostView.as_view(), name='update_post'),           # GET/PUT edit and update post
 
 
     # Inbox API System:

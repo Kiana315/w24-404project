@@ -48,8 +48,8 @@
             </a></li>
             {% if user.avatar %}
                 <li><a href="{% url 'PAGE_Profile' username=user.username %}"><img class="user-avatar"
-                                                                              src="{{ user.avatar.url }}"
-                                                                              alt="User avatar"></a></li>
+                                                                                   src="{{ user.avatar.url }}"
+                                                                                   alt="User avatar"></a></li>
             {% else %}
                 <li><a href="{% url 'PAGE_Profile' username=user.username %}">
                     <ion-icon name="person-circle" size="large"></ion-icon>
@@ -126,21 +126,21 @@
             </form>
         </div>
         <div class="follow-container">
-            <a href = "{% url 'PAGE_FollowersList' username=user.username %}">
-            <button
-                    id="follower-btn"
-                    class="top-button followers-button"
-            >
-                Followers<br/>0
-            </button>
+            <a href="{% url 'PAGE_FollowersList' username=user.username %}">
+                <button
+                        id="follower-btn"
+                        class="top-button followers-button"
+                >
+                    Followers<br/>0
+                </button>
             </a>
-            <a href = "{% url 'PAGE_FollowingList' username=user.username %}">
-            <button
-                    id="following-btn"
-                    class="top-button following-button"
-            >
-                Following<br/>0
-            </button>
+            <a href="{% url 'PAGE_FollowingList' username=user.username %}">
+                <button
+                        id="following-btn"
+                        class="top-button following-button"
+                >
+                    Following<br/>0
+                </button>
             </a>
         </div>
         {% if not user.username == request.user.username and not user.username in following_usernames %}
@@ -179,7 +179,11 @@
                             </button>
                             <button id="post-like" class="action">
                                 <ion-icon class="material-symbols-outlined" name="heart-outline"></ion-icon>
-                                Like
+                                {% if post.like_count %}
+                                    <span>{{ post.like_count }}</span>
+                                {% else %}
+                                    Like
+                                {% endif %}
                             </button>
                         </div>
 

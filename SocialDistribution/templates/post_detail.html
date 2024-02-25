@@ -9,31 +9,34 @@
     <link rel="stylesheet" href="{% static 'css/index.css' %}">
 </head>
 <body>
-    <div class="post-container" data-post-id="{{ post.id }}">
-        <div class="back-button-container">
-            <button onclick="history.back()" class="back-button">
-                <ion-icon size="small" name="chevron-back-outline" style="margin-right: 8px;"></ion-icon>
-                Back</button>
-            <button id="more-options-button" class="more-options-button">
-                <ion-icon size="large" name="ellipsis-horizontal" style="cursor: pointer;"></ion-icon>
-                </button>
-        </div>
+<div class="post-container" data-post-id="{{ post.id }}">
+    <div class="back-button-container">
+        <button onclick="history.back()" class="back-button">
+            <ion-icon size="small" name="chevron-back-outline" style="margin-right: 8px;"></ion-icon>
+            Back
+        </button>
+        <button id="more-options-button" class="more-options-button">
+            <ion-icon size="large" name="ellipsis-horizontal" style="cursor: pointer;"></ion-icon>
+        </button>
+    </div>
 
-        <div id="options-container" class="options-container" style="display: none;">
-            <button class="option-button" id="edit-btn">
-                <ion-icon size="small" name="create-outline" style="margin-right: 8px;"></ion-icon>
-                Edit</button>
-            <button class="option-button" onclick="deletePost()">
-                <ion-icon size="small" name="trash-outline" style="margin-right: 8px;"></ion-icon>
-                Delete</button>
-        
-            <!-- Add more buttons as needed -->
-        </div>
+    <div id="options-container" class="options-container" style="display: none;">
+        <button class="option-button" id="edit-btn">
+            <ion-icon size="small" name="create-outline" style="margin-right: 8px;"></ion-icon>
+            Edit
+        </button>
+        <button class="option-button" onclick="deletePost()">
+            <ion-icon size="small" name="trash-outline" style="margin-right: 8px;"></ion-icon>
+            Delete
+        </button>
+
+        <!-- Add more buttons as needed -->
+    </div>
 
 
-    <div class="user-info">
+    <div class="user-info" onclick="redirectProfile()">
         <img src="{{ post.author.avatar.url }}" alt="User Avatar" class="user-avatar" width="50" height="50">
-        <span class="user-name">{{ post.author.username }}</span>
+        <span class="user-name" id="userName">{{ post.author.username }}</span>
     </div>
     <h1 class="post-title" id="postTitle">{{ post.title }}</h1>
     <div class="scrollable-content">
@@ -262,6 +265,14 @@
             // Add error message
         });
     }
+
+    function redirectProfile() {
+        var el = document.getElementById("userName")
+        window.location = `/profile/${el.innerText}`
+        window.onload = () => {
+            window.reload();
+        }
+    }
 </script>
 
 <script type="text/javascript">
@@ -269,11 +280,11 @@
     const currentPostContent = "{{ post.content }}";
 </script>
 
-    <script src="{% static 'js/common.js' %}"></script>
-    <script src="{% static 'js/post_detail.js' %}"></script>
-    <script src="{% static 'js/editing.js' %}"></script>
-    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+<script src="{% static 'js/common.js' %}"></script>
+<script src="{% static 'js/post_detail.js' %}"></script>
+<script src="{% static 'js/editing.js' %}"></script>
+<script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 
 </body>
 </html>

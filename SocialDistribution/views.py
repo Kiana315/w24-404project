@@ -324,9 +324,14 @@ def update_username(request, username):
 
 def profileView(request, username):
     user = get_object_or_404(User, username=username)
+
+    posts = []
+    for post in Post.objects.filter(author=user, is_draft=False).order_by('-date_posted'):
+        post.like_count = post.like.count()
+        posts.append(post)
     context = {
         'user': user,
-        'posts': Post.objects.filter(author=user, is_draft=False).order_by('-date_posted')
+        'posts': posts
     }
     return render(request, 'profile.html', context)
 

@@ -36,14 +36,13 @@
     </div>
     {% endif %}
 
-    <div class="user-info">
+    <div class="user-info" onclick="redirectProfile()">
         {% if post.author.avatar %}
         <img src="{{ post.author.avatar.url }}" alt="User Avatar" class="user-avatar" width="50" height="50">
     {% else %}
         <img src="{% static 'images/default_avatar.png' %}" alt="Default Avatar" class="user-avatar" width="50" height="50">
     {% endif %}
-    
-        <span class="user-name">{{ post.author.username }}</span>
+        <span class="user-name" id="userName">{{ post.author.username }}</span>
     </div>
     <h1 class="post-title" id="postTitle">{{ post.title }}</h1>
     <div class="scrollable-content">

@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -151,7 +152,7 @@
 
     <div class="post-container">
         <div>
-            <button><a href="draft">
+            <button><a href="{% url 'API_AuthorDraft' username=user.username %}">
                 <ion-icon name="file-tray-full-outline">Post Draft</ion-icon>
             </a></button>
         </div>

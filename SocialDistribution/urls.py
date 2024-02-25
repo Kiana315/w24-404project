@@ -28,6 +28,7 @@ urlpatterns = [
     path('profile/<str:username>/followers/', FollowerView.as_view(), name='PAGE_FollowersList'),
     path('profile/<str:username>/following/', FollowingView.as_view(), name='PAGE_FollowingList'),
     path('profile/<str:username>/friends/', FriendView.as_view(), name='PAGE_FriendList'),
+    path("profile/<str:username>/draft/", author_draft_view, name="API_AuthorDraft"),
 
     path("api/user/<str:username>/followers/", FollowersAPIView.as_view(), name="API_GETFollowers"),                                        # GET User FollowerList             --> Test Success
     path("api/user/<str:username>/following/", FollowingAPIView.as_view(), name="API_GETFollowing"),                                        # GET User FollowerList             --> Test Success
@@ -45,7 +46,6 @@ urlpatterns = [
     path("profile/<str:username>/upload-avatar/", upload_avatar, name="API_UploadAvatar"),
     path("profile/<str:username>/update-bio/", update_bio, name="API_UpdateBio"),
     path("profile/<str:username>/update-username/", update_username, name="API_UpdateUsername"),
-    path("profile/<str:username>/draft/", author_draft_view, name="author-draft"),
 
     # Post API System:
     path("api/pps/", PPsAPIView.as_view(), name="API_PPs"),                                                                                 # GET PublicPostsList               --> Test Success

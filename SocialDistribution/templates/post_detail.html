@@ -103,10 +103,11 @@
     </div>
 </div>
 
-<div id="newPostModal" class="modal" style="display: none">
+<!-- Edit madal -->
+<div id="editModal" class="modal" style="display: none">
     <div class="modal-content">
         <span class="close" onclick="closeModal()">&times;</span>
-        <form id="newPostForm">
+        <form id="editForm">
             <input id="titleInput" type="text" name="title" placeholder="Title">
             <textarea id="contentInput" name="content" placeholder="Tell Something New..."></textarea>
 
@@ -125,7 +126,7 @@
                         <option value="FRIENDS">Friends-Only</option>
                     </select>
                     <button class="post-button" type="submit">Save Draft</button>
-                    <button class="post-button" type="submit">Post</button>
+                    <button class="post-button" type="submit">Post Changes</button>
                 </div>
             </div>
         </form>

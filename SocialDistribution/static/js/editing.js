@@ -1,9 +1,8 @@
 document.addEventListener('DOMContentLoaded', function() {
     const editButton = document.getElementById('edit-btn'); // 确保这个 ID 与 HTML 中的按钮 ID 匹配
-    const editModal = document.getElementById('editPostModal');
-    const closeButton = document.querySelector('.modal .close'); // 确保选择器正确
+    const editModal = document.getElementById('editModal');
+    const form = document.getElementById('editForm');
 
-    // 当点击编辑按钮时
     editButton.addEventListener('click', function() {
         // 显示编辑模态框
         editModal.style.display = 'block';
@@ -19,9 +18,9 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // 点击关闭按钮时隐藏弹出框
-    closeButton.addEventListener('click', function() {
-        editModal.style.display = 'none';
-    });
+    document.getElementsByClassName("close")[0].onclick = function() {
+        modal.style.display = "none";
+    }
 
     // 处理编辑表单的提交
     const editForm = document.getElementById('editPostForm');

@@ -14,7 +14,7 @@ class User(AbstractUser):
     bio = models.TextField(blank=True)
     username = models.CharField(max_length=150, unique=True)
     email = models.EmailField()
-    avatar = models.ImageField(upload_to='avatars/', default="default_avatar.jpg")
+    avatar = models.ImageField(upload_to='avatars/', default="avatars/default_avatar.png")
 
     def is_friend(self, other_user):
         return Friend.objects.filter(

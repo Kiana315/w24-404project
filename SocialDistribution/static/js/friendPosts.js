@@ -17,8 +17,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 const userInfoHTML = `
                     <div class="user-info">
-                        <img src="${post.author.profile_picture}" alt="profile picture" class="avatar">
-                        <div class="username">${post.author.username}</div>
+                        <img src="${post.avatar}" alt="profile avatar" class="user-avatar">
+                        <div class="username">${post.username || 'Unknown User'}</div>
+                        <div class="post-time">${formattedDate}</div>
                     </div>
                 `;
 
@@ -30,9 +31,19 @@ document.addEventListener('DOMContentLoaded', () => {
                 `;
 
                 const interactionHTML = `
-                    <div class="interactions">
-                        <button type="button" class="like-btn">Like</button>
-                        <button type="button" class="comment-btn">Comment</button>
+                    <div class="interact-container">
+                        <button id="share-${post.id}" type="button" data-post-id="${post.id}">
+                            <ion-icon size="small" name="share-outline" style="margin-right: 8px;"></ion-icon>
+                            Share <span class="share-count">${post.share_count}</span>
+                        </button>
+                        <button id="comment-${post.id}" type="button" data-post-id="${post.id}">
+                            <ion-icon size="small" name="chatbox-ellipses-outline" style="margin-right: 8px;"></ion-icon>
+                            Comment <span class="comment-count">${post.comment_count}</span>
+                        </button>
+                        <button id="like-${post.id}" type="button" data-post-id="${post.id}"> 
+                            <ion-icon size="small" name="heart-outline" style="margin-right: 8px;"></ion-icon>
+                            Like <span class="like-count">${post.like_count}</span>
+                        </button>
                     </div>
                 `;
 

@@ -30,12 +30,13 @@ document.addEventListener('DOMContentLoaded', function() {
         // 确保在这里正确获取输入框的值
         const currentUserInput = searchForm.querySelector('input[name="user1_id"]');
         const searchQueryInput = searchForm.querySelector('input[name="user2_id"]');
-
+        console.log(currentUserInput,currentUserInput);
+        
         if (!currentUserInput || !searchQueryInput) {
             console.error('Input fields not found');
             return;
         }
-
+        console.log(currentUserInput,currentUserInput);
         const currentUser = currentUserInput.value;
         const searchQuery = searchQueryInput.value;
         window.location.href = `profile/${currentUser}/${searchQuery}`;

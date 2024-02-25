@@ -136,7 +136,7 @@ class PPsAPIView(generics.ListAPIView):
 class FPsAPIView(generics.ListAPIView):
     """ [GET] Get The Username-based Friend Posts """
     serializer_class = PostSerializer
-
+    
     def get_queryset(self):
         username = self.kwargs['username']
         user = get_object_or_404(User, username=username)

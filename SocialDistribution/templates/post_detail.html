@@ -17,31 +17,31 @@
             Back
         </button>
         {% if request.user == post.author %}
-        <button id="more-options-button" class="more-options-button">
-            <ion-icon size="large" name="ellipsis-horizontal" style="cursor: pointer;"></ion-icon>
+            <button id="more-options-button" class="more-options-button">
+                <ion-icon size="large" name="ellipsis-horizontal" style="cursor: pointer;"></ion-icon>
             </button>
         {% endif %}
     </div>
 
-
     <div id="options-container" class="options-container" style="display: none;">
-        <button class="option-button"  id="edit-btn">
+        <button class="option-button" id="edit-btn">
             <ion-icon size="small" name="create-outline" style="margin-right: 8px;"></ion-icon>
-            Edit</button>
+            Edit
+        </button>
         <button class="option-button" data-post-id="{{ post.id }}" onclick="deletePost(this)">
             <ion-icon size="small" name="trash-outline" style="margin-right: 8px;"></ion-icon>
-            Delete</button>
+            Delete
+        </button>
         <!-- Add more buttons as needed -->
     </div>
 
-    
-
     <div class="user-info" onclick="redirectProfile()">
         {% if post.author.avatar %}
-        <img src="{{ post.author.avatar.url }}" alt="User Avatar" class="user-avatar" width="50" height="50">
-    {% else %}
-        <img src="{% static 'images/default_avatar.png' %}" alt="Default Avatar" class="user-avatar" width="50" height="50">
-    {% endif %}
+            <img src="{{ post.author.avatar.url }}" alt="User Avatar" class="user-avatar" width="50" height="50">
+        {% else %}
+            <img src="{% static 'images/default_avatar.png' %}" alt="Default Avatar" class="user-avatar" width="50"
+                 height="50">
+        {% endif %}
         <span class="user-name" id="userName">{{ post.author.username }}</span>
     </div>
     <h1 class="post-title" id="postTitle">{{ post.title }}</h1>
@@ -98,10 +98,10 @@
 
 <div id="shareModal" class="modal">
     <div class="modal-content">
-      <span class="close" id="close_share">&times;</span>
-      <h2>Share This Post</h2>
-      <textarea id="shareText" placeholder="Add your thoughts to this post..."></textarea>
-      <button id="confirmShare">Share</button>
+        <span class="close" id="close_share">&times;</span>
+        <h2>Share This Post</h2>
+        <textarea id="shareText" placeholder="Add your thoughts to this post..."></textarea>
+        <button id="confirmShare">Share</button>
     </div>
 </div>
 
@@ -254,6 +254,7 @@
                 // Add error message
             });
     }
+
     function redirectProfile() {
         var el = document.getElementById("userName")
         window.location = `/profile/${el.innerText}`

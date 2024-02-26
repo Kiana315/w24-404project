@@ -1,6 +1,6 @@
 'use strict';
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     const moreOptionsButton = document.getElementById('more-options-button');
     const optionsContainer = document.getElementById('options-container');
     const likeButton = document.getElementById('like-button');
@@ -19,16 +19,18 @@ document.addEventListener('DOMContentLoaded', function() {
 
     checkLikeStatusAndUpdateIcon(postId);
 
-    moreOptionsButton.addEventListener('click', function() {
-        if (optionsContainer.style.display === 'none') {
-            optionsContainer.style.display = 'block';
-        } else {
-            optionsContainer.style.display = 'none';
-        }
-    });
+    if (moreOptionsButton) {
+        moreOptionsButton.addEventListener('click', function () {
+            if (optionsContainer.style.display === 'none') {
+                optionsContainer.style.display = 'block';
+            } else {
+                optionsContainer.style.display = 'none';
+            }
+        });
+    }
 
     if (likeButton) {
-        likeButton.addEventListener('click', function() {
+        likeButton.addEventListener('click', function () {
             // const likeCount = parseInt(likeCountElement.textContent, 10);
 
             console.log('Like button clicked for post:', postId);
@@ -39,30 +41,31 @@ document.addEventListener('DOMContentLoaded', function() {
                     'X-CSRFToken': getCookie('csrftoken') // Get CSRF token
                 },
             })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                checkLikeStatusAndUpdateIcon(postId);   
-            })
-            .then(data => {
-                fetchLikes(); 
-                // likeCountElement.textContent = data.likes_count; 
-                likeButton.classList.add('liked');
-            })
-            .catch(error => {
-                console.error('There was a problem with the fetch operation:', error);
-            });
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    checkLikeStatusAndUpdateIcon(postId);
+                })
+                .then(data => {
+                    fetchLikes();
+                    // likeCountElement.textContent = data.likes_count;
+                    likeButton.classList.add('liked');
+                })
+                .catch(error => {
+                    console.error('There was a problem with the fetch operation:', error);
+                });
         });
     }
 
     if (commentButton) {
-        commentButton.addEventListener('click', function() {
+        fetchComments();
+        commentButton.addEventListener('click', function () {
             commentForm.style.display = 'block'; // Show the comment form
         });
 
         // Event listener for submitting a comment
-        submitCommentButton.addEventListener('click', function() {
+        submitCommentButton.addEventListener('click', function () {
             const commentText = commentInput.value.trim();
 
             if (commentText === '') {
@@ -77,81 +80,81 @@ document.addEventListener('DOMContentLoaded', function() {
                     'X-CSRFToken': getCookie('csrftoken'),
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ comment_text: commentText })
+                body: JSON.stringify({comment_text: commentText})
             })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}, statusText: ${response.statusText}`);
-                }
-            })
-            .then(() => {
-                fetchComments();
-                commentInput.value = ''; // Clear the input field
-                commentForm.style.display = 'none'; // Hide the comment form again
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                console.log('Error message:', error.message);
-                alert(error.message);
-            });
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}, statusText: ${response.statusText}`);
+                    }
+                })
+                .then(() => {
+                    fetchComments();
+                    commentInput.value = ''; // Clear the input field
+                    commentForm.style.display = 'none'; // Hide the comment form again
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    console.log('Error message:', error.message);
+                    alert(error.message);
+                });
         });
     }
 
     if (shareButton) {
-        shareButton.addEventListener('click', function() {
+        shareButton.addEventListener('click', function () {
             shareModal.style.display = "block";
         });
     }
-    
-    closeSpan.onclick = function() {
+
+    closeSpan.onclick = function () {
         shareModal.style.display = "none";
     }
-    
+
     // when user clicks the outside of the model, close the model
-    window.onclick = function(event) {
+    window.onclick = function (event) {
         if (event.target == shareModal) {
             shareModal.style.display = "none";
         }
     }
-    
-    confirmShare.onclick = function() {
+
+    confirmShare.onclick = function () {
         // type thoughts of the post
         var text = shareText.value;
-    
+
         fetch(`/api/posts/${postId}/share/`, {
             method: 'POST',
             headers: {
                 'X-CSRFToken': getCookie('csrftoken'),
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ text: text })
+            body: JSON.stringify({text: text})
         })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}, statusText: ${response.statusText}`);
-            }
-            return response.json();
-        })
-        .then(data => {
-            if(data.success) {
-                console.log('Post shared successfully', data.post_id);
-                showNotification('Post shared successfully!');
-                // Update UI design to see repost style
-            } else {
-                console.error('Failed to share the post');
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}, statusText: ${response.statusText}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    console.log('Post shared successfully', data.post_id);
+                    showNotification('Post shared successfully!');
+                    // Update UI design to see repost style
+                } else {
+                    console.error('Failed to share the post');
+                    showNotification('Failed to share the post, please try again later!');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
                 showNotification('Failed to share the post, please try again later!');
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            showNotification('Failed to share the post, please try again later!');
-        });
-    
+            });
+
         shareModal.style.display = "none";
         shareText.value = '';
     }
-    
-    
+
+
 });
 
 function checkLikeStatusAndUpdateIcon(postId) {
@@ -235,14 +238,14 @@ function fetchComments() {
         })
         .catch(error => {
             console.error('Error:', error);
-            console.log('Error message:', error.message);   
+            console.log('Error message:', error.message);
             alert(error.message);
         });
 }
 
 function renderComments(comments) {
     const commentsContainer = document.getElementById('comments-container');
-    commentsContainer.innerHTML = ''; 
+    commentsContainer.innerHTML = '';
 
     comments.forEach(comment => {
         // Create Content Container
@@ -250,15 +253,15 @@ function renderComments(comments) {
         commentElement.classList.add('comment');
 
         const avatarElement = document.createElement('img');
-        avatarElement.src = comment.commenter_avatar_url; 
+        avatarElement.src = comment.commenter_avatar_url;
         avatarElement.alt = 'User Avatar';
-        avatarElement.classList.add('comment-avatar'); 
+        avatarElement.classList.add('comment-avatar');
 
         // add username
         const commenterNameElement = document.createElement('h5');
         commenterNameElement.textContent = comment.commenter_username;
         commenterNameElement.classList.add('commenter-name');
-        
+
         // add comment text
         const commentTextElement = document.createElement('p');
         commentTextElement.textContent = comment.comment_text;
@@ -285,7 +288,7 @@ function deletePost(button) {
         }).then(response => {
             if (response.status === 204) {
                 window.location.href = '/';
-                
+
             } else {
                 alert("Something went wrong.");
             }
@@ -296,12 +299,12 @@ function deletePost(button) {
 function showNotification(message) {
     console.log('showNotification called with message:', message);
     var notification = document.getElementById('notification');
-    console.log(notification); 
+    console.log(notification);
     notification.textContent = message;
     notification.style.display = 'block';
 
     // Hide the notification after 3 seconds
-    setTimeout(function() {
+    setTimeout(function () {
         console.log('Hiding notification');
         notification.style.display = 'none';
     }, 3000);

@@ -50,13 +50,18 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log(currentUser, searchQuery);
 
         
-        
         fetch(`/search?q=${encodeURIComponent(searchQuery)}`)
             .then(response => response.json())
             .then(data => {
                 if (data.url) {
                     // User exist, redirect to the profile
-                    window.location.href = `profile/${currentUser}/${searchQuery}`;
+                    fetch(`profile/${currentUser}/${searchQuery}`)
+                        .then(response => {
+                            if (!response.ok) {
+                                alert("User not found");
+                            }
+                             window.location.href = `profile/${currentUser}/${searchQuery}`;
+                        })
                 } else {
                     // user not exist
                     alert("User not found");

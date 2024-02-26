@@ -168,7 +168,7 @@ class FPsAPIView(generics.ListAPIView):
             Q(author__in=friends, visibility='FRIENDS') |
             Q(author=current_user, visibility='PUBLIC') |
             Q(author=current_user, visibility='FRIENDS')
-        ) | Post.objects.filter(author=current_user, visibility='PUBLIC')
+        )
 
         # Merge query sets and remove duplicates
         posts = followed_user_posts | friend_posts

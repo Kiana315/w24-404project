@@ -288,9 +288,8 @@ function deletePost(button) {
                 setTimeout(function () {
                     window.history.back();
                 }, 1000);
-                
-                
-                
+
+
             } else {
                 alert("Something went wrong.");
             }
@@ -338,4 +337,122 @@ function getCookie(name) {
         }
     }
     return cookieValue;
+}
+
+
+// Draft Post Actions
+
+function EditPost() {
+    var postTitle = document.getElementById("postTitle")
+    var postContent = document.getElementById("postContent")
+
+    var titleInput = document.getElementById("titleInput")
+    titleInput.value = postTitle.innerText
+    var contentInput = document.getElementById("contentInput")
+    contentInput.value = postContent.innerText
+
+    const modal = document.getElementById("editModal");
+    modal.style.display = 'block'
+}
+
+document.addEventListener('DOMContentLoaded', (event) => {
+    // Get elements
+    const modal = document.getElementById("editModal");
+    const form = document.getElementById("editForm");
+    const postId = document.getElementById("postId").innerText;
+
+    // Click the x to close the pop-up window
+    document.getElementsByClassName("close")[0].onclick = function () {
+        modal.style.display = "none";
+    }
+    // Close pop-up window when clicking outside window
+    window.onclick = function (event) {
+        if (event.target === modal) {
+            modal.style.display = "none";
+        }
+    }
+    form.onsubmit = function (event) {
+        event.preventDefault();   //Prevent form default submission behavior
+
+        // Create FormData Obj
+        var formData = new FormData(form);
+        var isDraft = event.submitter.innerText === "Save Draft"
+        if (isDraft) {
+            formData.append("is_draft", "true")
+        }
+
+        // Send AJAX request to server
+        fetch(`/api/posts/${postId}/`, {
+            method: 'PUT',
+            body: formData,
+            headers: {
+                'X-CSRFToken': getCookie('csrftoken')   //Get CSRF token
+            },
+            credentials: 'same-origin'   // For CSRF token verification
+        })
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    emptyPost()
+                    throw new Error('Something went wrong');
+                }
+            })
+            .then(data => {
+                // After posted
+                modal.style.display = "none";   //Close pop-up window
+                if (isDraft) {
+                    history.back();
+                } else {
+                    window.location = "/"
+                    window.onload = function () {
+                        window.reload()
+                    }
+                }
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+                //Add error message
+            });
+    };
+});
+
+function sendPost() {
+    var modal = document.getElementById('editModal')
+    var data = {
+        title: document.getElementById("postTitle").innerText,
+        content: document.getElementById("postContent").innerText,
+    }
+
+    var postId = document.getElementById("postId").innerText
+
+    // Send AJAX request to server
+    fetch(`/api/posts/${postId}/`, {
+        method: 'PUT',
+        body: JSON.stringify(data),
+        headers: {
+            'X-CSRFToken': getCookie('csrftoken'),   //Get CSRF token
+            'Content-type': 'application/json'
+        },
+        credentials: 'same-origin'   //For CSRF token verification
+    })
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            } else {
+                throw new Error('Something went wrong');
+            }
+        })
+        .then(data => {
+            //After posted
+            modal.style.display = "none";   //Close pop-up window
+            window.location = '/'
+            window.onload = function () {
+                location.reload();
+            };
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+            // Add error message
+        });
 }

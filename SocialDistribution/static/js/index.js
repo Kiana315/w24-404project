@@ -41,12 +41,17 @@ document.addEventListener('DOMContentLoaded', () => {
                             Share <span class="share-count">${post.share_count}</span>
                         </button>
                         <button id="comment-${post.id}" type="button" data-post-id="${post.id}">
-                            <ion-icon size="small" name="chatbox-ellipses-outline" style="margin-right: 8px;"></ion-icon>
-                            Comment <span class="comment-count">${post.comment_count}</span>
+                            <ion-icon size="small" name="chatbox-ellipses-outline" style="margin-right: 8px;">
+                            </ion-icon>
+                                ${post.comment_count > 0 ? '' : 'Comment'} 
+                                <span class="comment-count">${post.comment_count > 0 ? post.comment_count: ''}
+                            </span>
                         </button>
                         <button id="like-${post.id}" type="button" data-post-id="${post.id}"> 
-                            <ion-icon size="small" name="heart-outline" style="margin-right: 8px;"></ion-icon>
-                            Like <span class="like-count">${post.like_count}</span>
+                            <ion-icon size="small" name="heart-outline" style="margin-right: 8px;">
+                            </ion-icon>
+                                    ${post.likes_count > 0 ? '' : 'Like'}
+                                <span class="like-count">${post.likes_count > 0 ? post.likes_count : ''}</span>
                         </button>
                     </div>
                 `;
@@ -95,8 +100,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     // 评论操作的 AJAX 请求
                     // 更新评论计数
                 });
-
-                
 
                 // commentButton.addEventListener('click', (e) => {
                 //     e.stopPropagation();

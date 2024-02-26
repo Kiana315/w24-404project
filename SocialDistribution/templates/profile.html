@@ -39,7 +39,7 @@
 <body>
 
 
-    {% include 'navbar.html' %}
+{% include 'navbar.html' %}
 
 <div class="button-container">
     <!-- <button class="back-button" onclick="history.back()">Back</button> -->
@@ -84,18 +84,21 @@
             <div class="username" id="username" onclick="editUserName()">{{ user.username }}</div>
             <input type="text" id="edit-username" onblur="handleUserNameBlur()" style="display: none">
             <div class="email" id="email">Email: {{ user.email }}</div>
-            <form action="update-bio/" method="post">
-                {% csrf_token %}
-                <textarea
-                        class="bio-container"
-                        name="bio"
-                        type="text"
-                        rows="4"
-                        cols="50"
-                >
-{{ user.bio }}</textarea>
-                <button type="submit">Save</button>
-            </form>
+            {% if request.user == user %}
+                <form action="update-bio/" method="post">
+                    {% csrf_token %}
+                    <textarea
+                            class="bio-container"
+                            name="bio"
+                            type="text"
+                            rows="4"
+                            cols="50"
+                    >{{ user.bio }}</textarea>
+                    <button type="submit">Save</button>
+                </form>
+            {% else %}
+                <textarea readonly>{{ user.bio }}</textarea>
+            {% endif %}
         </div>
         <div class="follow-container">
             <a href="{% url 'PAGE_FollowersList' username=user.username %}">
@@ -103,7 +106,7 @@
                         id="follower-btn"
                         class="top-button followers-button"
                 >
-                    Followers<br/>0
+                    Followers
                 </button>
             </a>
             <a href="{% url 'PAGE_FollowingList' username=user.username %}">
@@ -111,7 +114,7 @@
                         id="following-btn"
                         class="top-button following-button"
                 >
-                    Following<br/>0
+                    Following
                 </button>
             </a>
         </div>
@@ -120,13 +123,14 @@
         {% endif %}
     </div>
 
-
     <div class="post-container">
-        <div>
-            <button><a href="{% url 'API_AuthorDraft' username=user.username %}">
-                <ion-icon name="file-tray-full-outline">Post Draft</ion-icon>
-            </a></button>
-        </div>
+        {% if request.user == user %}
+            <div>
+                <button><a href="{% url 'API_AuthorDraft' username=user.username %}">
+                    <ion-icon name="file-tray-full-outline">Post Draft</ion-icon>
+                </a></button>
+            </div>
+        {% endif %}
         <div class="recent-posts">
             <!-- This section should be populated with actual post data -->
             {% for post in posts %}

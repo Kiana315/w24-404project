@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
             for (let follower of data) {
                 followersList.innerHTML += `
                     <li class='person' onclick="window.location.href='/profile/${username}/${follower.follower.username}/'">
-                        <img class='person-photo' src='person1.jpg' alt='Profile Picture'>
+                        <img class='person-photo' src='{{ ${follower.follower}.avatar.url }}' alt="Profile Picture">
                         <p class='person-name'>${follower.follower.username}</p>
                     </li>`;
             }

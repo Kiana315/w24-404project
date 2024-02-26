@@ -62,7 +62,6 @@ document.addEventListener('DOMContentLoaded', function() {
             const selfUsername = _getURLSelfUsername();
             const targetUsername = _getURLTargetUsername();
 
-
             // Todo - For `USER_SELF`, set `USER_TARGET` as a following of `USER_SELF`:
             fetch(`/api/user/${selfUsername}/followerOf/${targetUsername}/`, {
                 method: 'POST',
@@ -124,22 +123,18 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
                 })
                 .catch(error => console.error('Error:', error));
-
         });
     }
-
-
 });
+
 
 function _getURLTargetUsername() {
     const pathSections = window.location.pathname.split('/').filter(Boolean);
-    ;
     return pathSections[pathSections.length - 1];
 }
 
 function _getURLSelfUsername() {
     const pathSections = window.location.pathname.split('/').filter(Boolean);
-    ;
     return pathSections[pathSections.length - 2];
 }
 
@@ -150,7 +145,7 @@ function _getRelationAnalysis(relationResponse) {
 }
 
 
-function getCookie(name) {
+function getCookie(name){
     let cookieValue = null;
     if (document.cookie && document.cookie !== '') {
         const cookies = document.cookie.split(';');

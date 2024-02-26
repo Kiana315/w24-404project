@@ -7,6 +7,7 @@ class PostSerializer(serializers.ModelSerializer):
     username = serializers.ReadOnlyField(source='author.username')
     avatar = serializers.ReadOnlyField(source='author.avatar_url')
     likes_count = serializers.SerializerMethodField()
+    comment_count = serializers.SerializerMethodField()
     is_draft = serializers.BooleanField(default=False)
 
     is_shared = serializers.SerializerMethodField() 
@@ -18,11 +19,14 @@ class PostSerializer(serializers.ModelSerializer):
         fields = [
             'id', 'author', 'username', 'title', 'content', 'image', 'visibility',
             'date_posted', 'last_modified', 'likes_count', 'avatar', 'is_draft',
-            'is_shared', 'shared_post_id', 'shared_post_title',
+            'is_shared', 'shared_post_id', 'shared_post_title', 'comment_count'
         ]
         extra_kwargs = {'author': {'read_only': True}}
 
     def get_likes_count(self, obj):
+        return Like.objects.filter(post=obj).count()
+
+    def get_comment_count(self, obj):
         return Like.objects.filter(post=obj).count()
     
     def get_is_shared(self, obj):

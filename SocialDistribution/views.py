@@ -140,18 +140,25 @@ class FPsAPIView(generics.ListAPIView):
         current_user = get_object_or_404(User, username=username)   # get current user
 
         # Query the users followed by the current user
-        followed_users = User.objects.filter(following__user=current_user)
+        followed_users = User.objects.filter(reverse_following__user=current_user)
+        following_users = User.objects.filter(reverse_followers__user=current_user)
+        print("followed_users: ", followed_users, "\nfollowing_users: ", following_users)
+        
+        followed_users_set = set(followed_users)
+        following_users_set = set(following_users)
 
+        friends_set = followed_users_set & following_users_set
+        print(friends_set)
         # Query the current user’s friends (two-way relationship)
-        friends = User.objects.filter(friends_set1__user1=current_user) | User.objects.filter(friends_set2__user2=current_user)
-
-        # 获取关注用户的公开帖子
+        friends = User.objects.filter(id__in=[user.id for user in friends_set])
+        print(friends)
+        # Get public posts from following users
         followed_user_posts = Post.objects.filter(author__in=followed_users, visibility='PUBLIC')
 
-        # 获取好友的公开和仅好友可见帖子
+        # Get friends’ public and friends-only posts
         friend_posts = Post.objects.filter(author__in=friends) | Post.objects.filter(author=current_user)
 
-        # 合并查询集并去重
+        # Merge query sets and remove duplicates
         posts = followed_user_posts | friend_posts
         posts = posts.distinct().order_by('-date_posted')
         

@@ -1,0 +1,174 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background-image: url('../../static/images/inbox-bg.jpg');
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    position: relative;
+    display: flex;           
+    flex-direction: column; 
+    margin: 0;
+    padding-top: 60px;
+}
+
+.inbox-container {
+    width: 80%;
+    margin: 30px auto;
+    background: rgba(255, 255, 255, 0.8);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+h1, h2 {
+    color: #333;
+    text-align: center;
+}
+
+
+.inbox-filters {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+#filter-form {
+    display: inline-block;
+}
+
+#filter-form label {
+    margin-right: 10px;
+}
+
+#filter-form select {
+    border: 2px solid #007bff;
+    border-radius: 4px;
+    padding: 5px;
+    background-color: #fff;
+}
+
+#filter-form button {
+    padding: 5px 15px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#filter-form button:hover {
+    background-color: #218838;
+}
+
+
+.inbox-messages {
+    background-color: #fff;
+    border-radius: 5px;
+    margin-top: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.inbox-messages ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.message {
+    border-bottom: 1px solid #ddd;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    position: relative;
+    transition: background-color 0.3s;
+}
+
+.message:last-child {
+    border-bottom: none;
+}
+
+.message:hover {
+    background-color: #f8f8f8;
+}
+
+.status-dot {
+    height: 10px;
+    width: 10px;
+    background-color: #ddd;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 10px;
+    padding-right: 10px;
+    position: relative;
+    top: -1px;
+}
+
+.message.unread .status-dot {
+    background-color: #ff3b30;
+}
+
+.message.star .status-dot {
+    background-color: yellow;
+}
+
+.sender {
+    font-weight: bold;
+    margin-right: 10px;
+    color: #007bff;
+}
+
+.message-header {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+
+.subject {
+    font-weight: bold;
+    color: #333;
+}
+
+.message-body {
+    display: none;
+    padding: 30px;
+    border-top: 1px solid #ddd;
+}
+
+.message-actions button {
+    margin-right: 10px;
+    padding: 5px 10px;
+    border: none;
+    cursor: pointer;
+}
+
+.message.unread .sender, .message.unread .subject {
+    font-weight: bold;
+    text-align: center;
+}
+
+#inbox-delete-btn {
+    margin-top: 20px;
+    text-align: right;
+    border-radius: 10px;
+    background-color: red;
+    color: white;
+}
+
+#inbox-star-btn {
+    margin-top: 20px;
+    text-align: right;
+    border-radius: 10px;
+    background-color: aqua;
+    color: black;
+}
+
+.message.unfolded .message-body {
+    display: block;
+    margin-left: 50px;
+}
+
+.user-avatar {
+    height: 30px;
+    width: 30px;
+    border-radius: 50%;
+}

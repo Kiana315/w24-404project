@@ -1,0 +1,271 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post Page</title>
+    <link rel="stylesheet" href="{% static 'css/post_detail.css' %}">
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+</head>
+<body data-current-user="{{ request.user.username }}">
+<div id="notification" class="notification"></div>
+<div class="post-container" data-post-id="{{ post.id }}">
+    <div class="back-button-container">
+        <button onclick="history.back()" class="back-button">
+            <ion-icon size="small" name="chevron-back-outline" style="margin-right: 8px;"></ion-icon>
+            Back
+        </button>
+        {% if request.user == post.author and not post.is_draft %}
+            <button id="more-options-button" class="more-options-button">
+                <ion-icon size="large" name="ellipsis-horizontal" style="cursor: pointer;"></ion-icon>
+            </button>
+        {% endif %}
+    </div>
+
+    <div id="options-container" class="options-container" style="display: none;">
+        <button class="option-button" id="edit-btn">
+            <ion-icon size="small" name="create-outline" style="margin-right: 8px;"></ion-icon>
+            Edit
+        </button>
+        <button class="option-button" data-post-id="{{ post.id }}" onclick="deletePost(this)">
+            <ion-icon size="small" name="trash-outline" style="margin-right: 8px;"></ion-icon>
+            Delete
+        </button>
+        <!-- Add more buttons as needed -->
+    </div>
+
+    <div class="user-info">
+        {% if post.author.avatar %}
+            <img src="{{ post.author.avatar.url }}" alt="User Avatar" class="user-avatar" width="50" height="50" onclick="redirectProfile()">
+        {% else %}
+            <img src="{% static 'images/default_avatar.png' %}" alt="Default Avatar" class="user-avatar" width="50"
+                 height="50" onclick="redirectProfile()">
+        {% endif %}
+        <span class="user-name" id="userName" onclick="redirectProfile()">{{ post.author.username }}</span>
+        <span class="post-date">{{ post.date_posted|date:"Y-m-d" }}</span>
+    </div>
+    <h1 class="post-title" id="postTitle">{{ post.title }}</h1>
+    <div class="scrollable-content">
+        <span id="postId" style="display: none">{{ post.id }}</span>
+        <p class="post-content" id="postContent">{{ post.content|safe }}</p>
+        {% if post.image %}
+            <img src="{{ post.image.url }}" alt="Post Image" class="post-image">
+        {% endif %}
+        {% if not post.is_draft %}
+            <div class="comments-section">
+                <h2>Comments:</h2>
+                <div id="comments-container"></div>
+            </div>
+        {% endif %}
+    </div>
+    <div class="post-actions">
+        {% if post.is_draft %}
+            <button id="edit-button" class="action" onclick="EditPost()" type="button">
+                <span class="material-symbols-outlined">
+                    <ion-icon name="create-outline">Edit</ion-icon>
+                </span>
+                Edit
+            </button>
+            <button id="delete-button" class="action" onclick="deletePost(this)" data-post-id="{{ post.id }}">
+                <span class="material-symbols-outlined"><ion-icon name="trash-outline">Delete</ion-icon></span>
+                Delete
+            </button>
+            <button id="send-button" class="action" onclick="sendPost()">
+                <span class="material-symbols-outlined"><ion-icon name="send-outline">Send</ion-icon></span>
+                Post
+            </button>
+        {% else %}
+            <button id="share-button" class="action">
+                <ion-icon size="small" name="share-outline" style="margin-right: 8px;"></ion-icon>
+                Share
+            </button>
+            <button id="comment-button" class="action">
+                <ion-icon size="small" name="chatbox-ellipses-outline" style="margin-right: 8px;"></ion-icon>
+                Comment
+            </button>
+            <div id="comment-form" class="comment-form" style="display: none;">
+                <textarea id="comment-input" placeholder="Add a comment..."></textarea>
+                <button id="submit-comment" class="action">Post Comment</button>
+            </div>
+            <button id="like-button" class="action">
+                <ion-icon id="like-icon" size="small" name="heart-outline" style="margin-right: 8px;"></ion-icon>
+                Like
+                <span id="like-count">{{ likes_count }}</span>
+            </button>
+        {% endif %}
+    </div>
+</div>
+
+<div id="shareModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeShareModal()">&times;</span>
+        <h2>Share This Post</h2>
+        <textarea id="shareText" placeholder="Add your thoughts to this post..."></textarea>
+        <button id="confirmShare">Share</button>
+    </div>
+</div>
+
+<!-- Edit madal -->
+<div id="editModal" class="modal" style="display: none">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <form id="editForm">
+            <input id="titleInput" type="text" name="title" placeholder="Title">
+            <textarea id="contentInput" name="content" placeholder="Tell Something New..."></textarea>
+
+            <div class="submit-container">
+                <div class="left">
+                    <label for="imageUpload" class="upload-icon">
+                        <ion-icon name="image"></ion-icon>
+                    </label>
+                    <input type="file" id="imageUpload" name="image" style="display: none;">
+                </div>
+                <div class="right">
+                    <label for="visibility"></label>
+
+                    <select name="visibility" id="visibility">
+                        <option value="PUBLIC" selected>Public</option>
+                        <option value="FRIENDS">Friends-Only</option>
+                    </select>
+                    <button class="post-button" type="submit">Save Draft</button>
+                    <button class="post-button" type="submit">Post Changes</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+    
+
+    // function EditPost() {
+    //     var postTitle = document.getElementById("postTitle")
+    //     var postContent = document.getElementById("postContent")
+
+    //     var titleInput = document.getElementById("titleInput")
+    //     titleInput.value = postTitle.innerText
+    //     var contentInput = document.getElementById("contentInput")
+    //     contentInput.value = postContent.innerText
+
+    //     const modal = document.getElementById("editModal");
+    //     modal.style.display = 'block'
+    // }
+
+    // document.addEventListener('DOMContentLoaded', (event) => {
+    //     // Get elements
+    //     const modal = document.getElementById("editModal");
+    //     const form = document.getElementById("editForm");
+    //     const postId = document.getElementById("postId").innerText;
+
+    //     // Click the x to close the pop-up window
+    //     document.getElementsByClassName("close")[0].onclick = function () {
+    //         modal.style.display = "none";
+    //     }
+    //     // Close pop-up window when clicking outside window
+    //     window.onclick = function (event) {
+    //         if (event.target === modal) {
+    //             modal.style.display = "none";
+    //         }
+    //     }
+    //     form.onsubmit = function (event) {
+    //         event.preventDefault(); // Prevent form default submission behavior
+
+    //         // Create FormData Obj
+    //         var formData = new FormData(form);
+    //         var isDraft = event.submitter.innerText === "Save Draft"
+    //         if (isDraft) {
+    //             formData.append("is_draft", "true")
+    //         }
+
+    //         // Send AJAX request to server
+    //         fetch(`/api/posts/${postId}/`, {
+    //             method: 'PUT',
+    //             body: formData,
+    //             headers: {
+    //                 'X-CSRFToken': getCookie('csrftoken') // Get CSRF token
+    //             },
+    //             credentials: 'same-origin' // For CSRF token verification
+    //         })
+    //             .then(response => {
+    //                 if (response.ok) {
+    //                     return response.json();
+    //                 } else {
+    //                     emptyPost()
+    //                     throw new Error('Something went wrong');
+    //                 }
+    //             })
+    //             .then(data => {
+    //                 // After posted
+    //                 modal.style.display = "none"; // Close pop-up window
+    //                 if (isDraft) {
+    //                     history.back();
+    //                 } else {
+    //                     window.location = "/"
+    //                     window.onload = function () {
+    //                         window.reload()
+    //                     }
+    //                 }
+    //             })
+    //             .catch((error) => {
+    //                 console.error('Error:', error);
+    //                 // Add error message
+    //             });
+    //     };
+    // });
+
+    // function sendPost() {
+    //     var modal = document.getElementById('editModal')
+    //     var data = {
+    //         title: document.getElementById("postTitle").innerText,
+    //         content: document.getElementById("postContent").innerText,
+    //     }
+
+    //     var postId = document.getElementById("postId").innerText
+
+    //     // Send AJAX request to server
+    //     fetch(`/api/posts/${postId}/`, {
+    //         method: 'PUT',
+    //         body: JSON.stringify(data),
+    //         headers: {
+    //             'X-CSRFToken': getCookie('csrftoken'), // Get CSRF token
+    //             'Content-type': 'application/json'
+    //         },
+    //         credentials: 'same-origin' // For CSRF token verification
+    //     })
+    //         .then(response => {
+    //             if (response.ok) {
+    //                 return response.json();
+    //             } else {
+    //                 throw new Error('Something went wrong');
+    //             }
+    //         })
+    //         .then(data => {
+    //             // After posted
+    //             modal.style.display = "none"; // Close pop-up window
+    //             window.location = '/'
+    //             window.onload = function () {
+    //                 location.reload();
+    //             };
+    //         })
+    //         .catch((error) => {
+    //             console.error('Error:', error);
+    //             // Add error message
+    //         });
+    // }
+
+    
+</script>
+
+<script type="text/javascript">
+    const currentPostTitle = "{{ post.title }}";
+    const currentPostContent = "{{ post.content }}";
+</script>
+
+<script src="{% static 'js/common.js' %}"></script>
+<script src="{% static 'js/post_detail.js' %}"></script>
+<script src="{% static 'js/editing.js' %}"></script>
+<script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+
+</body>
+</html>

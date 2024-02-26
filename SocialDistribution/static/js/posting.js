@@ -24,6 +24,9 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
         // Create FormData Obj
         var formData = new FormData(form);
+        if (event.submitter.innerText === "Save Draft"){
+            formData.append("is_draft", "true")
+        }
 
         // Send AJAX request to server
         fetch('/api/nps/', {
@@ -36,6 +39,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
         })
         .then(response => {
             if(response.ok) {
+                window.location.reload();
                 return response.json();
             } else {
                 emptyPost()
@@ -46,7 +50,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
             // After posted
             modal.style.display = "none"; // Close pop-up window
             submitPost();
-            // Refresh the page 
+
         })
         .catch((error) => {
             console.error('Error:', error);

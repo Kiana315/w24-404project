@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,84 +6,63 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Friend Posts</title>
-    <link rel="stylesheet" type="text/css" href="../../static/css/friendPosts.css">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/friendPosts.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/navbar.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/postListContent.css' %}">
+
 </head>
 
 <body>
-<nav class="navbar">
-    <ul>
-        <li><a href="/">
-            <ion-icon name="home" size="large"></ion-icon>
-        </a></li>
-        {% if user.is_authenticated %}
-            <li><a href="{% url 'friendPosts' username=user.username %}">
-                <ion-icon name="people" size="large"></ion-icon>
-            </a></li>
-            <li><a href="{% url 'inbox' username=user.username %}">
-                <ion-icon name="mail" size="large" target="_blank"></ion-icon>
-            </a></li>
-            {% if user.avatar %}
-                <li><a href="{% url 'profile' username=user.username %}"><img class="user-avatar"
-                                                                              src="{{ user.avatar.url }}"
-                                                                              alt="User avatar"></a></li>
-            {% else %}
-                <li><a href="{% url 'profile' username=user.username %}">
-                    <ion-icon name="person-circle" size="large"></ion-icon>
-                </a></li>
-            {% endif %}
-        {% else %}
-            <li><a href="login/">
-                <ion-icon name="people" size="large"></ion-icon>
-            </a></li>
-            <li><a href="login/">
-                <ion-icon name="mail" size="large"></ion-icon>
-            </a></li>
-            <li><a href="login/">
-                <ion-icon name="person" size="large"></ion-icon>
-            </a></li>
-        {% endif %}
-    </ul>
-</nav>
 
+    {% include 'navbar.html' %}
 
-<div class="post-container" id="post-container">
-    <!-- Posts will be dynamically loaded here via JavaScript -->
-</div>
+    
+    {% include 'postListContent.html' %}
+    
+<!-- <div class="post-container" id="post-container">
+     Posts will be dynamically loaded here via JavaScript 
+</div> -->
 
+    {% if user.is_authenticated %}
+        <button id="floating-button">+</button>
+    {% endif %}
 
-<button id="floating-button">+</button>
-<div id="newPostModal" class="modal">
-    <div class="modal-content">
-        <span class="close">&times;</span>
-        <form id="newPostForm">
-            <input id="titleInput" type="text" name="title" placeholder="Title">
-            <textarea id="contentInput" name="content" placeholder="Tell Something New..."></textarea>
-            <div class="separator"></div>
-            <div class="post-container">
-                <label for="imageUpload" class="upload-icon">
-                    <ion-icon name="image"></ion-icon>
-                </label>
-                <input type="file" id="imageUpload" name="image" style="display: none;">
-
-                <label for="visibility"></label>
-                <div class="visibility-select">
-                    <select name="visibility" id="visibility">
-                        <option value="PUBLIC" selected>Public</option>
-                        <option value="FRIENDS">Friends-Only</option>
-                    </select>
+    <div id="newPostModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <form id="newPostForm">
+                <input id="titleInput" type="text" name="title" placeholder="Title">
+                <textarea id="contentInput" name="content" placeholder="Tell Something New..."></textarea>
+                
+                <div class="submit-container">
+                    <div class="left">
+                        <label for="imageUpload" class="upload-icon">
+                            <ion-icon name="image"></ion-icon>
+                        </label>
+                        <input type="file" id="imageUpload" name="image" style="display: none;">
+                    </div>
+                    <div class="right">
+                        <label for="visibility"></label>
+                        
+                        <select name="visibility" id="visibility">
+                            <option value="PUBLIC" selected>Public</option>
+                            <option value="FRIENDS">Friends-Only</option>
+                        </select>
+                        
+                        <button class="post-button" type="submit">Save Draft</button>
+                        <button class="post-button" type="submit">Post</button>
+                    </div>
                 </div>
-                <button class="post-button" type="submit">Post</button>
-                <button class="post-button" type="submit">Save Draft</button>
-            </div>
-        </form>
+            </form>
+        </div>
     </div>
-</div>
 
 
-<script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-<script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
-<script src="../../static/js/friendPosts.js"></script>
-<script src="../../static/js/posting.js"></script>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <script src="{% static 'js/friendPosts.js' %}"></script>
+    <script src="{% static 'js/posting.js' %}"></script>
+    <script src="{% static 'js/search.js' %}"></script>
 
 </body>
 

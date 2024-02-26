@@ -1,8 +1,8 @@
 :root {
     --text-color: #ffffff;
     --bg-color: rgba(255, 255, 255, 0.39);
-    --btn-hover-color: #0056b3;
-    --btn-bg-color: #007bff;
+    --btn-hover-color: #2f83cc;
+    --btn-bg-color: #2fcccc;;
     --modal-bg-color: rgba(0,0,0,0.4);
     --modal-content-bg-color: rgba(254, 254, 254, 0.9);
     --separator-color: #ccc;
@@ -18,61 +18,72 @@ body {
     background-position: center center;
     background-repeat: no-repeat;
     background-attachment: fixed;
+    position: relative;
+    display: flex;           
+    flex-direction: column; 
+    margin: 0;
+    padding-top: 60px;
 }
 
-.navbar {
-    list-style: none;
-    overflow: hidden;
-    display: flex;
-    background-color: rgba(255, 255, 255, 0.39);
+
+/* .search-bar {
     width: 100%;
-    height: 8%;
-    justify-content: center;
+    padding: 5px 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+    background-color: rgba(255, 255, 255, 0.8);
+    margin: 20px auto;
+    border: 3px solid #ddd;
+    border-radius: 8px;
+    max-width: 800px;
+    height: 40px;
     align-items: center;
-    z-index: 10000;
-    color: #ffffff;
-    position: relative;
-}
-.navbar ul{
-    margin: 10px 10px;
     display: flex;
-    list-style-type: none;
-    justify-content: center;
+    flex-direction: row;
+}
+
+
+#search-form {
+    flex-grow: 1;
+    display: flex;
     align-items: center;
-    text-align: center;
+   
+    font-size: 18px;
 }
-.navbar li {
-    padding: 0 15px;
+
+
+#search-form input, 
+#search-form button {
+    
+    border: none;
+    background: none;
+    outline: none;
+    font-size: 16px;
 }
-.navbar a {
-    display: block;
-    color: #ffffff;
-    text-align: center;
-    font-weight: bold;
+
+#search-form input {
+    margin: 0 10px;
+    width: 100%;
+}
+
+#search-form button {
     cursor: pointer;
-    height: 98%;
-    width: 60px;
-    padding: 5px;
-    text-decoration: none;
-    font-size: 15px;
+    padding: 5px 10px;
 }
-.navbar a:hover {
-    background-color: #ddd;
-    color: black;
-    border-radius: 10px;
-}
+
 
 .user-avatar {
     height: 30px;
     width: 30px;
     border-radius: 50%;
-}
+} */
 
-.post-container {
+/* .post-container {
     position: relative;
     margin-top: 20px;
     width: 100%;
     align-items: center;
+    
 }
 
 .post {
@@ -106,30 +117,58 @@ body {
 }
 
 .user-info {
+    display: flex;
+    flex-direction: row;
     margin-bottom: 15px;
 }
 
-.avatar,
-.username,
+.user-avatar,
 .title,
 .content {
     border-radius: 50%;
 }
 
-.interactions {
-    position: absolute;
-    top: 20px;
-    right: 20px;
+.username {
+    margin: 0 10px;
+    font-weight: bold;
 }
+
+.post-time{
+    
+    margin: 0 10px;
+    color: #888;
+    font-size: small;
+}
+.interact-container {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    border-top: 1px solid #aaa;
+    justify-content: space-between; 
+    width: 100%; 
+}
+
+.interact-container button {
+    height: 36px;
+    flex: 1;  
+    margin-top: 15px;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    align-items: center; 
+    justify-content: center; 
+    display: flex;
+}
+.interact-container button:hover {
+    background-color: var(--icon-hover-bg-color);
+} */
 
 a {
     text-decoration: none;
     color: black;
 }
 
-.like-btn,
-.comment-btn,
-.submit-comment,
+ 
 .post-button {
     background-color: var(--btn-bg-color);
     color: white;
@@ -137,29 +176,13 @@ a {
     border: none;
     border-radius: 25px;
     cursor: pointer;
-    margin-left: 30px;
-    margin-top: 15px;
-    float: right;
-}
-
-.like-btn:hover,
-.comment-btn:hover,
-.submit-comment:hover {
-    background-color: var(--btn-hover-color);
-}
-
-.comment-box {
-    width: 100%;
+    margin-right: 30px;
     margin-top: 10px;
 }
 
-.comment-text {
-    width: calc(100% - 20px);
-    padding: 10px;
-    border: 1px solid #e1e1e1;
-    border-radius: 5px;
-    height: 100px;
-    margin-bottom: 5px;
+.post-button:active,
+.post-button:hover {
+    background-color: var(--btn-hover-color);
 }
 
 /* Floating Action Button */
@@ -185,6 +208,10 @@ a {
     transform: scale(1.1);
 }
 
+
+
+
+
 /* Modal Styles */
 .modal {
     display: none;
@@ -200,18 +227,21 @@ a {
 
 .modal-content {
     background-color: var(--modal-content-bg-color);
-    margin: 15% auto;
     padding: 20px;
     border: 1px solid #888;
-    width: 70%;
+    margin: 8% auto auto auto;
+    flex-direction: column;
+    width: 50%;
     border-radius: 15px;
+    height: auto;
 }
 
 .close {
     color: #aaa;
-    float: right;
+    float: left;
     font-size: 28px;
     font-weight: bold;
+    margin: 0px 10px 10px 10px;
 }
 .close:hover,
 .close:focus {
@@ -260,24 +290,98 @@ a {
 }
 
 #titleInput {
-    width: 800px;
-    height: 30px;
+    width: 100%;
+    height: 36px;
     border-radius: 10px;
     margin-bottom: 20px;
+    border: none;
+    font-family: inherit;
+    font-size: 20px
 }
 
+
 #contentInput {
-    width: 800px;
+    width: 100%;
     height: 300px;
-    border-radius: 20px;
+    border-radius: 10px;
+    resize: none;
+    border: none;
+    font-family: inherit;
+    font-size: 16px;
+    
+}
+
+#titleInput:focus,
+#contentInput:focus,
+#visibility:focus {
+    /* no border when focus on  */
+    border: none;
+    outline-color: #2fcccc;
+}
+
+
+ /* the container that include upload image, visibility select and btns */
+.submit-container {
+    position: relative;
+    margin-top: 20px;
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+.submit-container .left {
+    width: 50%;
+    margin-right: auto; 
+    align-items: center;
+}
+
+.submit-container .right {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    width: 50%;
+    margin-left: auto;
+    margin-right: 20px;
+}
+.right > * {
+    margin-right: 10px; 
+}
+
+.upload-icon {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%; 
+    text-align: center;
+    margin: auto 20px;
+    
+    justify-content: center;
+    align-items: center;
+}
+
+.upload-icon:hover {
+    cursor: pointer;
+    background-color: rgba(202, 202, 202, 0.6); 
+}
+
+.upload-icon ion-icon {
+    color: #2fcccc; 
+    font-size: 20px; 
+    position: relative;
+    top: 10px;
 }
 
 #visibility {
-    margin-top: 15px;
-    float: left;
+    border: none;
+    cursor: pointer;
+    margin-top: 10px;
+    margin-right: 20px;
 }
 
+
 #newPostForm {
-    width: 800px;
-    height: 450px;
+    width: 100%;
+    height: auto;
 }
+

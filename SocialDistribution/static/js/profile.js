@@ -56,26 +56,33 @@ function handleUserNameBlur() {
 
 
 document.addEventListener('DOMContentLoaded', function() {
+    const selfUsername = _getURLSelfUsername();
+    const targetUsername = _getURLTargetUsername();
+
+
     const followButton = document.getElementById('follow-btn');
     if (followButton) {
         followButton.addEventListener('click', function() {
             const selfUsername = _getURLSelfUsername();
             const targetUsername = _getURLTargetUsername();
 
-            // Todo - For `USER_SELF`, set `USER_TARGET` as a following of `USER_SELF`:
-            fetch(`/api/user/${selfUsername}/followerOf/${targetUsername}/`, {
-                method: 'POST',
-                headers: {
-                    'X-CSRFToken': getCookie('csrftoken'),
-                    'Content-Type': 'application/json'
-                }
-            })
-                .then(response => {
-                    if (response.ok) {
-                        followButton.style.display = 'none';
-
-                        // Todo - For `USER_TARGET`, set `USER_SELF` as a follower of `USER_TARGET`:
-                        fetch(`/api/user/${targetUsername}/following/${selfUsername}/`, {
+            // Todo - Check if they are already friends, if not then continue the follow process:
+            let areFriends = true;
+            fetch(`/api/user/${selfUsername}/anyRelations/${targetUsername}/`)
+                .then(relationResponse => {
+                    if (!relationResponse.ok) {
+                        throw new Error('Network response was not ok.');
+                    }
+                    return relationResponse.json();
+                })
+                .then(relations => {
+                    areFriends = relations["already_friend"];
+                    if (areFriends) {
+                        alert("You are already friends!!");
+                    }
+                    else {
+                        // Todo - For `USER_SELF`, set `USER_TARGET` as a following of `USER_SELF`:
+                        fetch(`/api/user/${selfUsername}/followerOf/${targetUsername}/`, {
                             method: 'POST',
                             headers: {
                                 'X-CSRFToken': getCookie('csrftoken'),
@@ -84,45 +91,62 @@ document.addEventListener('DOMContentLoaded', function() {
                         })
                             .then(response => {
                                 if (response.ok) {
-                                    alert("Follow Success!");
-                                    // Todo - For BOTH, if the two are following each other and being followed by each other,
-                                    //  then activate the “friend mechanism”, remove their following & follower relations but
-                                    //  keep a friend relation between them:
-                                    fetch(`/api/user/${selfUsername}/anyRelations/${targetUsername}/`)
-                                        .then(relationResponse => {
-                                            if (relationResponse.ok) {
-                                                return relationResponse.json()
-                                            }
-                                        })
-                                        .then(relations => {
-                                            let isFriend = relations["mutual_follow"]
-                                            if (isFriend) {
-                                                // Todo - If relationships are valid, then process the “friend mechanism”:
-                                                fetch(`/api/user/${selfUsername}/friend/${targetUsername}/`, {
-                                                    method: 'POST',
-                                                    headers: {
-                                                        'X-CSRFToken': getCookie('csrftoken'),
-                                                        'Content-Type': 'application/json'
-                                                    }
-                                                })
+                                    followButton.style.display = 'none';
+
+                                    // Todo - For `USER_TARGET`, set `USER_SELF` as a follower of `USER_TARGET`:
+                                    fetch(`/api/user/${targetUsername}/following/${selfUsername}/`, {
+                                        method: 'POST',
+                                        headers: {
+                                            'X-CSRFToken': getCookie('csrftoken'),
+                                            'Content-Type': 'application/json'
+                                        }
+                                    })
+                                        .then(response => {
+                                            if (response.ok) {
+                                                alert("Follow Success!");
+                                                // Todo - For BOTH, if the two are following each other and being followed by each other,
+                                                //  then activate the “friend mechanism”, remove their following & follower relations but
+                                                //  keep a friend relation between them:
+                                                fetch(`/api/user/${selfUsername}/anyRelations/${targetUsername}/`)
                                                     .then(relationResponse => {
                                                         if (relationResponse.ok) {
-                                                            alert("You are friends now!!")
                                                             return relationResponse.json()
+                                                        }
+                                                    })
+                                                    .then(relations => {
+                                                        let isFriend = relations["mutual_follow"]
+                                                        if (isFriend) {
+                                                            // Todo - If relationships are valid, then process the “friend mechanism”:
+                                                            fetch(`/api/user/${selfUsername}/friend/${targetUsername}/`, {
+                                                                method: 'POST',
+                                                                headers: {
+                                                                    'X-CSRFToken': getCookie('csrftoken'),
+                                                                    'Content-Type': 'application/json'
+                                                                }
+                                                            })
+                                                                .then(relationResponse => {
+                                                                    if (relationResponse.ok) {
+                                                                        alert("You are friends now!!")
+                                                                        return relationResponse.json()
+                                                                    }
+                                                                })
+                                                                .catch(error => console.error('Error:', error));
                                                         }
                                                     })
                                                     .catch(error => console.error('Error:', error));
                                             }
                                         })
                                         .catch(error => console.error('Error:', error));
+                                } else {
+                                    alert("Already Followed.");
                                 }
                             })
                             .catch(error => console.error('Error:', error));
-                    } else {
-                        alert("Already Followed.");
                     }
                 })
-                .catch(error => console.error('Error:', error));
+                .catch(error => {
+                    console.error('There has been a problem with your fetch operation:', error);
+                });
         });
     }
 });
@@ -145,7 +169,7 @@ function _getRelationAnalysis(relationResponse) {
 }
 
 
-function getCookie(name){
+function getCookie(name) {
     let cookieValue = null;
     if (document.cookie && document.cookie !== '') {
         const cookies = document.cookie.split(';');

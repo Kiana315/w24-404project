@@ -24,6 +24,8 @@ urlpatterns = [
     path("inbox/<str:username>/", InboxView.as_view(), name="PAGE_Inbox"),
     path("posts/<int:post_id>/", PostDetailView.as_view(), name="PAGE_postDetail"),
 
+
+
     # Friend API System:
     path('search/', views.search_user, name='PAGE_SearchUser'),
     path('profile/<str:username>/followers/', FollowerView.as_view(), name='PAGE_FollowersList'),
@@ -63,13 +65,11 @@ urlpatterns = [
     path('api/posts/<int:post_id>/share/', SharePostView.as_view(), name='share_post'),
 
 
-    path('api/posts/<int:post_id>/delete/', DeletePostView.as_view(), name='API_delete_post'),       # DELETE post
-    path('api/posts/<int:post_id>/update/', UpdatePostView.as_view(), name='update_post'),           # GET/PUT edit and update post
-
+    path('api/posts/<int:post_id>/delete/', DeletePostView.as_view(), name='API_delete_post'),                                              # DELETE post                       --> Test Success
+    path('api/posts/<int:post_id>/update/', UpdatePostView.as_view(), name='update_post'),                                                  # GET/PUT edit and update post      --> Test Success
 
     # Inbox API System:
     path("api/msgs/<str:username>/", MsgsAPIView.as_view(), name="API_MSGs"),                                                               # GET InboxMessages                 --> Unknown
-
 
 
 ]

@@ -15,6 +15,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 postLink.href = `/posts/${post.id}`;
                 postLink.className = 'post-link';
 
+                const datePosted = new Date(post.date_posted);
+                const formattedDate = `${datePosted.getFullYear()}-${datePosted.getMonth() + 1}-${datePosted.getDate()}`;
+                
                 const userInfoHTML = `
                     <div class="user-info">
                         <img src="${post.avatar}" alt="profile avatar" class="user-avatar">

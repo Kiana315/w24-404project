@@ -136,16 +136,27 @@ class PPsAPIView(generics.ListAPIView):
 
 class FPsAPIView(generics.ListAPIView):
     """ [GET] Get The Username-based Friend Posts """
-    serializer_class = PostSerializer
-    
-    def get_queryset(self):
-        username = self.kwargs['username']
-        user = get_object_or_404(User, username=username)
-        return self._getFPsForUser(user)
+    def get(self, request, username):
+        current_user = get_object_or_404(User, username=username)   # get current user
 
-    def _getFPsForUser(self, user):
-        # todo: rule needed
-        return user.friend_posts.all()
+        # Query the users followed by the current user
+        followed_users = User.objects.filter(following__user=current_user)
+
+        # Query the current user’s friends (two-way relationship)
+        friends = User.objects.filter(friends_set1__user1=current_user) | User.objects.filter(friends_set2__user2=current_user)
+
+        # 获取关注用户的公开帖子
+        followed_user_posts = Post.objects.filter(author__in=followed_users, visibility='PUBLIC')
+
+        # 获取好友的公开和仅好友可见帖子
+        friend_posts = Post.objects.filter(author__in=friends) | Post.objects.filter(author=current_user)
+
+        # 合并查询集并去重
+        posts = followed_user_posts | friend_posts
+        posts = posts.distinct().order_by('-date_posted')
+        
+        serializer = PostSerializer(posts, many=True)
+        return Response(serializer.data)
 
 
 class NPsAPIView(generics.CreateAPIView):

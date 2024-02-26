@@ -30,6 +30,7 @@ class Post(models.Model):
     VISIBILITY_CHOICES = [
         ('PUBLIC', 'Public'),
         ('FRIENDS', 'Friends-Only'),
+        ('PRIVATE', 'Private'),
     ]
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='posts')
     title = models.CharField(max_length=255)

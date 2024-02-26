@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>People List</title>
     <link rel="shortcut icon" type="image/x-icon" href="{% static 'favicon.ico' %}">
-    <link rel="stylesheet" type="text/css" href="../../../static/css/peopleList.css">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/peopleList.css' %}">
 
 
 </head>
@@ -24,7 +25,7 @@
  </li>
 -->
 
- <script src="../../../static/js/friendsList.js"></script>
+ <script src="{% static 'js/friendsList.js' %}"></script>
 
 </body>
 </html>

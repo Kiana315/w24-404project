@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const commentInput = document.getElementById('comment-input');
     const shareButton = document.getElementById('share-button');
     var shareModal = document.getElementById('shareModal');
-    var closeSpan = document.getElementsByClassName('close_share');
+    // var closeSpan = document.getElementsByClassName('close_share');
     var confirmShare = document.getElementById('confirmShare');
     var shareText = document.getElementById('shareText');
 
@@ -106,9 +106,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    closeSpan.onclick = function () {
-        shareModal.style.display = "none";
-    }
 
     // when user clicks the outside of the model, close the model
     window.onclick = function (event) {
@@ -287,8 +284,13 @@ function deletePost(button) {
             }
         }).then(response => {
             if (response.status === 204) {
-                window.location.href = '/';
-
+                showNotification('Post Deleted.');
+                setTimeout(function () {
+                    window.history.back();
+                }, 1000);
+                
+                
+                
             } else {
                 alert("Something went wrong.");
             }
@@ -308,6 +310,19 @@ function showNotification(message) {
         console.log('Hiding notification');
         notification.style.display = 'none';
     }, 3000);
+}
+
+function closeShareModal() {
+    shareModal.style.display = 'none';
+}
+
+function redirectProfile() {
+    var el = document.getElementById("userName")
+    var currentUser = document.body.getAttribute('data-current-user');
+    window.location = `/profile/${currentUser}/${el.innerText}`
+    window.onload = () => {
+        window.location.reload();
+    }
 }
 
 function getCookie(name) {

@@ -135,14 +135,16 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(data => {
             if(data.success) {
                 console.log('Post shared successfully', data.post_id);
+                showNotification('Post shared successfully!');
                 // Update UI design to see repost style
             } else {
                 console.error('Failed to share the post');
+                showNotification('Failed to share the post, please try again later!');
             }
         })
         .catch(error => {
             console.error('Error:', error);
-            alert(error.message);
+            showNotification('Failed to share the post, please try again later!');
         });
     
         shareModal.style.display = "none";
@@ -289,6 +291,20 @@ function deletePost(button) {
             }
         }).catch(error => console.error('Error:', error));
     }
+}
+
+function showNotification(message) {
+    console.log('showNotification called with message:', message);
+    var notification = document.getElementById('notification');
+    console.log(notification); 
+    notification.textContent = message;
+    notification.style.display = 'block';
+
+    // Hide the notification after 3 seconds
+    setTimeout(function() {
+        console.log('Hiding notification');
+        notification.style.display = 'none';
+    }, 3000);
 }
 
 function getCookie(name) {

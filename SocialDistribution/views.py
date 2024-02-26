@@ -11,6 +11,7 @@ from django.views.generic import TemplateView, DetailView
 from django.db.models import Q
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
+from django.urls import reverse
 
 # REST Pattern:
 from rest_framework import generics, status
@@ -205,7 +206,7 @@ def author_draft_view(request, username):
 class PostOperationAPIView(generics.RetrieveUpdateDestroyAPIView):
     """ [GET/PUT/DELETE] Get, Update, or Delete A Specific Post """
     queryset = Post.objects.all()
-    serializer_class = PostSerializer
+    serializer_class = PostSerializer   
     permission_classes = [IsAuthenticatedOrReadOnly, IsAuthorOrReadOnly]
 
     def get_object(self):
@@ -288,19 +289,30 @@ class SharePostView(APIView):
 
     def post(self, request, post_id):
         original_post = get_object_or_404(Post, pk=post_id)
+        original_author_username = original_post.author.username
 
-        # check if the post is friends-only
+        profile_url = reverse('PAGE_Profile', kwargs={'username': original_author_username})
+
         if original_post.visibility != 'PUBLIC':
             raise PermissionDenied('This post cannot be shared as it is not public.')
-        # create a new post object
+
+        if original_post.shared_post is None:
+            mention_link = f'<a href="{profile_url}">@{original_author_username}</a>'
+            content_with_mention = f"{mention_link}: {original_post.content}"
+            repost_title = f"Repost: {original_post.title}"
+        else:
+            content_with_mention = original_post.content
+            repost_title = original_post.title
+
         new_post = Post.objects.create(
             author=request.user,
-            title=original_post.title,
-            content=original_post.content,  # could add something more to show this is a repost
+            title=repost_title,
+            content=content_with_mention,
             image=original_post.image,
             shared_post=original_post,
-            # add other stuff as needed
+            # Add other necessary fields...
         )
+
 
         return Response({'success': True, 'post_id': new_post.pk}, status=status.HTTP_201_CREATED)
 

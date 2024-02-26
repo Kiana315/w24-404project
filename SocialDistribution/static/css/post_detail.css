@@ -10,6 +10,23 @@ body  {
     margin: 0;
 }
 
+.notification {
+    display: none; 
+    position: fixed; 
+    top: 50%; 
+    left: 50%; 
+    transform: translate(-50%, -50%); 
+    background-color: green;
+    color: white; 
+    padding: 20px;
+    border-radius: 20px; 
+    z-index: 2000;
+    width: 80%;
+    max-width: 400px;
+    text-align: center;
+}
+
+
 .post-container {
     position: relative;
     background-color: rgba(255, 255, 255, 0.9);

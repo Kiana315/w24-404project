@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -9,9 +10,9 @@
     <link
             rel="stylesheet"
             type="text/css"
-            href="../../../static/css/profile.css"
+            href="{% static 'css/profile.css' %}"
     />
-    <link rel="stylesheet" type="text/css" href="../../../static/css/navbar.css">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/navbar.css' %}">
 
 </head>
 
@@ -145,11 +146,11 @@
 <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
 <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 
-<script src="../../../static/js/index.js"></script>
-<script src="../../../static/js/posting.js"></script>
-<script src="../../../static/js/post_detail.js"></script>
-<script src="../../../static/js/follow.js"></script>
-<script src="../../../static/js/profile.js"></script>
+<script src="{% static 'js/index.js' %}"></script>
+<script src="{% static 'js/posting.js' %}"></script>
+<script src="{% static 'js/post_detail.js' %}"></script>
+<script src="{% static 'js/follow.js' %}"></script>
+<script src="{% static 'js/profile.js' %}"></script>
 
 </body>
 </html>

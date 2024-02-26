@@ -142,21 +142,33 @@ class FPsAPIView(generics.ListAPIView):
         # Query the users followed by the current user
         followed_users = User.objects.filter(reverse_following__user=current_user)
         following_users = User.objects.filter(reverse_followers__user=current_user)
-        print("followed_users: ", followed_users, "\nfollowing_users: ", following_users)
+        # print("followed_users: ", followed_users, "\nfollowing_users: ", following_users)
         
-        followed_users_set = set(followed_users)
-        following_users_set = set(following_users)
+        # followed_users_set = set(followed_users)
+        # following_users_set = set(following_users)
 
-        friends_set = followed_users_set & following_users_set
-        print(friends_set)
-        # Query the current user’s friends (two-way relationship)
-        friends = User.objects.filter(id__in=[user.id for user in friends_set])
-        print(friends)
+        # friends_set = followed_users_set & following_users_set
+        # print(friends_set)
+        # # Query the current user’s friends (two-way relationship)
+        # friends = User.objects.filter(id__in=[user.id for user in friends_set])
+        # print(friends)
+
+        # Get friend list of current user
+        friends = User.objects.filter(
+            Q(friends_set1__user1=current_user) | 
+            Q(friends_set2__user2=current_user)
+        ).distinct()
+        
         # Get public posts from following users
         followed_user_posts = Post.objects.filter(author__in=followed_users, visibility='PUBLIC')
 
         # Get friends’ public and friends-only posts
-        friend_posts = Post.objects.filter(author__in=friends) | Post.objects.filter(author=current_user)
+        friend_posts = Post.objects.filter(
+            Q(author__in=friends, visibility='PUBLIC') |
+            Q(author__in=friends, visibility='FRIENDS') |
+            Q(author=current_user, visibility='PUBLIC') |
+            Q(author=current_user, visibility='FRIENDS')
+        ) | Post.objects.filter(author=current_user, visibility='PUBLIC')
 
         # Merge query sets and remove duplicates
         posts = followed_user_posts | friend_posts

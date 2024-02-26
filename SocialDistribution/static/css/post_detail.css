@@ -119,6 +119,13 @@ body  {
     border-bottom: 1px dashed #ccc;
 }
 
+.post-date{
+    margin: 30px 10px;
+    color: #888;
+    font-size: small;
+
+}
+
 .scrollable-content {
     padding-bottom: 80px; /* Space for the action buttons */
 }

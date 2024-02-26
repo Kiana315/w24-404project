@@ -102,20 +102,10 @@
         </div>
         <div class="follow-container">
             <a href="{% url 'PAGE_FollowersList' username=user.username %}">
-                <button
-                        id="follower-btn"
-                        class="top-button followers-button"
-                >
-                    Followers
-                </button>
+                <button id="follower-btn" class="top-button followers-button">Followers</button>
             </a>
             <a href="{% url 'PAGE_FollowingList' username=user.username %}">
-                <button
-                        id="following-btn"
-                        class="top-button following-button"
-                >
-                    Following
-                </button>
+                <button id="following-btn" class="top-button following-button">Following</button>
             </a>
         </div>
         {% if not user.username == request.user.username and not user.username in following_usernames %}

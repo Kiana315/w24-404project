@@ -89,20 +89,12 @@
             </form>
         </div>
         <div class="follow-container">
-            <button
-                    id="follower-btn"
-                    class="top-button followers-button"
-                    onclick="location.href = 'followers'"
-            >
-                Followers
-            </button>
-            <button
-                    id="following-btn"
-                    class="top-button following-button"
-                    onclick="location.href = 'following'"
-            >
-                Following
-            </button>
+            <a href="{% url 'PAGE_FollowersList' username=user.username %}">
+                <button id="follower-btn" class="top-button followers-button">Followers</button>
+            </a>
+            <a href="{% url 'PAGE_FollowingList' username=user.username %}">
+                <button id="following-btn" class="top-button following-button">Following</button>
+            </a>
         </div>
         <button id="follow-btn" data-username="{{ user.username }}">follow</button>
 

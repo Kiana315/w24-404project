@@ -373,6 +373,7 @@ def profileView(request, username):
 def otherProfileView(request, selfUsername, targetUsername):
     selfUser = get_object_or_404(User, username=selfUsername)
     targetUser = get_object_or_404(User, username=targetUsername)
+
     context = {
         'user': targetUser,
         'posts': Post.objects.filter(author=targetUser).order_by('-date_posted')
@@ -395,6 +396,8 @@ class UserAPIView(generics.RetrieveAPIView):
 
 def search_user(request):
     query = request.GET.get('q', '')  # Get search query parameters
+    current_user = request.user.username
+
     try:
         user = User.objects.get(username=query)
         # Or use eamil search：User.objects.get(email=query)

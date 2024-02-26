@@ -1,4 +1,5 @@
 from django.urls import path
+from django.shortcuts import redirect
 from .views import *
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
@@ -42,6 +43,10 @@ urlpatterns = [
     path("api/user/<str:username>/", UserAPIView.as_view(), name="API_USER"),                                                               # GET Self User/Profile Info        --> Test Success
     path("api/user/<str:user1_id>/<str:user2_id>/", UserAPIView.as_view(), name="API_USER_TWO"),                                            # GET Other's User/Profile Info     --> Test Success
     path("profile/<str:username>/", profileView, name="PAGE_Profile"),
+    path("profile/<str:selfUsername>/<str:targetUsername>/", otherProfileView, name="PAGE_OtherProfile"),
+    path("friendPosts/<str:username>/profile/<str:selfUsername>/<str:targetUsername>/",
+        lambda request, username, selfUsername, targetUsername: 
+        redirect('PAGE_OtherProfile', selfUsername=selfUsername, targetUsername=targetUsername)),
     path("profile/<str:username>/upload-avatar/", upload_avatar, name="API_UploadAvatar"),
     path("profile/<str:username>/update-bio/", update_bio, name="API_UpdateBio"),
     path("profile/<str:username>/update-username/", update_username, name="API_UpdateUsername"),

@@ -16,7 +16,25 @@
             <ion-icon size="small" name="chevron-back-outline" style="margin-right: 8px;"></ion-icon>
             Back
         </button>
+        {% if request.user == post.author %}
+        <button id="more-options-button" class="more-options-button">
+            <ion-icon size="large" name="ellipsis-horizontal" style="cursor: pointer;"></ion-icon>
+            </button>
+        {% endif %}
     </div>
+
+
+    <div id="options-container" class="options-container" style="display: none;">
+        <button class="option-button"  id="edit-btn">
+            <ion-icon size="small" name="create-outline" style="margin-right: 8px;"></ion-icon>
+            Edit</button>
+        <button class="option-button" data-post-id="{{ post.id }}" onclick="deletePost(this)">
+            <ion-icon size="small" name="trash-outline" style="margin-right: 8px;"></ion-icon>
+            Delete</button>
+        <!-- Add more buttons as needed -->
+    </div>
+
+    
 
     <div class="user-info" onclick="redirectProfile()">
         {% if post.author.avatar %}

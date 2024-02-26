@@ -46,7 +46,7 @@ body  {
     background: #C4E4F3;
     padding: 10px 20px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-    z-index: 1000;
+    
     margin: -20px -20px;
 }
 
@@ -279,7 +279,7 @@ body  {
 .modal {
     display: none;
     position: fixed;
-    z-index: 1;
+    z-index: 200;
     left: 0;
     top: 0;
     width: 100%;
@@ -289,6 +289,7 @@ body  {
 }
 
 .modal-content {
+    z-index: 200;
     background-color: rgba(254, 254, 254, 0.9);
     padding: 20px;
     border: 1px solid #888;

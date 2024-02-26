@@ -16,7 +16,7 @@
             <ion-icon size="small" name="chevron-back-outline" style="margin-right: 8px;"></ion-icon>
             Back
         </button>
-        {% if request.user == post.author %}
+        {% if request.user == post.author and not post.is_draft %}
             <button id="more-options-button" class="more-options-button">
                 <ion-icon size="large" name="ellipsis-horizontal" style="cursor: pointer;"></ion-icon>
             </button>

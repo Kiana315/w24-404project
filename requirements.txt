@@ -5,3 +5,4 @@ django==5.0.2; python_version >= '3.10'
 sqlparse==0.4.4; python_version >= '3.5'
 djangorestframework
 Pillow
+gunicorn

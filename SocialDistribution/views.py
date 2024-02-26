@@ -545,11 +545,15 @@ class AnalyzeRelationAPIView(APIView):
         user1_followed_by_user2 = Follower.objects.filter(user=user1, follower=user2).exists()
         user2_followed_by_user1 = Follower.objects.filter(user=user2, follower=user1).exists()
 
+        user1_makeFriend_user2 = Friend.objects.filter(user1=user1, user2=user2).exists()
+        user2_makeFriend_user1 = Friend.objects.filter(user1=user2, user2=user1).exists()
+
         data = {
             'user1_follows_user2': user1_follows_user2,
             'user2_follows_user1': user2_follows_user1,
             'user1_followed_by_user2': user1_followed_by_user2,
             'user2_followed_by_user1': user2_followed_by_user1,
+            'already_friend': user1_makeFriend_user2 and user2_makeFriend_user1,
             'mutual_follow': user1_follows_user2 and user2_follows_user1 and user1_followed_by_user2 and user2_followed_by_user1,
         }
         return Response(data)

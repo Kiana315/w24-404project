@@ -115,7 +115,7 @@
     </div>
 
     <div class="post-container">
-        {% if request.user == user %}
+        {% if request.user == user and request.user %}
             <div>
                 <button><a href="{% url 'API_AuthorDraft' username=user.username %}">
                     <ion-icon name="file-tray-full-outline">Post Draft</ion-icon>

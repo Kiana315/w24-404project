@@ -45,7 +45,6 @@ urlpatterns = [
     path("api/user/<str:username>/", UserAPIView.as_view(), name="API_USER"),                                                               # GET Self User/Profile Info        --> Test Success
     path("api/user/<str:user1_id>/<str:user2_id>/", UserAPIView.as_view(), name="API_USER_TWO"),                                            # GET Other's User/Profile Info     --> Test Success
     path("profile/<str:username>/", profileView, name="PAGE_Profile"),
-    path("profile/<str:selfUsername>/<str:targetUsername>/", otherProfileView, name="PAGE_OtherProfile"),
     path("friendPosts/<str:username>/profile/<str:selfUsername>/<str:targetUsername>/",
         lambda request, username, selfUsername, targetUsername: 
         redirect('PAGE_OtherProfile', selfUsername=selfUsername, targetUsername=targetUsername)),

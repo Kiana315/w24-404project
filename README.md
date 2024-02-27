@@ -26,13 +26,13 @@ All text is licensed under the CC-BY-SA 4.0 http://creativecommons.org/licenses/
 
 Contributors:
 
-+    Karim Baaba
-+  Ali Sajedi
++   Karim Baaba
++   Ali Sajedi
 +   Kyle Richelhoff
 +   Chris Pavlicek
 +   Derek Dowling
 +   Olexiy Berjanskii
 +   Erin Torbiak
 +   Abram Hindle
-+ Braedy Kuzma
++   Braedy Kuzma
 +   Nhan Nguyen 
